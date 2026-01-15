@@ -1,0 +1,1 @@
+A simple and intuitive **Domino Game Score Keeper** designed for **2 to 4 players**, including **2-vs-2 team play**. Easily track scores round by round with a clean, distraction-free interface that keeps the focus on the game. Perfect for casual matches or competitive domino sessions, whether you’re playing solo, head-to-head, or in teams.
