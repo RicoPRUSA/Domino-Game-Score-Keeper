@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>El BORICUA Domino Score Keeper</title>
 
-<!-- Favicon (Puerto Rico Flag) -->
+<!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 600'%3E%3Crect width='900' height='600' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='0' fill='%23ED0000'/%3E%3Crect width='900' height='120' y='120' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='240' fill='%23ED0000'/%3E%3Crect width='900' height='120' y='360' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='480' fill='%23ED0000'/%3E%3Cpath d='M 0 0 L 360 300 L 0 600 Z' fill='%230050F0'/%3E%3Cpath d='M 130 270 L 150 330 L 215 330 L 165 365 L 185 425 L 130 385 L 75 425 L 95 365 L 45 330 L 110 330 Z' fill='%23ffffff'/%3E%3C/svg%3E">
 
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -24,12 +24,11 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  /* Light blue gradient background */
   background: linear-gradient(120deg, #f0f4f8, #dbeafe);
   color: #111827;
   min-height: 100vh;
   padding: 0.5rem;
-  padding-bottom: 80px; /* Space for the flag badge on mobile */
+  padding-bottom: 80px; 
   -webkit-text-size-adjust: 100%;
   touch-action: manipulation;
 }
@@ -40,10 +39,10 @@ body {
   position: relative;
 }
 
-/* --- THE VIEJO SAN JUAN CARD --- */
-/* Guayabera Texture: Subtle diagonal lines on white */
+/* --- CARD DESIGN --- */
 .card {
   background-color: #ffffff;
+  /* Guayabera Texture */
   background-image: repeating-linear-gradient(45deg, transparent, transparent 1px, #f9fafb 1px, #f9fafb 4px);
   border-radius: 16px;
   padding: 1.5rem;
@@ -61,10 +60,10 @@ body {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(to right, #1e3a8a, #ffffff, #dc2626); /* Flag Colors */
+  background: linear-gradient(to right, #1e3a8a, #ffffff, #dc2626);
 }
 
-/* Floating Flag Badge */
+/* Fixed Flag Badge */
 .pr-flag-badge {
   position: fixed;
   bottom: 1rem;
@@ -79,7 +78,7 @@ body {
 }
 .pr-flag-badge svg { width: 100%; height: 100%; }
 
-/* Header & Typography */
+/* Typography */
 .logo-block {
   display: flex;
   flex-direction: column;
@@ -124,7 +123,7 @@ h2 {
   50% { background-position: 100% 0%; }
 }
 
-/* Inputs & Controls */
+/* Controls */
 .controls {
   display: flex;
   gap: 0.75rem;
@@ -197,14 +196,34 @@ input:disabled {
   color: #94a3b8;
 }
 
-/* --- THE "SMART TOGGLES" (Pill Shape) --- */
+/* --- BADGES (Original Pill Shape) --- */
+.badge {
+  display: inline-block;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px; /* Pill shape */
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: white;
+  margin: 2px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  white-space: nowrap; /* Prevents text breaking inside badge */
+  text-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  line-height: 1;
+}
+
+.bonus { background: #f59e0b; }
+.capicu { background: #ea580c; }
+.chuchazo { background: #dc2626; }
+
+/* --- INPUT TOGGLES (Visual Overrides) --- */
+/* These styles only affect the badges when used as clickable toggles */
 .checkbox-group {
   display: flex;
   gap: 0.5rem;
   justify-content: center;
   flex-wrap: wrap;
   margin-bottom: 1.5rem;
-  background: #f1f5f9; /* Light gray pill background */
+  background: #f1f5f9;
   padding: 0.5rem;
   border-radius: 50px;
   border: 1px solid #e2e8f0;
@@ -219,49 +238,48 @@ input:disabled {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Hide the actual checkbox input */
-.checkbox-label input[type="checkbox"] {
-  display: none;
-}
+.checkbox-label input[type="checkbox"] { display: none; }
 
-/* The visual badge acts as the toggle */
+/* Inactive Toggle State */
 .checkbox-label .badge {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  border-radius: 50px;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: white;
-  margin: 0;
-  box-shadow: none;
-  
-  /* Inactive State */
   opacity: 0.5;
-  filter: grayscale(80%);
+  filter: grayscale(100%);
   transform: scale(0.95);
   transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  border: 2px solid transparent;
+  box-shadow: none;
 }
 
-/* Active State (When Checked) */
+/* Active Toggle State */
 .checkbox-label input:checked + .badge {
   opacity: 1;
   filter: grayscale(0%);
   transform: scale(1.05);
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  border: 2px solid #fff;
 }
 
-/* Badge Colors */
-.badge.bonus { background: #f59e0b; }
-.badge.capicu { background: #ea580c; }
-.badge.chuchazo { background: #dc2626; }
-
-/* Table Styles */
+/* --- TABLE STYLES --- */
 table { width: 100%; border-collapse: collapse; }
 th, td { padding: 0.75rem 0.5rem; text-align: center; color: #1e3a8a; }
 th { font-weight: 800; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px; }
 tbody tr { border-top: 1px solid #e2e8f0; }
+
+/* Table Cell Content Layout */
+td .winner-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+/* This container ensures badges wrap and don't overflow */
+td .badge-stack {
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  max-width: 150px; /* Constraints width to force wrapping on small screens */
+}
 
 /* --- WINNER ANIMATION --- */
 @keyframes pulse-winner {
@@ -304,8 +322,8 @@ tbody tr { border-top: 1px solid #e2e8f0; }
   .card { padding: 1rem; }
   .pr-flag-badge { width: 45px; height: 45px; bottom: 0.5rem; right: 0.5rem; }
   
-  /* Make toggles stack nicely on very small screens */
   .checkbox-group { gap: 0.25rem; width: 100%; padding: 0.4rem; border-radius: 12px; }
+  /* Ensure original pill shape persists even on mobile */
   .checkbox-label .badge { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
 }
 </style>
@@ -313,7 +331,6 @@ tbody tr { border-top: 1px solid #e2e8f0; }
 
 <body>
 
-<!-- Fixed Flag Badge -->
 <div class="pr-flag-badge">
   <svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
     <rect width="900" height="600" fill="#ffffff"/>
@@ -328,7 +345,6 @@ tbody tr { border-top: 1px solid #e2e8f0; }
 </div>
 
 <div class="container">
-  <!-- Header / Logo -->
   <div class="logo-block">
     <svg class="domino-icon" viewBox="0 0 80 140">
       <defs>
@@ -344,7 +360,6 @@ tbody tr { border-top: 1px solid #e2e8f0; }
       <rect x="10" y="10" width="60" height="120" rx="8" fill="url(#tileGradient)" stroke="#cbd5e1" stroke-width="2"/>
       <rect x="11" y="11" width="58" height="3" rx="2" fill="rgba(255,255,255,0.8)"/>
       <line x1="15" y1="70" x2="65" y2="70" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
-      <!-- Dots -->
       <circle cx="25" cy="27" r="5" fill="url(#dotGradient)"/>
       <circle cx="40" cy="27" r="5" fill="url(#dotGradient)"/>
       <circle cx="55" cy="27" r="5" fill="url(#dotGradient)"/>
@@ -357,7 +372,6 @@ tbody tr { border-top: 1px solid #e2e8f0; }
       <circle cx="25" cy="113" r="5" fill="url(#dotGradient)"/>
       <circle cx="40" cy="113" r="5" fill="url(#dotGradient)"/>
       <circle cx="55" cy="113" r="5" fill="url(#dotGradient)"/>
-      <!-- Highlights for 3D effect -->
       <circle cx="23.5" cy="25.5" r="1.5" fill="rgba(255,255,255,0.6)"/>
       <circle cx="38.5" cy="25.5" r="1.5" fill="rgba(255,255,255,0.6)"/>
       <circle cx="53.5" cy="25.5" r="1.5" fill="rgba(255,255,255,0.6)"/>
@@ -369,7 +383,6 @@ tbody tr { border-top: 1px solid #e2e8f0; }
     <div class="pr-accent"></div>
   </div>
 
-  <!-- SETUP SCREEN -->
   <div id="setup">
     <div class="card">
       <h2>Game Setup</h2>
@@ -386,12 +399,10 @@ tbody tr { border-top: 1px solid #e2e8f0; }
       </div>
       <div id="playerSelects" class="controls"></div>
       <div class="controls">
-        <!-- Changed Text per request -->
         <button onclick="startGame()">¡A Jugar!</button>
       </div>
     </div>
 
-    <!-- HISTORY SCREEN -->
     <div class="card" id="historyCard" style="display: none;">
       <h2>Game History</h2>
       <div id="gameHistory"></div>
@@ -401,7 +412,6 @@ tbody tr { border-top: 1px solid #e2e8f0; }
     </div>
   </div>
 
-  <!-- ACTIVE GAME SCREEN -->
   <div id="game" class="hidden">
     <div class="card">
       <h2>Rounds</h2>
@@ -417,7 +427,6 @@ tbody tr { border-top: 1px solid #e2e8f0; }
         <select id="winner"></select>
       </div>
       
-      <!-- Smart Toggles for Capicú & Chuchazo -->
       <div class="checkbox-group">
         <label class="checkbox-label">
           <input type="checkbox" id="capicu">
@@ -540,10 +549,8 @@ function setupRoundInputs() {
     input.type = 'number';
     input.placeholder = name;
     input.id = 'score' + i;
-    input.setAttribute('aria-label', name + ' score'); // Accessibility fix
+    input.setAttribute('aria-label', name + ' score');
     input.addEventListener('input', () => {
-      // Logic: disable input of the player who won (conventionally winner doesn't have points in hand)
-      // But in this app logic, winner gets points added to them.
       elements.winner.value = i;
     });
     elements.scoreInputs.appendChild(input);
@@ -565,7 +572,6 @@ function addRound() {
     rScores.push(+document.getElementById('score' + i).value || 0);
   }
   
-  // Update Logic: Add everything to winner
   scores[w] += rScores[w] + base + extra;
   rounds.push({ rScores, w, base, capicu: elements.capicu.checked, chuchazo: elements.chuchazo.checked });
   
@@ -577,8 +583,6 @@ function addRound() {
 function undoRound() {
   if (rounds.length === 0) return;
   rounds.pop();
-  
-  // Recalculate scores from scratch to ensure accuracy
   scores.fill(0);
   rounds.forEach(r => {
     scores[r.w] += r.rScores[r.w] + r.base + (r.capicu ? 100 : 0) + (r.chuchazo ? 100 : 0);
@@ -685,7 +689,6 @@ function render() {
   elements.totals.innerHTML = names.map((name, i) => {
     const isWinner = scores[i] > 0 && scores[i] === max;
     const wepa = isWinner ? ' ¡Wepa!' : '';
-    // Added 🏆 icon for winner visual
     return '<div class="score ' + (isWinner ? 'winner' : '') + '">' + (isWinner ? '🏆 ' : '') + name + ': ' + scores[i] + wepa + '</div>';
   }).join('');
   
@@ -694,10 +697,14 @@ function render() {
   rounds.forEach((r, i) => {
     table += '<tr><td><strong>' + (i + 1) + '</strong></td>';
     table += r.rScores.map(s => '<td>' + s + '</td>').join('');
-    table += '<td><div style="display: flex; flex-direction: column; align-items: center; gap: 0.25rem;"><strong>' + names[r.w] + '</strong><div>';
+    
+    // Updated HTML structure for stacking badges
+    table += '<td><div class="winner-cell"><strong>' + names[r.w] + '</strong><div class="badge-stack">';
+    
     if (r.base) table += '<span class="badge bonus">+' + r.base + '</span>';
     if (r.capicu) table += '<span class="badge capicu">Capicú</span>';
     if (r.chuchazo) table += '<span class="badge chuchazo">Chuchazo</span>';
+    
     table += '</div></div></td></tr>';
   });
   
