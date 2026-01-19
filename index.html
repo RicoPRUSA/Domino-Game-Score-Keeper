@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>El BORICUA Domino Score Keeper</title>
 
+<!-- Favicon (Puerto Rico Flag) -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 600'%3E%3Crect width='900' height='600' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='0' fill='%23ED0000'/%3E%3Crect width='900' height='120' y='120' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='240' fill='%23ED0000'/%3E%3Crect width='900' height='120' y='360' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='480' fill='%23ED0000'/%3E%3Cpath d='M 0 0 L 360 300 L 0 600 Z' fill='%230050F0'/%3E%3Cpath d='M 130 270 L 150 330 L 215 330 L 165 365 L 185 425 L 130 385 L 75 425 L 95 365 L 45 330 L 110 330 Z' fill='%23ffffff'/%3E%3C/svg%3E">
 
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -23,10 +24,12 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  /* Light blue gradient background */
   background: linear-gradient(120deg, #f0f4f8, #dbeafe);
   color: #111827;
   min-height: 100vh;
   padding: 0.5rem;
+  padding-bottom: 80px; /* Space for the flag badge on mobile */
   -webkit-text-size-adjust: 100%;
   touch-action: manipulation;
 }
@@ -37,6 +40,31 @@ body {
   position: relative;
 }
 
+/* --- THE VIEJO SAN JUAN CARD --- */
+/* Guayabera Texture: Subtle diagonal lines on white */
+.card {
+  background-color: #ffffff;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 1px, #f9fafb 1px, #f9fafb 4px);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(to right, #1e3a8a, #ffffff, #dc2626); /* Flag Colors */
+}
+
+/* Floating Flag Badge */
 .pr-flag-badge {
   position: fixed;
   bottom: 1rem;
@@ -49,12 +77,9 @@ body {
   overflow: hidden;
   border: 3px solid white;
 }
+.pr-flag-badge svg { width: 100%; height: 100%; }
 
-.pr-flag-badge svg {
-  width: 100%;
-  height: 100%;
-}
-
+/* Header & Typography */
 .logo-block {
   display: flex;
   flex-direction: column;
@@ -66,7 +91,7 @@ body {
   width: 50px;
   height: 85px;
   transform: rotate(-18deg);
-  filter: drop-shadow(2px 4px 10px rgba(0,0,0,0.5));
+  filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
 }
 
 h1 {
@@ -74,7 +99,14 @@ h1 {
   text-align: center;
   margin: 0.5rem 0;
   font-size: 2rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+h2 {
+  color: #1e3a8a;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
 }
 
 .pr-accent {
@@ -92,34 +124,7 @@ h1 {
   50% { background-position: 100% 0%; }
 }
 
-.card {
-  background: white;
-  border-radius: 16px;
-  padding: 1.5rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  position: relative;
-  overflow: hidden;
-}
-
-.card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(to right, #1e3a8a, #ffffff, #b91c1c);
-}
-
-h2 {
-  color: #1e3a8a;
-  text-align: center;
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-}
-
+/* Inputs & Controls */
 .controls {
   display: flex;
   gap: 0.75rem;
@@ -144,87 +149,126 @@ select {
   color: white;
   -webkit-appearance: none;
   appearance: none;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
 button {
   background: #1e40af;
   color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.15) !important;
+  transition: transform 0.1s, box-shadow 0.1s;
 }
 
 button:hover {
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.25), 0 4px 6px rgba(0, 0, 0, 0.2) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 10px rgba(0,0,0,0.2) !important;
 }
 
 button:active {
   transform: translateY(1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
 }
 
 button.secondary {
-  background: #475569;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  background: #64748b;
 }
 
 input[type="text"],
 input[type="number"] {
   padding: 0.75rem;
-  font-size: 1rem;
-  border: 2px solid #94a3b8;
+  font-size: 1.1rem;
+  border: 2px solid #cbd5e1;
   border-radius: 8px;
   text-align: center;
-  width: 80px;
-  -webkit-appearance: none;
-  appearance: none;
+  width: 85px;
+  background: #fff;
+  transition: border-color 0.2s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #1e40af;
 }
 
 input:disabled {
   background: #f1f5f9;
   cursor: not-allowed;
   border-color: #e2e8f0;
+  color: #94a3b8;
 }
 
-input[type="checkbox"] {
-  width: 24px;
-  height: 24px;
+/* --- THE "SMART TOGGLES" (Pill Shape) --- */
+.checkbox-group {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+  background: #f1f5f9; /* Light gray pill background */
+  padding: 0.5rem;
+  border-radius: 50px;
+  border: 1px solid #e2e8f0;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.checkbox-label {
   cursor: pointer;
+  position: relative;
   -webkit-tap-highlight-color: transparent;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
+/* Hide the actual checkbox input */
+.checkbox-label input[type="checkbox"] {
+  display: none;
 }
 
-th, td {
-  padding: 0.75rem 0.5rem;
-  text-align: center;
-  color: #1e3a8a;
-}
-
-th {
-  font-weight: 700;
-}
-
-tbody tr {
-  border-top: 1px solid #e2e8f0;
-}
-
-.badge {
+/* The visual badge acts as the toggle */
+.checkbox-label .badge {
   display: inline-block;
-  padding: 0.25rem 0.6rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
   font-weight: 700;
   color: white;
-  margin: 0.125rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin: 0;
+  box-shadow: none;
+  
+  /* Inactive State */
+  opacity: 0.5;
+  filter: grayscale(80%);
+  transform: scale(0.95);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 2px solid transparent;
 }
 
-.bonus { background: #f59e0b; }
-.capicu { background: #ea580c; }
-.chuchazo { background: #dc2626; }
+/* Active State (When Checked) */
+.checkbox-label input:checked + .badge {
+  opacity: 1;
+  filter: grayscale(0%);
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  border: 2px solid #fff;
+}
+
+/* Badge Colors */
+.badge.bonus { background: #f59e0b; }
+.badge.capicu { background: #ea580c; }
+.badge.chuchazo { background: #dc2626; }
+
+/* Table Styles */
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 0.75rem 0.5rem; text-align: center; color: #1e3a8a; }
+th { font-weight: 800; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px; }
+tbody tr { border-top: 1px solid #e2e8f0; }
+
+/* --- WINNER ANIMATION --- */
+@keyframes pulse-winner {
+  0% { transform: scale(1); box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+  50% { transform: scale(1.05); box-shadow: 0 8px 16px rgba(220, 38, 38, 0.25); border-color: #fca5a5; }
+  100% { transform: scale(1); box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+}
 
 .scores-display {
   display: flex;
@@ -237,88 +281,39 @@ tbody tr {
   font-size: 1.5rem;
   font-weight: 700;
   color: #1e3a8a;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
 }
 
 .score.winner {
   color: #dc2626;
-  font-size: 1.75rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  background-color: #fef2f2;
+  border: 2px solid #fee2e2;
+  animation: pulse-winner 2.5s infinite;
+  font-size: 1.7rem;
 }
 
-.checkbox-group {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
-}
+.hidden { display: none; }
 
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-}
-
-.hidden {
-  display: none;
-}
-
+/* Mobile Tweaks */
 @media (max-width: 640px) {
-  body { padding: 0.25rem; }
-  h1 { font-size: 1.4rem; margin: 0.25rem 0; }
-  h2 { font-size: 1.2rem; }
+  h1 { font-size: 1.4rem; }
   .domino-icon { width: 40px; height: 68px; }
-  .card { padding: 1rem; border-radius: 12px; }
-  .pr-flag-badge {
-    width: 45px;
-    height: 45px;
-    bottom: 0.5rem;
-    right: 0.5rem;
-    border: 2px solid white;
-  }
-  select { 
-    padding: 0.65rem 1rem; 
-    font-size: 0.95rem;
-    min-height: 44px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35), 0 2px 4px rgba(0, 0, 0, 0.3) !important;
-    -webkit-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35), 0 2px 4px rgba(0, 0, 0, 0.3) !important;
-  }
-  button { 
-    padding: 0.65rem 1rem; 
-    font-size: 0.95rem;
-    min-height: 44px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.2);
-  }
-  input[type="number"] { 
-    width: 70px;
-    min-height: 44px;
-  }
-  th, td { 
-    padding: 0.5rem 0.25rem;
-    font-size: 0.9rem;
-  }
-  .controls {
-    gap: 0.5rem;
-  }
-  .checkbox-group {
-    gap: 0.75rem;
-  }
-  .checkbox-label {
-    font-size: 0.9rem;
-  }
-  .score {
-    font-size: 1.3rem;
-  }
-  .score.winner {
-    font-size: 1.5rem;
-  }
+  .card { padding: 1rem; }
+  .pr-flag-badge { width: 45px; height: 45px; bottom: 0.5rem; right: 0.5rem; }
+  
+  /* Make toggles stack nicely on very small screens */
+  .checkbox-group { gap: 0.25rem; width: 100%; padding: 0.4rem; border-radius: 12px; }
+  .checkbox-label .badge { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
 }
 </style>
 </head>
 
 <body>
+
+<!-- Fixed Flag Badge -->
 <div class="pr-flag-badge">
   <svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
     <rect width="900" height="600" fill="#ffffff"/>
@@ -333,12 +328,12 @@ tbody tr {
 </div>
 
 <div class="container">
+  <!-- Header / Logo -->
   <div class="logo-block">
     <svg class="domino-icon" viewBox="0 0 80 140">
       <defs>
         <linearGradient id="tileGradient" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
-          <stop offset="50%" style="stop-color:#f8f8f8;stop-opacity:1" />
           <stop offset="100%" style="stop-color:#eeeeee;stop-opacity:1" />
         </linearGradient>
         <radialGradient id="dotGradient">
@@ -346,9 +341,10 @@ tbody tr {
           <stop offset="100%" style="stop-color:#991b1b;stop-opacity:1" />
         </radialGradient>
       </defs>
-      <rect x="10" y="10" width="60" height="120" rx="8" fill="url(#tileGradient)" stroke="#cccccc" stroke-width="1.5"/>
+      <rect x="10" y="10" width="60" height="120" rx="8" fill="url(#tileGradient)" stroke="#cbd5e1" stroke-width="2"/>
       <rect x="11" y="11" width="58" height="3" rx="2" fill="rgba(255,255,255,0.8)"/>
-      <line x1="15" y1="70" x2="65" y2="70" stroke="#999999" stroke-width="2" stroke-linecap="round"/>
+      <line x1="15" y1="70" x2="65" y2="70" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
+      <!-- Dots -->
       <circle cx="25" cy="27" r="5" fill="url(#dotGradient)"/>
       <circle cx="40" cy="27" r="5" fill="url(#dotGradient)"/>
       <circle cx="55" cy="27" r="5" fill="url(#dotGradient)"/>
@@ -361,17 +357,19 @@ tbody tr {
       <circle cx="25" cy="113" r="5" fill="url(#dotGradient)"/>
       <circle cx="40" cy="113" r="5" fill="url(#dotGradient)"/>
       <circle cx="55" cy="113" r="5" fill="url(#dotGradient)"/>
-      <circle cx="23.5" cy="25.5" r="1.8" fill="rgba(255,255,255,0.5)"/>
-      <circle cx="38.5" cy="25.5" r="1.8" fill="rgba(255,255,255,0.5)"/>
-      <circle cx="53.5" cy="25.5" r="1.8" fill="rgba(255,255,255,0.5)"/>
-      <circle cx="23.5" cy="85.5" r="1.8" fill="rgba(255,255,255,0.5)"/>
-      <circle cx="38.5" cy="85.5" r="1.8" fill="rgba(255,255,255,0.5)"/>
-      <circle cx="53.5" cy="85.5" r="1.8" fill="rgba(255,255,255,0.5)"/>
+      <!-- Highlights for 3D effect -->
+      <circle cx="23.5" cy="25.5" r="1.5" fill="rgba(255,255,255,0.6)"/>
+      <circle cx="38.5" cy="25.5" r="1.5" fill="rgba(255,255,255,0.6)"/>
+      <circle cx="53.5" cy="25.5" r="1.5" fill="rgba(255,255,255,0.6)"/>
+      <circle cx="23.5" cy="85.5" r="1.5" fill="rgba(255,255,255,0.6)"/>
+      <circle cx="38.5" cy="85.5" r="1.5" fill="rgba(255,255,255,0.6)"/>
+      <circle cx="53.5" cy="85.5" r="1.5" fill="rgba(255,255,255,0.6)"/>
     </svg>
-    <h1>El BORICUA Domino Score Keeper ¡Wepa!</h1>
+    <h1>El BORICUA Domino Score Keeper</h1>
     <div class="pr-accent"></div>
   </div>
 
+  <!-- SETUP SCREEN -->
   <div id="setup">
     <div class="card">
       <h2>Game Setup</h2>
@@ -388,10 +386,12 @@ tbody tr {
       </div>
       <div id="playerSelects" class="controls"></div>
       <div class="controls">
-        <button onclick="startGame()">¡Dale! Start Game</button>
+        <!-- Changed Text per request -->
+        <button onclick="startGame()">¡A Jugar!</button>
       </div>
     </div>
 
+    <!-- HISTORY SCREEN -->
     <div class="card" id="historyCard" style="display: none;">
       <h2>Game History</h2>
       <div id="gameHistory"></div>
@@ -401,6 +401,7 @@ tbody tr {
     </div>
   </div>
 
+  <!-- ACTIVE GAME SCREEN -->
   <div id="game" class="hidden">
     <div class="card">
       <h2>Rounds</h2>
@@ -415,6 +416,8 @@ tbody tr {
       <div class="controls">
         <select id="winner"></select>
       </div>
+      
+      <!-- Smart Toggles for Capicú & Chuchazo -->
       <div class="checkbox-group">
         <label class="checkbox-label">
           <input type="checkbox" id="capicu">
@@ -425,6 +428,7 @@ tbody tr {
           <span class="badge chuchazo">Chuchazo +100</span>
         </label>
       </div>
+
       <div class="controls">
         <button onclick="addRound()">¡Dale! Add Round</button>
         <button class="secondary" onclick="undoRound()">¡Ay Bendito! Undo</button>
@@ -488,7 +492,7 @@ function renderPlayerSelects() {
       if (e.target.value === 'Custom') {
         const input = document.createElement('input');
         input.type = 'text';
-        input.placeholder = 'Enter name';
+        input.placeholder = 'Name';
         input.id = 'custom' + i;
         wrapper.appendChild(input);
       } else {
@@ -536,10 +540,10 @@ function setupRoundInputs() {
     input.type = 'number';
     input.placeholder = name;
     input.id = 'score' + i;
+    input.setAttribute('aria-label', name + ' score'); // Accessibility fix
     input.addEventListener('input', () => {
-      elements.scoreInputs.querySelectorAll('input').forEach((inp, idx) => {
-        inp.disabled = idx !== i;
-      });
+      // Logic: disable input of the player who won (conventionally winner doesn't have points in hand)
+      // But in this app logic, winner gets points added to them.
       elements.winner.value = i;
     });
     elements.scoreInputs.appendChild(input);
@@ -561,6 +565,7 @@ function addRound() {
     rScores.push(+document.getElementById('score' + i).value || 0);
   }
   
+  // Update Logic: Add everything to winner
   scores[w] += rScores[w] + base + extra;
   rounds.push({ rScores, w, base, capicu: elements.capicu.checked, chuchazo: elements.chuchazo.checked });
   
@@ -572,6 +577,8 @@ function addRound() {
 function undoRound() {
   if (rounds.length === 0) return;
   rounds.pop();
+  
+  // Recalculate scores from scratch to ensure accuracy
   scores.fill(0);
   rounds.forEach(r => {
     scores[r.w] += r.rScores[r.w] + r.base + (r.capicu ? 100 : 0) + (r.chuchazo ? 100 : 0);
@@ -590,7 +597,6 @@ function resetInputs() {
 }
 
 function newGame() {
-  // Save current game to history if there were rounds played
   if (rounds.length > 0) {
     saveGameToHistory();
   }
@@ -614,14 +620,8 @@ function saveGameToHistory() {
         roundsWon++;
         totalPoints += r.rScores[idx];
         bonusPoints += r.base;
-        if (r.capicu) {
-          capicuCount++;
-          bonusPoints += 100;
-        }
-        if (r.chuchazo) {
-          chuchazoCount++;
-          bonusPoints += 100;
-        }
+        if (r.capicu) { capicuCount++; bonusPoints += 100; }
+        if (r.chuchazo) { chuchazoCount++; bonusPoints += 100; }
       }
     });
     
@@ -648,34 +648,23 @@ function renderGameHistory() {
   
   elements.historyCard.style.display = 'block';
   
-  let historyHTML = '<div style="display: flex; flex-direction: column; gap: 1.5rem;">';
+  let historyHTML = '<div style="display: flex; flex-direction: column; gap: 1rem;">';
   
   gameHistory.slice().reverse().forEach((game, reverseIdx) => {
     const gameIdx = gameHistory.length - 1 - reverseIdx;
-    historyHTML += '<div style="padding: 1rem; background: #f8fafc; border-radius: 12px; border: 2px solid #e2e8f0;">';
-    historyHTML += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 2px solid #e2e8f0;">';
+    historyHTML += '<div style="padding: 1rem; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">';
+    historyHTML += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; border-bottom: 1px solid #cbd5e1; padding-bottom: 0.5rem;">';
     historyHTML += '<h3 style="margin: 0; color: #1e3a8a; font-size: 1rem;">Game ' + (gameIdx + 1) + '</h3>';
-    historyHTML += '<span style="font-size: 0.85rem; color: #64748b;">' + game.date + '</span>';
+    historyHTML += '<span style="font-size: 0.8rem; color: #64748b;">' + game.date + '</span>';
     historyHTML += '</div>';
-    historyHTML += '<div style="font-size: 0.9rem; color: #475569; margin-bottom: 0.5rem;"><strong>Rounds Played:</strong> ' + game.totalRounds + '</div>';
     
     game.players.forEach((player, rank) => {
       const isWinner = rank === 0;
-      historyHTML += '<div style="padding: 0.75rem; background: ' + (isWinner ? '#fef2f2' : 'white') + '; border-radius: 8px; margin-bottom: 0.5rem; border-left: 3px solid ' + (isWinner ? '#dc2626' : '#94a3b8') + ';">';
-      historyHTML += '<div style="display: flex; justify-content: space-between; align-items: center;">';
-      historyHTML += '<span style="font-weight: 600; color: #1e3a8a;">' + (isWinner ? '🏆 ' : '') + player.name + '</span>';
-      historyHTML += '<span style="font-weight: 700; color: ' + (isWinner ? '#dc2626' : '#1e3a8a') + ';">' + player.finalScore + '</span>';
-      historyHTML += '</div>';
-      historyHTML += '<div style="display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.8rem; color: #64748b; margin-top: 0.25rem;">';
-      historyHTML += '<span>Wins: ' + player.roundsWon + '</span>';
-      historyHTML += '<span>Base: ' + player.totalPoints + '</span>';
-      historyHTML += '<span>Bonus: ' + player.bonusPoints + '</span>';
-      if (player.capicuCount > 0) historyHTML += '<span class="badge capicu" style="font-size: 0.65rem;">Capicú x' + player.capicuCount + '</span>';
-      if (player.chuchazoCount > 0) historyHTML += '<span class="badge chuchazo" style="font-size: 0.65rem;">Chuchazo x' + player.chuchazoCount + '</span>';
-      historyHTML += '</div>';
+      historyHTML += '<div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.25rem; color: ' + (isWinner ? '#dc2626' : '#334155') + '; font-weight: ' + (isWinner ? '700' : '400') + ';">';
+      historyHTML += '<span>' + (isWinner ? '🏆 ' : '') + player.name + '</span>';
+      historyHTML += '<span>' + player.finalScore + '</span>';
       historyHTML += '</div>';
     });
-    
     historyHTML += '</div>';
   });
   
@@ -686,16 +675,8 @@ function renderGameHistory() {
 function clearHistory() {
   gameHistory = [];
   localStorage.removeItem('dominoGameHistory');
-  
   const historyCard = document.getElementById('historyCard');
-  const gameHistoryDiv = document.getElementById('gameHistory');
-  
-  if (historyCard) {
-    historyCard.style.display = 'none';
-  }
-  if (gameHistoryDiv) {
-    gameHistoryDiv.innerHTML = '';
-  }
+  if (historyCard) historyCard.style.display = 'none';
 }
 
 function render() {
@@ -704,7 +685,8 @@ function render() {
   elements.totals.innerHTML = names.map((name, i) => {
     const isWinner = scores[i] > 0 && scores[i] === max;
     const wepa = isWinner ? ' ¡Wepa!' : '';
-    return '<div class="score ' + (isWinner ? 'winner' : '') + '">' + name + ': ' + scores[i] + wepa + '</div>';
+    // Added 🏆 icon for winner visual
+    return '<div class="score ' + (isWinner ? 'winner' : '') + '">' + (isWinner ? '🏆 ' : '') + name + ': ' + scores[i] + wepa + '</div>';
   }).join('');
   
   let table = '<thead><tr><th>#</th>' + names.map(n => '<th>' + n + '</th>').join('') + '<th>Winner</th></tr></thead><tbody>';
@@ -736,7 +718,7 @@ function loadGameState() {
   const saved = localStorage.getItem('dominoGame');
   if (saved) {
     const state = JSON.parse(saved);
-    if (confirm('¡Dale! Continue previous game?')) {
+    if (confirm('¡A Jugar! Continue previous game?')) {
       names = state.names;
       scores = state.scores;
       rounds = state.rounds;
