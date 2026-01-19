@@ -39,10 +39,88 @@ body {
   position: relative;
 }
 
-/* --- CARD DESIGN --- */
+/* --- 3D DOMINO TILE STYLES --- */
+.domino-stage {
+  perspective: 1000px;
+  height: 160px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.domino-tile {
+  width: 80px;
+  height: 160px;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+  border-radius: 12px;
+  position: relative;
+  /* Thick 3D Layers */
+  box-shadow: 
+    1px 1px 0px #bbb,
+    2px 2px 0px #bbb,
+    3px 3px 0px #bbb,
+    4px 4px 0px #bbb,
+    5px 5px 0px #bbb,
+    6px 6px 0px #bbb,
+    8px 8px 20px rgba(0,0,0,0.3);
+  
+  /* Jaunty Angle */
+  transform: rotate(-15deg) translateY(-10px);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.domino-tile:hover {
+  transform: rotate(-12deg) translateY(-20px) scale(1.02);
+  box-shadow: 
+    1px 1px 0px #bbb,
+    2px 2px 0px #bbb,
+    3px 3px 0px #bbb,
+    4px 4px 0px #bbb,
+    5px 5px 0px #bbb,
+    6px 6px 0px #bbb,
+    8px 8px 0px #bbb,
+    10px 10px 0px #bbb,
+    20px 20px 30px rgba(0,0,0,0.25);
+}
+
+/* Brass Center Line */
+.line {
+  height: 4px;
+  background: linear-gradient(to right, #b45309, #f59e0b, #b45309);
+  margin: 4px 10px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* Grid for dots */
+.half {
+  height: 70px;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 8px;
+  align-items: center;
+  justify-items: center;
+}
+
+/* Engraved Dots */
+.dot {
+  width: 14px;
+  height: 14px;
+  background-color: #111;
+  border-radius: 50%;
+  box-shadow: inset 2px 2px 3px rgba(255,255,255,0.5), inset -2px -2px 3px rgba(0,0,0,0.9);
+  background: radial-gradient(circle at 30% 30%, #444, #000);
+}
+
+/* --- CARD DESIGN (Guayabera Texture) --- */
 .card {
   background-color: #ffffff;
-  /* Guayabera Texture */
   background-image: repeating-linear-gradient(45deg, transparent, transparent 1px, #f9fafb 1px, #f9fafb 4px);
   border-radius: 16px;
   padding: 1.5rem;
@@ -84,13 +162,6 @@ body {
   flex-direction: column;
   align-items: center;
   margin-bottom: 1rem;
-}
-
-.domino-icon {
-  width: 50px;
-  height: 85px;
-  transform: rotate(-18deg);
-  filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
 }
 
 h1 {
@@ -206,7 +277,7 @@ input:disabled {
   color: white;
   margin: 2px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  white-space: nowrap; /* Prevents text breaking inside badge */
+  white-space: nowrap;
   text-shadow: 0 1px 1px rgba(0,0,0,0.1);
   line-height: 1;
 }
@@ -215,8 +286,7 @@ input:disabled {
 .capicu { background: #ea580c; }
 .chuchazo { background: #dc2626; }
 
-/* --- INPUT TOGGLES (Visual Overrides) --- */
-/* These styles only affect the badges when used as clickable toggles */
+/* --- TOGGLES (Visual Overrides) --- */
 .checkbox-group {
   display: flex;
   gap: 0.5rem;
@@ -240,7 +310,6 @@ input:disabled {
 
 .checkbox-label input[type="checkbox"] { display: none; }
 
-/* Inactive Toggle State */
 .checkbox-label .badge {
   opacity: 0.5;
   filter: grayscale(100%);
@@ -249,7 +318,6 @@ input:disabled {
   box-shadow: none;
 }
 
-/* Active Toggle State */
 .checkbox-label input:checked + .badge {
   opacity: 1;
   filter: grayscale(0%);
@@ -257,13 +325,12 @@ input:disabled {
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-/* --- TABLE STYLES --- */
+/* --- TABLE --- */
 table { width: 100%; border-collapse: collapse; }
 th, td { padding: 0.75rem 0.5rem; text-align: center; color: #1e3a8a; }
 th { font-weight: 800; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px; }
 tbody tr { border-top: 1px solid #e2e8f0; }
 
-/* Table Cell Content Layout */
 td .winner-cell {
   display: flex;
   flex-direction: column;
@@ -271,17 +338,16 @@ td .winner-cell {
   gap: 4px;
 }
 
-/* This container ensures badges wrap and don't overflow */
 td .badge-stack {
   display: flex;
   flex-wrap: wrap; 
   justify-content: center;
   gap: 4px;
   width: 100%;
-  max-width: 150px; /* Constraints width to force wrapping on small screens */
+  max-width: 150px;
 }
 
-/* --- WINNER ANIMATION --- */
+/* --- ANIMATIONS --- */
 @keyframes pulse-winner {
   0% { transform: scale(1); box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
   50% { transform: scale(1.05); box-shadow: 0 8px 16px rgba(220, 38, 38, 0.25); border-color: #fca5a5; }
@@ -318,12 +384,14 @@ td .badge-stack {
 /* Mobile Tweaks */
 @media (max-width: 640px) {
   h1 { font-size: 1.4rem; }
-  .domino-icon { width: 40px; height: 68px; }
+  .domino-stage { height: 120px; }
+  .domino-tile { width: 60px; height: 120px; }
+  .half { padding: 8px; height: 55px; gap: 6px; }
+  .dot { width: 10px; height: 10px; }
+  
   .card { padding: 1rem; }
   .pr-flag-badge { width: 45px; height: 45px; bottom: 0.5rem; right: 0.5rem; }
-  
   .checkbox-group { gap: 0.25rem; width: 100%; padding: 0.4rem; border-radius: 12px; }
-  /* Ensure original pill shape persists even on mobile */
   .checkbox-label .badge { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
 }
 </style>
@@ -346,39 +414,22 @@ td .badge-stack {
 
 <div class="container">
   <div class="logo-block">
-    <svg class="domino-icon" viewBox="0 0 80 140">
-      <defs>
-        <linearGradient id="tileGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
-          <stop offset="100%" style="stop-color:#eeeeee;stop-opacity:1" />
-        </linearGradient>
-        <radialGradient id="dotGradient">
-          <stop offset="0%" style="stop-color:#dc2626;stop-opacity:1" />
-          <stop offset="100%" style="stop-color:#991b1b;stop-opacity:1" />
-        </radialGradient>
-      </defs>
-      <rect x="10" y="10" width="60" height="120" rx="8" fill="url(#tileGradient)" stroke="#cbd5e1" stroke-width="2"/>
-      <rect x="11" y="11" width="58" height="3" rx="2" fill="rgba(255,255,255,0.8)"/>
-      <line x1="15" y1="70" x2="65" y2="70" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
-      <circle cx="25" cy="27" r="5" fill="url(#dotGradient)"/>
-      <circle cx="40" cy="27" r="5" fill="url(#dotGradient)"/>
-      <circle cx="55" cy="27" r="5" fill="url(#dotGradient)"/>
-      <circle cx="25" cy="53" r="5" fill="url(#dotGradient)"/>
-      <circle cx="40" cy="53" r="5" fill="url(#dotGradient)"/>
-      <circle cx="55" cy="53" r="5" fill="url(#dotGradient)"/>
-      <circle cx="25" cy="87" r="5" fill="url(#dotGradient)"/>
-      <circle cx="40" cy="87" r="5" fill="url(#dotGradient)"/>
-      <circle cx="55" cy="87" r="5" fill="url(#dotGradient)"/>
-      <circle cx="25" cy="113" r="5" fill="url(#dotGradient)"/>
-      <circle cx="40" cy="113" r="5" fill="url(#dotGradient)"/>
-      <circle cx="55" cy="113" r="5" fill="url(#dotGradient)"/>
-      <circle cx="23.5" cy="25.5" r="1.5" fill="rgba(255,255,255,0.6)"/>
-      <circle cx="38.5" cy="25.5" r="1.5" fill="rgba(255,255,255,0.6)"/>
-      <circle cx="53.5" cy="25.5" r="1.5" fill="rgba(255,255,255,0.6)"/>
-      <circle cx="23.5" cy="85.5" r="1.5" fill="rgba(255,255,255,0.6)"/>
-      <circle cx="38.5" cy="85.5" r="1.5" fill="rgba(255,255,255,0.6)"/>
-      <circle cx="53.5" cy="85.5" r="1.5" fill="rgba(255,255,255,0.6)"/>
-    </svg>
+    <!-- NEW 3D TILE REPLACEMENT -->
+    <div class="domino-stage">
+      <div class="domino-tile double-six">
+        <div class="half top">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+        <div class="line"></div>
+        <div class="half bottom">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+      </div>
+    </div>
+    <!-- END NEW TILE -->
+    
     <h1>El BORICUA Domino Score Keeper</h1>
     <div class="pr-accent"></div>
   </div>
@@ -698,13 +749,10 @@ function render() {
     table += '<tr><td><strong>' + (i + 1) + '</strong></td>';
     table += r.rScores.map(s => '<td>' + s + '</td>').join('');
     
-    // Updated HTML structure for stacking badges
     table += '<td><div class="winner-cell"><strong>' + names[r.w] + '</strong><div class="badge-stack">';
-    
     if (r.base) table += '<span class="badge bonus">+' + r.base + '</span>';
     if (r.capicu) table += '<span class="badge capicu">Capicú</span>';
     if (r.chuchazo) table += '<span class="badge chuchazo">Chuchazo</span>';
-    
     table += '</div></div></td></tr>';
   });
   
