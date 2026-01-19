@@ -275,14 +275,13 @@ input:disabled {
 .capicu { background: #ea580c; }
 .chuchazo { background: #dc2626; }
 
-/* --- TOGGLES (Visual Overrides) --- */
+/* --- TOGGLES (Transparent BG) --- */
 .checkbox-group {
   display: flex;
   gap: 0.5rem;
   justify-content: center;
   flex-wrap: wrap;
   margin-bottom: 1.5rem;
-  /* UPDATED: Transparent Background */
   background: transparent;
   padding: 0;
   border: none;
@@ -358,6 +357,8 @@ td .badge-stack {
   border-radius: 12px;
   border: 2px solid transparent;
   transition: all 0.3s ease;
+  /* UPDATED: Center Text */
+  text-align: center;
 }
 
 .score.winner {
@@ -587,7 +588,7 @@ function setupRoundInputs() {
     const input = document.createElement('input');
     input.type = 'number';
     
-    // UPDATED: Force Numeric Keypad on Mobile
+    // Force numeric keypad
     input.setAttribute('inputmode', 'numeric');
     input.setAttribute('pattern', '[0-9]*');
     
