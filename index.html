@@ -579,6 +579,7 @@ function startGame() {
   
   setupRoundInputs();
   render();
+  saveGameState(); // Save immediately so we don't lose setup on refresh
 }
 
 function setupRoundInputs() {
@@ -650,6 +651,9 @@ function newGame() {
     saveGameToHistory();
   }
   
+  // Clear the active game state so we don't auto-load into a finished game
+  localStorage.removeItem('dominoGame');
+
   elements.game.classList.add('hidden');
   elements.setup.classList.remove('hidden');
   renderPlayerSelects();
@@ -767,7 +771,9 @@ function loadGameState() {
   const saved = localStorage.getItem('dominoGame');
   if (saved) {
     const state = JSON.parse(saved);
-    if (confirm('¡A Jugar! Continue previous game?')) {
+    // REMOVED THE CONFIRM DIALOG HERE
+    // Automatically load if data exists
+    if (state.names && state.names.length > 0) {
       names = state.names;
       scores = state.scores;
       rounds = state.rounds;
