@@ -39,7 +39,7 @@ body {
   position: relative;
 }
 
-/* --- 3D DOMINO TILE STYLES (Scaled Down) --- */
+/* --- 3D DOMINO TILE STYLES --- */
 .domino-stage {
   perspective: 600px;
   height: 100px; 
@@ -357,7 +357,6 @@ td .badge-stack {
   border-radius: 12px;
   border: 2px solid transparent;
   transition: all 0.3s ease;
-  /* UPDATED: Center Text */
   text-align: center;
 }
 
@@ -375,10 +374,12 @@ td .badge-stack {
 @media (max-width: 640px) {
   h1 { font-size: 1.4rem; }
   
-  .domino-stage { height: 80px; }
-  .domino-tile { width: 40px; height: 80px; }
-  .half { padding: 4px; height: 36px; gap: 3px; }
-  .dot { width: 6px; height: 6px; }
+  /* SMALLER DOMINO FOR MOBILE */
+  .domino-stage { height: 70px; margin-top: 0.25rem; }
+  .domino-tile { width: 32px; height: 64px; border-radius: 4px; }
+  .half { padding: 3px; height: 28px; gap: 2px; }
+  .dot { width: 4px; height: 4px; }
+  .line { margin: 1px 3px; height: 1px; }
   
   .card { padding: 1rem; }
   .pr-flag-badge { width: 45px; height: 45px; bottom: 0.5rem; right: 0.5rem; }
@@ -588,7 +589,6 @@ function setupRoundInputs() {
     const input = document.createElement('input');
     input.type = 'number';
     
-    // Force numeric keypad
     input.setAttribute('inputmode', 'numeric');
     input.setAttribute('pattern', '[0-9]*');
     
