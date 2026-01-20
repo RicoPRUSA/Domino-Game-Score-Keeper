@@ -130,7 +130,7 @@ body {
   background: linear-gradient(to right, #1e3a8a, #ffffff, #dc2626);
 }
 
-/* --- THE BADGE IS BACK (Perfect Geometry) --- */
+/* --- PERFECT GEOMETRIC BADGE --- */
 .pr-flag-badge {
   position: fixed;
   bottom: 1rem;
@@ -382,10 +382,7 @@ td .badge-stack {
   .line { margin: 1px 3px; height: 1px; }
   
   .card { padding: 1rem; }
-  
-  /* Mobile Badge Sizing */
   .pr-flag-badge { width: 45px; height: 45px; bottom: 0.5rem; right: 0.5rem; }
-  
   .checkbox-group { gap: 0.25rem; width: 100%; }
   .checkbox-label .badge { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
 }
@@ -504,6 +501,46 @@ const PLAYER_OPTIONS = ["Rico", "Aida", "Tony", "Mike", "Mayra", "Custom"];
 let names = [], scores = [], rounds = [], mode = "single";
 let gameHistory = [];
 
+// --- THE AUTHENTIC COQUI SOUND SYNTHESIZER ---
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+let audioCtx;
+
+function playCoquiSound() {
+  if (!audioCtx) audioCtx = new AudioContext();
+  
+  const now = audioCtx.currentTime;
+  
+  // "Co" note: ~1160 Hz, ~100ms
+  const coOsc = audioCtx.createOscillator();
+  const coGain = audioCtx.createGain();
+  coOsc.type = 'sine';
+  coOsc.frequency.setValueAtTime(1160, now);
+  coGain.gain.setValueAtTime(0, now);
+  coGain.gain.linearRampToValueAtTime(0.3, now + 0.02);
+  coGain.gain.linearRampToValueAtTime(0, now + 0.1);
+  coOsc.connect(coGain);
+  coGain.connect(audioCtx.destination);
+  coOsc.start(now);
+  coOsc.stop(now + 0.12);
+
+  // "Qui" note: Sweeps 1800 -> 2200 Hz, ~200ms
+  // Starts after a short pause (at now + 0.15s)
+  const quiOsc = audioCtx.createOscillator();
+  const quiGain = audioCtx.createGain();
+  quiOsc.type = 'sine';
+  quiOsc.frequency.setValueAtTime(1800, now + 0.15);
+  quiOsc.frequency.linearRampToValueAtTime(2200, now + 0.35);
+  
+  quiGain.gain.setValueAtTime(0, now + 0.15);
+  quiGain.gain.linearRampToValueAtTime(0.3, now + 0.18);
+  quiGain.gain.linearRampToValueAtTime(0, now + 0.35);
+  
+  quiOsc.connect(quiGain);
+  quiGain.connect(audioCtx.destination);
+  quiOsc.start(now + 0.15);
+  quiOsc.stop(now + 0.38);
+}
+
 const elements = {
   mode: document.getElementById('mode'),
   playerCount: document.getElementById('playerCount'),
@@ -519,6 +556,13 @@ const elements = {
   gameHistory: document.getElementById('gameHistory'),
   historyCard: document.getElementById('historyCard')
 };
+
+// Add sound to all buttons
+document.querySelectorAll('button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    playCoquiSound();
+  });
+});
 
 elements.mode.addEventListener('change', renderPlayerSelects);
 elements.playerCount.addEventListener('change', renderPlayerSelects);
@@ -591,7 +635,6 @@ function setupRoundInputs() {
     const input = document.createElement('input');
     input.type = 'number';
     
-    // Force numeric keypad
     input.setAttribute('inputmode', 'numeric');
     input.setAttribute('pattern', '[0-9]*');
     
