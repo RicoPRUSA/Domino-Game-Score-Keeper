@@ -130,65 +130,31 @@ body {
   background: linear-gradient(to right, #1e3a8a, #ffffff, #dc2626);
 }
 
-/* --- NEW FLOATING WAVING FLAG --- */
+/* --- WAVING FLAG STYLES --- */
 .floating-flag {
   position: fixed;
   bottom: 25px;
   right: 20px;
-  width: 75px; /* Nice rectangular size */
-  height: 50px;
+  width: 80px; 
+  height: 55px;
   z-index: 1000;
   transform-origin: left center;
-  /* Bobbing animation */
-  animation: flag-bob 3s ease-in-out infinite alternate;
-  /* Soft Shadow */
-  filter: drop-shadow(5px 10px 6px rgba(0, 0, 0, 0.3));
-}
-
-.flag-content {
-  width: 100%;
-  height: 100%;
-  /* Rounded corners like a smoothed flag */
-  border-radius: 2px 6px 6px 2px;
-  overflow: hidden;
-  position: relative;
-  /* Initial 3D tilt */
-  transform: perspective(400px) rotateY(5deg);
+  /* Gentle bobbing */
+  animation: flag-bob 4s ease-in-out infinite alternate;
+  /* Realistic shadow */
+  filter: drop-shadow(4px 8px 6px rgba(0, 0, 0, 0.4));
 }
 
 .flag-content svg {
   width: 100%;
   height: 100%;
   display: block;
-}
-
-/* The Ripple Effect (Simulates Wind/Light) */
-.flag-content::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  /* A gradient that is transparent - white/shine - dark/shadow - transparent */
-  background: linear-gradient(110deg, 
-    rgba(255,255,255,0) 20%, 
-    rgba(255,255,255,0.3) 40%, 
-    rgba(0,0,0,0.1) 60%, 
-    rgba(255,255,255,0) 80%
-  );
-  background-size: 200% 100%;
-  animation: flag-wave 2s linear infinite;
+  overflow: visible;
 }
 
 @keyframes flag-bob {
   0% { transform: translateY(0) rotate(0deg); }
-  100% { transform: translateY(-6px) rotate(3deg); }
-}
-
-@keyframes flag-wave {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  100% { transform: translateY(-5px) rotate(2deg); }
 }
 
 /* Typography */
@@ -430,7 +396,7 @@ td .badge-stack {
   .card { padding: 1rem; }
   
   /* Mobile Flag Sizing */
-  .floating-flag { width: 60px; height: 40px; bottom: 15px; right: 15px; }
+  .floating-flag { width: 65px; height: 45px; bottom: 15px; right: 15px; }
   
   .checkbox-group { gap: 0.25rem; width: 100%; }
   .checkbox-label .badge { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
@@ -440,15 +406,37 @@ td .badge-stack {
 
 <body>
 
-<!-- FLOATING WAVING FLAG -->
+<!-- WAVING FLAG WITH CLIP-PATH & SHADOWS -->
 <div class="floating-flag">
   <div class="flag-content">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" preserveAspectRatio="none">
-      <rect width="900" height="600" fill="#ED0000"/>
-      <rect width="900" height="120" y="120" fill="#ffffff"/>
-      <rect width="900" height="120" y="360" fill="#ffffff"/>
-      <path d="M 0 0 L 519.6 300 L 0 600 Z" fill="#0050F0"/>
-      <path fill="#ffffff" d="M 173.20508,200 L 202.59606,290.47227 L 297.71261,290.47227 L 220.76335,346.37683 L 250.15433,436.8491 L 173.20508,380.94454 L 96.255829,436.8491 L 125.64681,346.37683 L 48.697551,290.47227 L 143.8141,290.47227 Z"/>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+      <defs>
+        <!-- The Wavy Shape -->
+        <clipPath id="waveClip">
+          <path d="M0,30 C300,0 450,-10 900,30 V570 C450,530 300,530 0,570 Z" />
+        </clipPath>
+        <!-- The 3D Lighting Overlay -->
+        <linearGradient id="waveLight" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="black" stop-opacity="0.2"/>
+          <stop offset="25%" stop-color="white" stop-opacity="0.1"/>
+          <stop offset="50%" stop-color="black" stop-opacity="0.1"/>
+          <stop offset="75%" stop-color="white" stop-opacity="0.2"/>
+          <stop offset="100%" stop-color="black" stop-opacity="0.3"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Group applying the Wavy Clip -->
+      <g clip-path="url(#waveClip)">
+        <!-- The Correct Flag Geometry -->
+        <rect width="900" height="600" fill="#ED0000"/>
+        <rect width="900" height="120" y="120" fill="#ffffff"/>
+        <rect width="900" height="120" y="360" fill="#ffffff"/>
+        <path d="M 0 0 L 519.6 300 L 0 600 Z" fill="#0050F0"/>
+        <path fill="#ffffff" d="M 173.20508,200 L 202.59606,290.47227 L 297.71261,290.47227 L 220.76335,346.37683 L 250.15433,436.8491 L 173.20508,380.94454 L 96.255829,436.8491 L 125.64681,346.37683 L 48.697551,290.47227 L 143.8141,290.47227 Z"/>
+        
+        <!-- The 3D Overlay -->
+        <rect width="900" height="600" fill="url(#waveLight)" style="mix-blend-mode: overlay;"/>
+      </g>
     </svg>
   </div>
 </div>
