@@ -130,20 +130,66 @@ body {
   background: linear-gradient(to right, #1e3a8a, #ffffff, #dc2626);
 }
 
-/* Fixed Flag Badge */
-.pr-flag-badge {
+/* --- NEW FLOATING WAVING FLAG --- */
+.floating-flag {
   position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  bottom: 25px;
+  right: 20px;
+  width: 75px; /* Nice rectangular size */
+  height: 50px;
   z-index: 1000;
-  overflow: hidden;
-  border: 3px solid white;
+  transform-origin: left center;
+  /* Bobbing animation */
+  animation: flag-bob 3s ease-in-out infinite alternate;
+  /* Soft Shadow */
+  filter: drop-shadow(5px 10px 6px rgba(0, 0, 0, 0.3));
 }
-.pr-flag-badge svg { width: 100%; height: 100%; }
+
+.flag-content {
+  width: 100%;
+  height: 100%;
+  /* Rounded corners like a smoothed flag */
+  border-radius: 2px 6px 6px 2px;
+  overflow: hidden;
+  position: relative;
+  /* Initial 3D tilt */
+  transform: perspective(400px) rotateY(5deg);
+}
+
+.flag-content svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* The Ripple Effect (Simulates Wind/Light) */
+.flag-content::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* A gradient that is transparent - white/shine - dark/shadow - transparent */
+  background: linear-gradient(110deg, 
+    rgba(255,255,255,0) 20%, 
+    rgba(255,255,255,0.3) 40%, 
+    rgba(0,0,0,0.1) 60%, 
+    rgba(255,255,255,0) 80%
+  );
+  background-size: 200% 100%;
+  animation: flag-wave 2s linear infinite;
+}
+
+@keyframes flag-bob {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(-6px) rotate(3deg); }
+}
+
+@keyframes flag-wave {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
 
 /* Typography */
 .logo-block {
@@ -382,7 +428,10 @@ td .badge-stack {
   .line { margin: 1px 3px; height: 1px; }
   
   .card { padding: 1rem; }
-  .pr-flag-badge { width: 45px; height: 45px; bottom: 0.5rem; right: 0.5rem; }
+  
+  /* Mobile Flag Sizing */
+  .floating-flag { width: 60px; height: 40px; bottom: 15px; right: 15px; }
+  
   .checkbox-group { gap: 0.25rem; width: 100%; }
   .checkbox-label .badge { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
 }
@@ -391,15 +440,17 @@ td .badge-stack {
 
 <body>
 
-<!-- OFFICIAL GEOMETRIC PUERTO RICO FLAG -->
-<div class="pr-flag-badge">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
-    <rect width="900" height="600" fill="#ED0000"/>
-    <rect width="900" height="120" y="120" fill="#ffffff"/>
-    <rect width="900" height="120" y="360" fill="#ffffff"/>
-    <path d="M 0 0 L 519.6 300 L 0 600 Z" fill="#0050F0"/>
-    <path fill="#ffffff" d="M 173.20508,200 L 202.59606,290.47227 L 297.71261,290.47227 L 220.76335,346.37683 L 250.15433,436.8491 L 173.20508,380.94454 L 96.255829,436.8491 L 125.64681,346.37683 L 48.697551,290.47227 L 143.8141,290.47227 Z"/>
-  </svg>
+<!-- FLOATING WAVING FLAG -->
+<div class="floating-flag">
+  <div class="flag-content">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" preserveAspectRatio="none">
+      <rect width="900" height="600" fill="#ED0000"/>
+      <rect width="900" height="120" y="120" fill="#ffffff"/>
+      <rect width="900" height="120" y="360" fill="#ffffff"/>
+      <path d="M 0 0 L 519.6 300 L 0 600 Z" fill="#0050F0"/>
+      <path fill="#ffffff" d="M 173.20508,200 L 202.59606,290.47227 L 297.71261,290.47227 L 220.76335,346.37683 L 250.15433,436.8491 L 173.20508,380.94454 L 96.255829,436.8491 L 125.64681,346.37683 L 48.697551,290.47227 L 143.8141,290.47227 Z"/>
+    </svg>
+  </div>
 </div>
 
 <div class="container">
@@ -588,6 +639,7 @@ function setupRoundInputs() {
     const input = document.createElement('input');
     input.type = 'number';
     
+    // Force numeric keypad
     input.setAttribute('inputmode', 'numeric');
     input.setAttribute('pattern', '[0-9]*');
     
