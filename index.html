@@ -524,7 +524,6 @@ function playCoquiSound() {
   coOsc.stop(now + 0.12);
 
   // "Qui" note: Sweeps 1800 -> 2200 Hz, ~200ms
-  // Starts after a short pause (at now + 0.15s)
   const quiOsc = audioCtx.createOscillator();
   const quiGain = audioCtx.createGain();
   quiOsc.type = 'sine';
@@ -557,9 +556,9 @@ const elements = {
   historyCard: document.getElementById('historyCard')
 };
 
-// Add sound to all buttons
-document.querySelectorAll('button').forEach(btn => {
-  btn.addEventListener('click', () => {
+// Add sound to buttons AND checkboxes
+document.querySelectorAll('button, .checkbox-label').forEach(el => {
+  el.addEventListener('click', () => {
     playCoquiSound();
   });
 });
