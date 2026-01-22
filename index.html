@@ -39,36 +39,34 @@ body {
   position: relative;
 }
 
-/* --- LOGO ANIMATION (PR FLAG COLOR CYCLE) --- */
+/* --- ANIMATED COQUI MASK --- */
+/* This replaces the img tag with a div that uses the image as a mask over the gradient */
 .coqui-logo {
   width: 140px;
-  height: auto;
+  height: 140px; /* Adjust height to match aspect ratio of your image */
+  margin: 0.5rem auto;
   display: block;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
   
-  /* Cycle through PR Flag colors every 6 seconds */
-  animation: pr-flag-cycle 6s ease-in-out infinite;
+  /* The Image Mask */
+  -webkit-mask-image: url('coqui.png');
+  mask-image: url('coqui.png');
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  
+  /* The Animated Gradient Background (Same as the bar) */
+  background: linear-gradient(to right, #b91c1c, #ffffff, #1e3a8a, #b91c1c);
+  background-size: 200% 100%;
+  animation: shine 3s linear infinite;
+  
+  /* Drop shadow to make it pop off the background */
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
 }
 
-@keyframes pr-flag-cycle {
-  /* RED PHASE (#ED0000) */
-  0%, 100% {
-    filter: sepia(1) saturate(4) hue-rotate(-50deg) drop-shadow(0 6px 8px rgba(237, 0, 0, 0.6));
-  }
-  
-  /* WHITE PHASE (#FFFFFF) */
-  33% {
-    filter: brightness(1.3) grayscale(1) drop-shadow(0 6px 8px rgba(255, 255, 255, 0.8));
-  }
-  
-  /* BLUE PHASE (#0050F0) */
-  66% {
-    filter: sepia(1) saturate(4) hue-rotate(180deg) drop-shadow(0 6px 8px rgba(0, 80, 240, 0.6));
-  }
-}
-
-/* --- CARD DESIGN (Guayabera Texture) --- */
+/* --- CARD DESIGN --- */
 .card {
   background-color: #ffffff;
   background-image: repeating-linear-gradient(45deg, transparent, transparent 1px, #f9fafb 1px, #f9fafb 4px);
@@ -139,19 +137,20 @@ h2 {
   font-size: 1.5rem;
 }
 
+/* The Bar Animation (Shared with Logo) */
 .pr-accent {
   width: 120px;
   height: 4px;
   margin: 0.4rem auto 0.8rem;
   border-radius: 3px;
-  background: linear-gradient(to right, #b91c1c, #ffffff, #1e3a8a);
+  background: linear-gradient(to right, #b91c1c, #ffffff, #1e3a8a, #b91c1c);
   background-size: 200% 100%;
   animation: shine 3s linear infinite;
 }
 
 @keyframes shine {
-  0%, 100% { background-position: 0% 0%; }
-  50% { background-position: 100% 0%; }
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
 }
 
 /* Controls */
@@ -346,7 +345,7 @@ td .badge-stack {
   h1 { font-size: 1.4rem; }
   
   /* Mobile Logo Sizing */
-  .coqui-logo { width: 100px; }
+  .coqui-logo { width: 100px; height: 100px; }
   
   .card { padding: 1rem; }
   
@@ -391,9 +390,9 @@ td .badge-stack {
 
 <div class="container">
   <div class="logo-block">
-    <!-- COQUI LOGO: Cycles Red, White, Blue -->
+    <!-- COQUI LOGO: MASKED WITH ANIMATION -->
     <!-- MAKE SURE 'coqui.png' IS IN THE SAME FOLDER -->
-    <img src="coqui.png" class="coqui-logo" alt="Coqui Domino">
+    <div class="coqui-logo"></div>
     
     <h1>El BORICUA Domino Score Keeper</h1>
     <div class="pr-accent"></div>
