@@ -762,6 +762,9 @@ function celebrateWinner(winnerName) {
   playCoquiSound();
   setTimeout(playCoquiSound, 800);
   setTimeout(playCoquiSound, 1600);
+  setTimeout(playCoquiSound, 2400); // Extended
+  setTimeout(playCoquiSound, 3200); // Extended
+  setTimeout(playCoquiSound, 4000); // Extended
   
   // Confetti
   createConfetti();
@@ -769,16 +772,17 @@ function celebrateWinner(winnerName) {
 
 function createConfetti() {
   const colors = ['#dc2626', '#ffffff', '#0050F0'];
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 100; i++) { // Increased count
     const conf = document.createElement('div');
     conf.classList.add('confetti');
     conf.style.left = Math.random() * 100 + 'vw';
-    conf.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    // Slower fall: 4s to 9s
+    conf.style.animationDuration = (Math.random() * 5 + 4) + 's';
     conf.style.background = colors[Math.floor(Math.random() * colors.length)];
     elements.winnerOverlay.appendChild(conf);
     
-    // Remove after animation
-    setTimeout(() => conf.remove(), 5000);
+    // Remove after animation (10s)
+    setTimeout(() => conf.remove(), 10000);
   }
 }
 
