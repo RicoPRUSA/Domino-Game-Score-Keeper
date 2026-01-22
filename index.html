@@ -40,14 +40,14 @@ body {
 }
 
 /* --- ANIMATED COQUI MASK --- */
-/* This replaces the img tag with a div that uses the image as a mask over the gradient */
 .coqui-logo {
-  width: 140px;
-  height: 140px; /* Adjust height to match aspect ratio of your image */
+  /* Smaller Size */
+  width: 110px;
+  height: 110px;
   margin: 0.5rem auto;
   display: block;
   
-  /* The Image Mask */
+  /* Masking */
   -webkit-mask-image: url('coqui.png');
   mask-image: url('coqui.png');
   -webkit-mask-size: contain;
@@ -57,13 +57,13 @@ body {
   -webkit-mask-position: center;
   mask-position: center;
   
-  /* The Animated Gradient Background (Same as the bar) */
+  /* Animated Flag Gradient */
   background: linear-gradient(to right, #b91c1c, #ffffff, #1e3a8a, #b91c1c);
   background-size: 200% 100%;
   animation: shine 3s linear infinite;
   
-  /* Drop shadow to make it pop off the background */
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+  /* Soft Shadow applied to the mask shape */
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35));
 }
 
 /* --- CARD DESIGN --- */
@@ -89,7 +89,7 @@ body {
   background: linear-gradient(to right, #1e3a8a, #ffffff, #dc2626);
 }
 
-/* --- WAVING FLAG STYLES --- */
+/* --- WAVING FLAG BADGE --- */
 .floating-flag {
   position: fixed;
   bottom: 25px;
@@ -137,7 +137,7 @@ h2 {
   font-size: 1.5rem;
 }
 
-/* The Bar Animation (Shared with Logo) */
+/* Accent Bar */
 .pr-accent {
   width: 120px;
   height: 4px;
@@ -245,7 +245,7 @@ input:disabled {
 .capicu { background: #ea580c; }
 .chuchazo { background: #dc2626; }
 
-/* --- TOGGLES (Transparent BG) --- */
+/* --- TOGGLES --- */
 .checkbox-group {
   display: flex;
   gap: 0.5rem;
@@ -345,7 +345,7 @@ td .badge-stack {
   h1 { font-size: 1.4rem; }
   
   /* Mobile Logo Sizing */
-  .coqui-logo { width: 100px; height: 100px; }
+  .coqui-logo { width: 90px; height: 90px; }
   
   .card { padding: 1rem; }
   
@@ -360,7 +360,7 @@ td .badge-stack {
 
 <body>
 
-<!-- WAVING FLAG -->
+<!-- WAVING FLAG BADGE -->
 <div class="floating-flag">
   <div class="flag-content">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
@@ -390,7 +390,7 @@ td .badge-stack {
 
 <div class="container">
   <div class="logo-block">
-    <!-- COQUI LOGO: MASKED WITH ANIMATION -->
+    <!-- COQUI LOGO: MASKED WITH ANIMATION & SHADOW -->
     <!-- MAKE SURE 'coqui.png' IS IN THE SAME FOLDER -->
     <div class="coqui-logo"></div>
     
