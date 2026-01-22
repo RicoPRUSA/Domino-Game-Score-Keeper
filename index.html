@@ -39,9 +39,8 @@ body {
   position: relative;
 }
 
-/* --- ANIMATED COQUI MASK --- */
+/* --- ANIMATED COQUI MASK (Vertical) --- */
 .coqui-logo {
-  /* Smaller Size */
   width: 110px;
   height: 110px;
   margin: 0.5rem auto;
@@ -57,13 +56,18 @@ body {
   -webkit-mask-position: center;
   mask-position: center;
   
-  /* Animated Flag Gradient */
-  background: linear-gradient(to right, #b91c1c, #ffffff, #1e3a8a, #b91c1c);
-  background-size: 200% 100%;
+  /* Vertical Animated Flag Gradient (Top to Bottom) */
+  background: linear-gradient(to bottom, #b91c1c, #ffffff, #1e3a8a, #b91c1c);
+  background-size: 100% 200%; /* Stretched vertically */
   animation: shine 3s linear infinite;
   
-  /* Soft Shadow applied to the mask shape */
-  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35));
+  /* Stronger Shadow */
+  filter: drop-shadow(0 8px 8px rgba(0,0,0,0.6));
+}
+
+@keyframes shine {
+  0% { background-position: 50% 0%; }
+  100% { background-position: 50% 100%; }
 }
 
 /* --- CARD DESIGN --- */
@@ -89,29 +93,76 @@ body {
   background: linear-gradient(to right, #1e3a8a, #ffffff, #dc2626);
 }
 
-/* --- WAVING FLAG BADGE --- */
-.floating-flag {
+/* --- ROUND BADGE (Restored) --- */
+.pr-flag-badge {
   position: fixed;
-  bottom: 25px;
-  right: 20px;
-  width: 80px; 
-  height: 55px;
+  bottom: 1rem;
+  right: 1rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   z-index: 1000;
-  transform-origin: left center;
-  animation: flag-bob 4s ease-in-out infinite alternate;
-  filter: drop-shadow(4px 8px 6px rgba(0, 0, 0, 0.4));
+  overflow: hidden;
+  border: 3px solid white;
+}
+.pr-flag-badge svg { width: 100%; height: 100%; }
+
+/* --- 3D DOMINO TILE --- */
+.domino-stage {
+  perspective: 600px;
+  height: 100px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
-.flag-content svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-  overflow: visible;
+.domino-tile {
+  width: 45px;
+  height: 90px;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+  border-radius: 6px;
+  position: relative;
+  box-shadow: 1px 1px 0px #bbb, 2px 2px 0px #bbb, 3px 3px 0px #bbb, 4px 4px 10px rgba(0,0,0,0.3);
+  transform: rotate(-15deg) translateY(-5px);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  border: 1px solid rgba(0,0,0,0.1);
 }
 
-@keyframes flag-bob {
-  0% { transform: translateY(0) rotate(0deg); }
-  100% { transform: translateY(-5px) rotate(2deg); }
+.domino-tile:hover {
+  transform: rotate(-12deg) translateY(-10px) scale(1.05);
+  box-shadow: 1px 1px 0px #bbb, 2px 2px 0px #bbb, 3px 3px 0px #bbb, 4px 4px 0px #bbb, 5px 5px 0px #bbb, 6px 6px 15px rgba(0,0,0,0.25);
+}
+
+.line {
+  height: 2px;
+  background: linear-gradient(to right, #b45309, #f59e0b, #b45309);
+  margin: 2px 5px;
+  border-radius: 1px;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.2);
+}
+
+.half {
+  height: 40px;
+  padding: 6px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 4px;
+  align-items: center;
+  justify-items: center;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  background-color: #111;
+  border-radius: 50%;
+  box-shadow: inset 1px 1px 2px rgba(255,255,255,0.5), inset -1px -1px 2px rgba(0,0,0,0.9);
+  background: radial-gradient(circle at 30% 30%, #444, #000);
 }
 
 /* Typography */
@@ -137,7 +188,7 @@ h2 {
   font-size: 1.5rem;
 }
 
-/* Accent Bar */
+/* The Accent Bar Animation (Also Vertical now to match) */
 .pr-accent {
   width: 120px;
   height: 4px;
@@ -145,10 +196,10 @@ h2 {
   border-radius: 3px;
   background: linear-gradient(to right, #b91c1c, #ffffff, #1e3a8a, #b91c1c);
   background-size: 200% 100%;
-  animation: shine 3s linear infinite;
+  animation: shine-bar 3s linear infinite;
 }
 
-@keyframes shine {
+@keyframes shine-bar {
   0% { background-position: 0% 50%; }
   100% { background-position: 100% 50%; }
 }
@@ -347,11 +398,16 @@ td .badge-stack {
   /* Mobile Logo Sizing */
   .coqui-logo { width: 90px; height: 90px; }
   
+  /* Mobile Badge Sizing */
+  .pr-flag-badge { width: 45px; height: 45px; bottom: 0.5rem; right: 0.5rem; }
+  
+  .domino-stage { height: 70px; margin-top: 0.25rem; }
+  .domino-tile { width: 32px; height: 64px; border-radius: 4px; }
+  .half { padding: 3px; height: 28px; gap: 2px; }
+  .dot { width: 4px; height: 4px; }
+  .line { margin: 1px 3px; height: 1px; }
+  
   .card { padding: 1rem; }
-  
-  /* Mobile Flag Sizing */
-  .floating-flag { width: 65px; height: 45px; bottom: 15px; right: 15px; }
-  
   .checkbox-group { gap: 0.25rem; width: 100%; }
   .checkbox-label .badge { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
 }
@@ -360,39 +416,36 @@ td .badge-stack {
 
 <body>
 
-<!-- WAVING FLAG BADGE -->
-<div class="floating-flag">
-  <div class="flag-content">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
-      <defs>
-        <clipPath id="waveClip">
-          <path d="M0,30 C300,0 450,-10 900,30 V570 C450,530 300,530 0,570 Z" />
-        </clipPath>
-        <linearGradient id="waveLight" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="black" stop-opacity="0.2"/>
-          <stop offset="25%" stop-color="white" stop-opacity="0.1"/>
-          <stop offset="50%" stop-color="black" stop-opacity="0.1"/>
-          <stop offset="75%" stop-color="white" stop-opacity="0.2"/>
-          <stop offset="100%" stop-color="black" stop-opacity="0.3"/>
-        </linearGradient>
-      </defs>
-      <g clip-path="url(#waveClip)">
-        <rect width="900" height="600" fill="#ED0000"/>
-        <rect width="900" height="120" y="120" fill="#ffffff"/>
-        <rect width="900" height="120" y="360" fill="#ffffff"/>
-        <path d="M 0 0 L 519.6 300 L 0 600 Z" fill="#0050F0"/>
-        <path fill="#ffffff" d="M 173.20508,200 L 202.59606,290.47227 L 297.71261,290.47227 L 220.76335,346.37683 L 250.15433,436.8491 L 173.20508,380.94454 L 96.255829,436.8491 L 125.64681,346.37683 L 48.697551,290.47227 L 143.8141,290.47227 Z"/>
-        <rect width="900" height="600" fill="url(#waveLight)" style="mix-blend-mode: overlay;"/>
-      </g>
-    </svg>
-  </div>
+<!-- RESTORED ROUND BADGE -->
+<div class="pr-flag-badge">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+    <rect width="900" height="600" fill="#ED0000"/>
+    <rect width="900" height="120" y="120" fill="#ffffff"/>
+    <rect width="900" height="120" y="360" fill="#ffffff"/>
+    <path d="M 0 0 L 519.6 300 L 0 600 Z" fill="#0050F0"/>
+    <path fill="#ffffff" d="M 173.20508,200 L 202.59606,290.47227 L 297.71261,290.47227 L 220.76335,346.37683 L 250.15433,436.8491 L 173.20508,380.94454 L 96.255829,436.8491 L 125.64681,346.37683 L 48.697551,290.47227 L 143.8141,290.47227 Z"/>
+  </svg>
 </div>
 
 <div class="container">
   <div class="logo-block">
-    <!-- COQUI LOGO: MASKED WITH ANIMATION & SHADOW -->
+    <!-- COQUI LOGO: VERTICAL ANIMATION, DARKER SHADOW -->
     <!-- MAKE SURE 'coqui.png' IS IN THE SAME FOLDER -->
     <div class="coqui-logo"></div>
+    
+    <div class="domino-stage">
+      <div class="domino-tile double-six">
+        <div class="half top">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+        <div class="line"></div>
+        <div class="half bottom">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+      </div>
+    </div>
     
     <h1>El BORICUA Domino Score Keeper</h1>
     <div class="pr-accent"></div>
