@@ -39,76 +39,7 @@ body {
   position: relative;
 }
 
-/* --- ANIMATED COQUI MASK (Vertical) --- */
-.coqui-logo {
-  width: 110px;
-  height: 110px;
-  margin: 0.5rem auto;
-  display: block;
-  
-  /* Masking */
-  -webkit-mask-image: url('coqui.png');
-  mask-image: url('coqui.png');
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  
-  /* Vertical Animated Flag Gradient (Top to Bottom) */
-  background: linear-gradient(to bottom, #b91c1c, #ffffff, #1e3a8a, #b91c1c);
-  background-size: 100% 200%; /* Stretched vertically */
-  animation: shine 3s linear infinite;
-  
-  /* Stronger Shadow */
-  filter: drop-shadow(0 8px 8px rgba(0,0,0,0.6));
-}
-
-@keyframes shine {
-  0% { background-position: 50% 0%; }
-  100% { background-position: 50% 100%; }
-}
-
-/* --- CARD DESIGN --- */
-.card {
-  background-color: #ffffff;
-  background-image: repeating-linear-gradient(45deg, transparent, transparent 1px, #f9fafb 1px, #f9fafb 4px);
-  border-radius: 16px;
-  padding: 1.5rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-  position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(0,0,0,0.05);
-}
-
-.card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(to right, #1e3a8a, #ffffff, #dc2626);
-}
-
-/* --- ROUND BADGE (Restored) --- */
-.pr-flag-badge {
-  position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  z-index: 1000;
-  overflow: hidden;
-  border: 3px solid white;
-}
-.pr-flag-badge svg { width: 100%; height: 100%; }
-
-/* --- 3D DOMINO TILE --- */
+/* --- 3D DOMINO TILE STYLES --- */
 .domino-stage {
   perspective: 600px;
   height: 100px; 
@@ -125,7 +56,12 @@ body {
   background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
   border-radius: 6px;
   position: relative;
-  box-shadow: 1px 1px 0px #bbb, 2px 2px 0px #bbb, 3px 3px 0px #bbb, 4px 4px 10px rgba(0,0,0,0.3);
+  box-shadow: 
+    1px 1px 0px #bbb,
+    2px 2px 0px #bbb,
+    3px 3px 0px #bbb,
+    4px 4px 10px rgba(0,0,0,0.3);
+  
   transform: rotate(-15deg) translateY(-5px);
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
@@ -134,7 +70,13 @@ body {
 
 .domino-tile:hover {
   transform: rotate(-12deg) translateY(-10px) scale(1.05);
-  box-shadow: 1px 1px 0px #bbb, 2px 2px 0px #bbb, 3px 3px 0px #bbb, 4px 4px 0px #bbb, 5px 5px 0px #bbb, 6px 6px 15px rgba(0,0,0,0.25);
+  box-shadow: 
+    1px 1px 0px #bbb,
+    2px 2px 0px #bbb,
+    3px 3px 0px #bbb,
+    4px 4px 0px #bbb,
+    5px 5px 0px #bbb,
+    6px 6px 15px rgba(0,0,0,0.25);
 }
 
 .line {
@@ -165,6 +107,44 @@ body {
   background: radial-gradient(circle at 30% 30%, #444, #000);
 }
 
+/* --- CARD DESIGN (Guayabera Texture) --- */
+.card {
+  background-color: #ffffff;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 1px, #f9fafb 1px, #f9fafb 4px);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(to right, #1e3a8a, #ffffff, #dc2626);
+}
+
+/* --- PERFECT GEOMETRIC BADGE --- */
+.pr-flag-badge {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  overflow: hidden;
+  border: 3px solid white;
+}
+.pr-flag-badge svg { width: 100%; height: 100%; }
+
 /* Typography */
 .logo-block {
   display: flex;
@@ -188,20 +168,19 @@ h2 {
   font-size: 1.5rem;
 }
 
-/* The Accent Bar Animation (Also Vertical now to match) */
 .pr-accent {
   width: 120px;
   height: 4px;
   margin: 0.4rem auto 0.8rem;
   border-radius: 3px;
-  background: linear-gradient(to right, #b91c1c, #ffffff, #1e3a8a, #b91c1c);
+  background: linear-gradient(to right, #b91c1c, #ffffff, #1e3a8a);
   background-size: 200% 100%;
-  animation: shine-bar 3s linear infinite;
+  animation: shine 3s linear infinite;
 }
 
-@keyframes shine-bar {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
+@keyframes shine {
+  0%, 100% { background-position: 0% 0%; }
+  50% { background-position: 100% 0%; }
 }
 
 /* Controls */
@@ -296,7 +275,7 @@ input:disabled {
 .capicu { background: #ea580c; }
 .chuchazo { background: #dc2626; }
 
-/* --- TOGGLES --- */
+/* --- TOGGLES (Transparent BG) --- */
 .checkbox-group {
   display: flex;
   gap: 0.5rem;
@@ -395,12 +374,7 @@ td .badge-stack {
 @media (max-width: 640px) {
   h1 { font-size: 1.4rem; }
   
-  /* Mobile Logo Sizing */
-  .coqui-logo { width: 90px; height: 90px; }
-  
-  /* Mobile Badge Sizing */
-  .pr-flag-badge { width: 45px; height: 45px; bottom: 0.5rem; right: 0.5rem; }
-  
+  /* SMALLER DOMINO FOR MOBILE */
   .domino-stage { height: 70px; margin-top: 0.25rem; }
   .domino-tile { width: 32px; height: 64px; border-radius: 4px; }
   .half { padding: 3px; height: 28px; gap: 2px; }
@@ -408,6 +382,7 @@ td .badge-stack {
   .line { margin: 1px 3px; height: 1px; }
   
   .card { padding: 1rem; }
+  .pr-flag-badge { width: 45px; height: 45px; bottom: 0.5rem; right: 0.5rem; }
   .checkbox-group { gap: 0.25rem; width: 100%; }
   .checkbox-label .badge { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
 }
@@ -416,7 +391,7 @@ td .badge-stack {
 
 <body>
 
-<!-- RESTORED ROUND BADGE -->
+<!-- OFFICIAL GEOMETRIC PUERTO RICO FLAG BADGE -->
 <div class="pr-flag-badge">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
     <rect width="900" height="600" fill="#ED0000"/>
@@ -429,10 +404,6 @@ td .badge-stack {
 
 <div class="container">
   <div class="logo-block">
-    <!-- COQUI LOGO: VERTICAL ANIMATION, DARKER SHADOW -->
-    <!-- MAKE SURE 'coqui.png' IS IN THE SAME FOLDER -->
-    <div class="coqui-logo"></div>
-    
     <div class="domino-stage">
       <div class="domino-tile double-six">
         <div class="half top">
