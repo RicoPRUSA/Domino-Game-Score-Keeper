@@ -31,6 +31,7 @@ body {
   padding-bottom: 80px; 
   -webkit-text-size-adjust: 100%;
   touch-action: manipulation;
+  overflow-x: hidden;
 }
 
 .container {
@@ -107,7 +108,7 @@ body {
   background: radial-gradient(circle at 30% 30%, #444, #000);
 }
 
-/* --- CARD DESIGN (Guayabera Texture) --- */
+/* --- CARD DESIGN --- */
 .card {
   background-color: #ffffff;
   background-image: repeating-linear-gradient(45deg, transparent, transparent 1px, #f9fafb 1px, #f9fafb 4px);
@@ -370,6 +371,54 @@ td .badge-stack {
 
 .hidden { display: none; }
 
+/* --- WINNER OVERLAY --- */
+.winner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.95);
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  backdrop-filter: blur(5px);
+}
+
+.winner-overlay h1 {
+  font-size: 3rem;
+  color: #dc2626;
+  margin-bottom: 1rem;
+  animation: pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.winner-overlay h2 {
+  font-size: 2rem;
+  color: #1e3a8a;
+  margin-bottom: 2rem;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #f00;
+  animation: fall linear forwards;
+}
+
+@keyframes pop-in {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fall {
+  to { transform: translateY(100vh) rotate(720deg); }
+}
+
 /* Mobile Tweaks */
 @media (max-width: 640px) {
   h1 { font-size: 1.4rem; }
@@ -400,6 +449,29 @@ td .badge-stack {
     <path d="M 0 0 L 519.6 300 L 0 600 Z" fill="#0050F0"/>
     <path fill="#ffffff" d="M 173.20508,200 L 202.59606,290.47227 L 297.71261,290.47227 L 220.76335,346.37683 L 250.15433,436.8491 L 173.20508,380.94454 L 96.255829,436.8491 L 125.64681,346.37683 L 48.697551,290.47227 L 143.8141,290.47227 Z"/>
   </svg>
+</div>
+
+<!-- WINNER OVERLAY (Hidden by default) -->
+<div id="winnerOverlay" class="winner-overlay hidden">
+  <h1>¡WEPA!</h1>
+  <h2 id="winnerText"></h2>
+  <div class="domino-stage" style="transform: scale(1.5);">
+    <div class="domino-tile double-six">
+      <div class="half top">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      </div>
+      <div class="line"></div>
+      <div class="half bottom">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      </div>
+    </div>
+  </div>
+  <div class="controls" style="margin-top: 2rem;">
+    <button onclick="newGame()">Start New Game</button>
+    <button class="secondary" onclick="closeOverlay()">Close</button>
+  </div>
 </div>
 
 <div class="container">
@@ -510,7 +582,7 @@ function playCoquiSound() {
   
   const now = audioCtx.currentTime;
   
-  // "Co" note: ~1160 Hz, ~100ms
+  // "Co" note
   const coOsc = audioCtx.createOscillator();
   const coGain = audioCtx.createGain();
   coOsc.type = 'sine';
@@ -523,7 +595,7 @@ function playCoquiSound() {
   coOsc.start(now);
   coOsc.stop(now + 0.12);
 
-  // "Qui" note: Sweeps 1800 -> 2200 Hz, ~200ms
+  // "Qui" note
   const quiOsc = audioCtx.createOscillator();
   const quiGain = audioCtx.createGain();
   quiOsc.type = 'sine';
@@ -553,7 +625,9 @@ const elements = {
   capicu: document.getElementById('capicu'),
   chuchazo: document.getElementById('chuchazo'),
   gameHistory: document.getElementById('gameHistory'),
-  historyCard: document.getElementById('historyCard')
+  historyCard: document.getElementById('historyCard'),
+  winnerOverlay: document.getElementById('winnerOverlay'),
+  winnerText: document.getElementById('winnerText')
 };
 
 // Add sound to buttons AND checkboxes
@@ -633,10 +707,8 @@ function setupRoundInputs() {
   names.forEach((name, i) => {
     const input = document.createElement('input');
     input.type = 'number';
-    
     input.setAttribute('inputmode', 'numeric');
     input.setAttribute('pattern', '[0-9]*');
-    
     input.placeholder = name;
     input.id = 'score' + i;
     input.setAttribute('aria-label', name + ' score');
@@ -668,6 +740,47 @@ function addRound() {
   resetInputs();
   render();
   saveGameState();
+
+  // CHECK FOR WINNER
+  if (scores[w] >= 500) {
+    celebrateWinner(names[w]);
+  }
+}
+
+// --- CELEBRATION LOGIC ---
+function celebrateWinner(winnerName) {
+  elements.winnerText.textContent = winnerName + " Wins!";
+  elements.winnerOverlay.classList.remove('hidden');
+  
+  // Coqui Chorus
+  playCoquiSound();
+  setTimeout(playCoquiSound, 800);
+  setTimeout(playCoquiSound, 1600);
+  
+  // Confetti
+  createConfetti();
+}
+
+function createConfetti() {
+  const colors = ['#dc2626', '#ffffff', '#0050F0'];
+  for (let i = 0; i < 50; i++) {
+    const conf = document.createElement('div');
+    conf.classList.add('confetti');
+    conf.style.left = Math.random() * 100 + 'vw';
+    conf.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    conf.style.background = colors[Math.floor(Math.random() * colors.length)];
+    elements.winnerOverlay.appendChild(conf);
+    
+    // Remove after animation
+    setTimeout(() => conf.remove(), 5000);
+  }
+}
+
+function closeOverlay() {
+  elements.winnerOverlay.classList.add('hidden');
+  // Clean up confetti
+  const confettis = document.querySelectorAll('.confetti');
+  confettis.forEach(c => c.remove());
 }
 
 function undoRound() {
@@ -696,6 +809,7 @@ function newGame() {
   }
   
   localStorage.removeItem('dominoGame');
+  elements.winnerOverlay.classList.add('hidden'); // Ensure overlay is gone
 
   elements.game.classList.add('hidden');
   elements.setup.classList.remove('hidden');
