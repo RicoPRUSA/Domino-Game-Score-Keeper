@@ -388,6 +388,7 @@ td .badge-stack {
   text-align: center;
   padding: 2rem;
   backdrop-filter: blur(5px);
+  overflow: hidden;
 }
 
 /* Only show when active class is present */
@@ -399,6 +400,7 @@ td .badge-stack {
   font-size: 3rem;
   color: #dc2626;
   margin-bottom: 1rem;
+  z-index: 2002;
   animation: pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -406,14 +408,52 @@ td .badge-stack {
   font-size: 2rem;
   color: #1e3a8a;
   margin-bottom: 2rem;
+  z-index: 2002;
 }
 
 .confetti {
   position: absolute;
   width: 10px;
   height: 10px;
+  top: -20px;
   background: #f00;
+  z-index: 2001;
   animation: fall linear forwards;
+}
+
+.balloon {
+  position: absolute;
+  bottom: -150px;
+  width: 40px;
+  height: 50px;
+  border-radius: 50%;
+  z-index: 2001;
+  animation: floatUp linear forwards;
+  opacity: 0.9;
+}
+
+/* Balloon String */
+.balloon::before {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background: inherit;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.balloon::after {
+  content: "";
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 30px;
+  background: rgba(0,0,0,0.3);
 }
 
 @keyframes pop-in {
@@ -422,7 +462,12 @@ td .badge-stack {
 }
 
 @keyframes fall {
-  to { transform: translateY(100vh) rotate(720deg); }
+  to { transform: translateY(110vh) rotate(720deg); }
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-130vh) rotate(20deg); opacity: 0; }
 }
 
 /* Mobile Tweaks */
@@ -461,7 +506,7 @@ td .badge-stack {
 <div id="winnerOverlay" class="winner-overlay">
   <h1>¡WEPA!</h1>
   <h2 id="winnerText"></h2>
-  <div class="domino-stage" style="transform: scale(1.5);">
+  <div class="domino-stage" style="transform: scale(1.5); z-index: 2002;">
     <div class="domino-tile double-six">
       <div class="half top">
         <div class="dot"></div><div class="dot"></div><div class="dot"></div>
@@ -474,7 +519,7 @@ td .badge-stack {
       </div>
     </div>
   </div>
-  <div class="controls" style="margin-top: 2rem;">
+  <div class="controls" style="margin-top: 2rem; z-index: 2002;">
     <button onclick="newGame()">Start New Game</button>
     <button class="secondary" onclick="closeOverlay()">Close</button>
   </div>
@@ -758,39 +803,62 @@ function celebrateWinner(winnerName) {
   elements.winnerText.textContent = winnerName + " Wins!";
   elements.winnerOverlay.classList.add('active'); // Use class to show
   
-  // Coqui Chorus
+  // Coqui Chorus (Extended)
   playCoquiSound();
   setTimeout(playCoquiSound, 800);
   setTimeout(playCoquiSound, 1600);
-  setTimeout(playCoquiSound, 2400); // Extended
-  setTimeout(playCoquiSound, 3200); // Extended
-  setTimeout(playCoquiSound, 4000); // Extended
+  setTimeout(playCoquiSound, 2400); 
+  setTimeout(playCoquiSound, 3200); 
+  setTimeout(playCoquiSound, 4000); 
+  setTimeout(playCoquiSound, 4800); 
+  setTimeout(playCoquiSound, 5600); 
   
-  // Confetti
+  // Confetti & Balloons
   createConfetti();
+  createBalloons();
 }
 
 function createConfetti() {
   const colors = ['#dc2626', '#ffffff', '#0050F0'];
-  for (let i = 0; i < 100; i++) { // Increased count
+  // More confetti
+  for (let i = 0; i < 100; i++) {
     const conf = document.createElement('div');
     conf.classList.add('confetti');
     conf.style.left = Math.random() * 100 + 'vw';
-    // Slower fall: 4s to 9s
-    conf.style.animationDuration = (Math.random() * 5 + 4) + 's';
+    // Slower fall: 6s to 12s
+    conf.style.animationDuration = (Math.random() * 6 + 6) + 's';
     conf.style.background = colors[Math.floor(Math.random() * colors.length)];
     elements.winnerOverlay.appendChild(conf);
     
-    // Remove after animation (10s)
-    setTimeout(() => conf.remove(), 10000);
+    // Remove after animation (15s)
+    setTimeout(() => conf.remove(), 15000);
+  }
+}
+
+function createBalloons() {
+  const colors = ['#dc2626', '#ffffff', '#0050F0'];
+  for (let i = 0; i < 25; i++) {
+    const balloon = document.createElement('div');
+    balloon.classList.add('balloon');
+    balloon.style.left = (Math.random() * 90 + 5) + 'vw';
+    balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
+    // Randomize speed and delay
+    balloon.style.animationDuration = (Math.random() * 5 + 6) + 's';
+    balloon.style.animationDelay = (Math.random() * 3) + 's';
+    elements.winnerOverlay.appendChild(balloon);
+    
+    // Cleanup
+    setTimeout(() => balloon.remove(), 15000);
   }
 }
 
 function closeOverlay() {
   elements.winnerOverlay.classList.remove('active');
-  // Clean up confetti
+  // Clean up animation elements
   const confettis = document.querySelectorAll('.confetti');
   confettis.forEach(c => c.remove());
+  const balloons = document.querySelectorAll('.balloon');
+  balloons.forEach(b => b.remove());
 }
 
 function undoRound() {
@@ -819,7 +887,7 @@ function newGame() {
   }
   
   localStorage.removeItem('dominoGame');
-  elements.winnerOverlay.classList.remove('active');
+  closeOverlay();
 
   elements.game.classList.add('hidden');
   elements.setup.classList.remove('hidden');
