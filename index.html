@@ -820,8 +820,7 @@ function celebrateWinner(winnerName) {
 
 function createConfetti() {
   const colors = ['#dc2626', '#ffffff', '#0050F0'];
-  // More confetti
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 100; i++) { // Increased count
     const conf = document.createElement('div');
     conf.classList.add('confetti');
     conf.style.left = Math.random() * 100 + 'vw';
@@ -887,7 +886,7 @@ function newGame() {
   }
   
   localStorage.removeItem('dominoGame');
-  closeOverlay();
+  elements.winnerOverlay.classList.remove('active');
 
   elements.game.classList.add('hidden');
   elements.setup.classList.remove('hidden');
