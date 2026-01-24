@@ -194,7 +194,6 @@ h2 {
 }
 
 select, button {
-  /* Lowered padding to reduce height to approx 40px */
   padding: 0.6rem 1.2rem;
   font-size: 1rem;
   border-radius: 8px;
@@ -208,14 +207,11 @@ select, button {
 
 /* --- UPDATED DROPDOWN STYLES --- */
 select {
-  background-color: #DC2626; /* NEW RED BASE */
+  background-color: #DC2626;
   color: white;
   -webkit-appearance: none;
   appearance: none;
-  /* Softer, spread shadow */
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
-  
-  /* Dropdown Arrow Icon */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(255, 255, 255, 0.6)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.7rem center;
@@ -224,21 +220,19 @@ select {
 }
 
 select:hover {
-  background-color: #F44336; /* NEW RED HOVER */
+  background-color: #F44336;
 }
 
 /* --- UPDATED BUTTON STYLES --- */
 button {
-  background-color: #1C398E; /* NEW BLUE BASE */
+  background-color: #1C398E;
   color: white;
-  /* Softer, spread shadow */
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2) !important;
 }
 
 button:hover {
-  background-color: #193CB8; /* NEW BLUE HOVER */
+  background-color: #193CB8;
   transform: translateY(-1px);
-  /* Intense soft shadow on hover */
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1) !important;
 }
 
@@ -254,21 +248,42 @@ button.secondary:hover {
   background-color: #475569;
 }
 
+/* --- ENHANCED INPUTS (The Deep Slot Look) --- */
 input[type="text"],
 input[type="number"] {
-  padding: 0.75rem;
-  font-size: 1.1rem;
-  border: 2px solid #cbd5e1;
-  border-radius: 8px;
+  padding: 0.8rem 0.5rem;
+  font-size: 1.3rem; /* Larger text is easier to read */
+  font-weight: 800;  /* Bold numbers */
   text-align: center;
   width: 85px;
-  background: #fff;
-  transition: border-color 0.2s;
+  
+  /* Visuals */
+  color: #1e3a8a;    /* Dark Blue text */
+  background-color: #f1f5f9; /* Slightly grey, not pure white */
+  border: 2px solid #cbd5e1;
+  border-radius: 12px; /* Matches the button curves */
+  
+  /* The "Inset" Effect */
+  box-shadow: inset 0 3px 6px rgba(0,0,0,0.1); 
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+/* When you tap the input */
 input:focus {
   outline: none;
-  border-color: #1C398E;
+  background-color: #ffffff;
+  border-color: #1C398E; /* Matches your Blue Buttons */
+  
+  /* Removes the inset shadow and adds a glow ring */
+  box-shadow: 0 0 0 4px rgba(28, 57, 142, 0.2); 
+  transform: scale(1.1); /* Pops up slightly */
+}
+
+/* Placeholder text styling */
+input::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+  font-size: 1rem;
 }
 
 input:disabled {
@@ -276,6 +291,7 @@ input:disabled {
   cursor: not-allowed;
   border-color: #e2e8f0;
   color: #94a3b8;
+  box-shadow: none;
 }
 
 /* --- BADGES --- */
