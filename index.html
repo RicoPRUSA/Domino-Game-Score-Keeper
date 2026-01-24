@@ -194,7 +194,8 @@ h2 {
 }
 
 select, button {
-  padding: 0.75rem 1.25rem;
+  /* Lowered padding to reduce height to approx 40px */
+  padding: 0.6rem 1.2rem;
   font-size: 1rem;
   border-radius: 8px;
   border: none;
@@ -211,14 +212,15 @@ select {
   color: white;
   -webkit-appearance: none;
   appearance: none;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  /* Softer, spread shadow */
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
   
-  /* Added Dropdown Arrow Icon */
+  /* Dropdown Arrow Icon */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(255, 255, 255, 0.6)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.7rem center;
   background-size: 1.2em;
-  padding-right: 2.5rem; /* Make room for the arrow */
+  padding-right: 2.5rem;
 }
 
 select:hover {
@@ -229,13 +231,15 @@ select:hover {
 button {
   background-color: #1C398E; /* NEW BLUE BASE */
   color: white;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.15) !important;
+  /* Softer, spread shadow */
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2) !important;
 }
 
 button:hover {
   background-color: #193CB8; /* NEW BLUE HOVER */
   transform: translateY(-1px);
-  box-shadow: 0 6px 10px rgba(0,0,0,0.2) !important;
+  /* Intense soft shadow on hover */
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1) !important;
 }
 
 button:active {
@@ -244,7 +248,7 @@ button:active {
 }
 
 button.secondary {
-  background-color: #64748b; /* Keeps grey secondary buttons */
+  background-color: #64748b;
 }
 button.secondary:hover {
   background-color: #475569;
@@ -264,7 +268,7 @@ input[type="number"] {
 
 input:focus {
   outline: none;
-  border-color: #1C398E; /* Updated to match new blue */
+  border-color: #1C398E;
 }
 
 input:disabled {
