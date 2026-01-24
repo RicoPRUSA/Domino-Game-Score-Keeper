@@ -202,24 +202,38 @@ select, button {
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  transition: all 0.2s ease;
 }
 
+/* --- UPDATED DROPDOWN STYLES --- */
 select {
-  background: #dc2626;
+  background-color: #DC2626; /* NEW RED BASE */
   color: white;
   -webkit-appearance: none;
   appearance: none;
   box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  
+  /* Added Dropdown Arrow Icon */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(255, 255, 255, 0.6)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  background-size: 1.2em;
+  padding-right: 2.5rem; /* Make room for the arrow */
 }
 
+select:hover {
+  background-color: #F44336; /* NEW RED HOVER */
+}
+
+/* --- UPDATED BUTTON STYLES --- */
 button {
-  background: #1e40af;
+  background-color: #1C398E; /* NEW BLUE BASE */
   color: white;
   box-shadow: 0 4px 6px rgba(0,0,0,0.15) !important;
-  transition: transform 0.1s, box-shadow 0.1s;
 }
 
 button:hover {
+  background-color: #193CB8; /* NEW BLUE HOVER */
   transform: translateY(-1px);
   box-shadow: 0 6px 10px rgba(0,0,0,0.2) !important;
 }
@@ -230,7 +244,10 @@ button:active {
 }
 
 button.secondary {
-  background: #64748b;
+  background-color: #64748b; /* Keeps grey secondary buttons */
+}
+button.secondary:hover {
+  background-color: #475569;
 }
 
 input[type="text"],
@@ -247,7 +264,7 @@ input[type="number"] {
 
 input:focus {
   outline: none;
-  border-color: #1e40af;
+  border-color: #1C398E; /* Updated to match new blue */
 }
 
 input:disabled {
