@@ -5,14 +5,108 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>El BORICUA Domino Score Keeper</title>
 
-<!-- Favicon & Mobile Icons -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 600'%3E%3Crect width='900' height='600' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='0' fill='%23ED0000'/%3E%3Crect width='900' height='120' y='120' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='240' fill='%23ED0000'/%3E%3Crect width='900' height='120' y='360' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='480' fill='%23ED0000'/%3E%3Cpath d='M 0 0 L 360 300 L 0 600 Z' fill='%230050F0'/%3E%3Cpath d='M 130 270 L 150 330 L 215 330 L 165 365 L 185 425 L 130 385 L 75 425 L 95 365 L 45 330 L 110 330 Z' fill='%23ffffff'/%3E%3C/svg%3E">
+<!-- PWA & Mobile Meta Tags -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Domino PR">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 600'%3E%3Crect width='900' height='600' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='0' fill='%23ED0000'/%3E%3Crect width='900' height='120' y='120' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='240' fill='%23ED0000'/%3E%3Crect width='900' height='120' y='360' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='480' fill='%23ED0000'/%3E%3Cpath d='M 0 0 L 360 300 L 0 600 Z' fill='%230050F0'/%3E%3Cpath d='M 130 270 L 150 330 L 215 330 L 165 365 L 185 425 L 130 385 L 75 425 L 95 365 L 45 330 L 110 330 Z' fill='%23ffffff'/%3E%3C/svg%3E">
 <meta name="theme-color" content="#0050F0">
 <meta name="description" content="Puerto Rican Domino Score Keeper">
+
+<!-- 
+  ICON GENERATOR SCRIPT 
+  This fixes the iOS "Missing Icon" issue by generating a PNG on the fly.
+-->
+<script>
+(function() {
+  // Create a canvas to draw the icon
+  var canvas = document.createElement('canvas');
+  canvas.width = 180; // Standard iOS Icon Size
+  canvas.height = 180;
+  var ctx = canvas.getContext('2d');
+
+  // 1. Draw Background (PR Flag Red)
+  ctx.fillStyle = "#ED0000";
+  ctx.fillRect(0, 0, 180, 180);
+
+  // 2. Draw White Stripes
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 36, 180, 36);
+  ctx.fillRect(0, 108, 180, 36);
+
+  // 3. Draw Blue Triangle
+  ctx.fillStyle = "#0050F0";
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.lineTo(104, 90);
+  ctx.lineTo(0, 180);
+  ctx.fill();
+
+  // 4. Draw White Star
+  ctx.fillStyle = "#ffffff";
+  ctx.beginPath();
+  var cx = 35, cy = 90, outerRadius = 18, innerRadius = 7;
+  var rot = Math.PI / 2 * 3;
+  var x = cx, y = cy;
+  var step = Math.PI / 5;
+  ctx.moveTo(cx, cy - outerRadius);
+  for (var i = 0; i < 5; i++) {
+    x = cx + Math.cos(rot) * outerRadius;
+    y = cy + Math.sin(rot) * outerRadius;
+    ctx.lineTo(x, y);
+    rot += step;
+    x = cx + Math.cos(rot) * innerRadius;
+    y = cy + Math.sin(rot) * innerRadius;
+    ctx.lineTo(x, y);
+    rot += step;
+  }
+  ctx.lineTo(cx, cy - outerRadius);
+  ctx.closePath();
+  ctx.fill();
+
+  // 5. Draw Domino Tile (Right Side)
+  // Tile Body
+  ctx.fillStyle = "#f8fafc"; // White-ish
+  ctx.fillRect(110, 30, 45, 120); // x, y, width, height
+  // Tile Border
+  ctx.strokeStyle = "#cbd5e1";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(110, 30, 45, 120);
+  // Center Line
+  ctx.strokeStyle = "#d97706"; // Gold
+  ctx.beginPath();
+  ctx.moveTo(115, 90);
+  ctx.lineTo(150, 90);
+  ctx.stroke();
+  
+  // Dots (Double Six)
+  ctx.fillStyle = "black";
+  function drawDot(x, y) {
+      ctx.beginPath();
+      ctx.arc(x, y, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+  }
+  // Top Dots
+  drawDot(120, 40); drawDot(132.5, 40); drawDot(145, 40);
+  drawDot(120, 80); drawDot(132.5, 80); drawDot(145, 80);
+  // Bottom Dots
+  drawDot(120, 100); drawDot(132.5, 100); drawDot(145, 100);
+  drawDot(120, 140); drawDot(132.5, 140); drawDot(145, 140);
+
+  // 6. Convert to PNG URL and inject into HEAD
+  var url = canvas.toDataURL('image/png');
+  
+  var link = document.createElement('link');
+  link.rel = 'apple-touch-icon';
+  link.href = url;
+  document.head.appendChild(link);
+  
+  var fav = document.createElement('link');
+  fav.rel = 'icon';
+  fav.type = 'image/png';
+  fav.href = url;
+  document.head.appendChild(fav);
+})();
+</script>
 
 <style>
 * {
@@ -424,7 +518,6 @@ td .badge-stack {
   height: 100%;
   background: rgba(255,255,255,0.95);
   z-index: 2000;
-  /* Hidden by default in CSS */
   display: none; 
   flex-direction: column;
   justify-content: center;
@@ -435,7 +528,6 @@ td .badge-stack {
   overflow: hidden;
 }
 
-/* Only show when active class is present */
 .winner-overlay.active {
   display: flex;
 }
@@ -518,7 +610,6 @@ td .badge-stack {
 @media (max-width: 640px) {
   h1 { font-size: 1.4rem; }
   
-  /* SMALLER DOMINO FOR MOBILE */
   .domino-stage { height: 70px; margin-top: 0.25rem; }
   .domino-tile { width: 32px; height: 64px; border-radius: 4px; }
   .half { padding: 3px; height: 28px; gap: 2px; }
@@ -535,7 +626,6 @@ td .badge-stack {
 
 <body>
 
-<!-- OFFICIAL GEOMETRIC PUERTO RICO FLAG BADGE -->
 <div class="pr-flag-badge">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
     <rect width="900" height="600" fill="#ED0000"/>
@@ -546,7 +636,6 @@ td .badge-stack {
   </svg>
 </div>
 
-<!-- WINNER OVERLAY (Default hidden via CSS) -->
 <div id="winnerOverlay" class="winner-overlay">
   <h1>¡WEPA!</h1>
   <h2 id="winnerText"></h2>
@@ -612,7 +701,6 @@ td .badge-stack {
     <div class="card" id="historyCard" style="display: none;">
       <h2>Game History</h2>
       <div id="gameHistory"></div>
-      <!-- ADDED MARGIN TO PUSH BUTTON INTO CARD PADDING -->
       <div class="controls" style="margin-top: 1.5rem;">
         <button class="secondary" onclick="clearHistory()">Clear History</button>
       </div>
@@ -634,7 +722,6 @@ td .badge-stack {
         <select id="winner"></select>
       </div>
       
-      <!-- NEON OUTLINE TOGGLES -->
       <div class="checkbox-group">
         <label class="checkbox-label">
           <input type="checkbox" id="capicu">
@@ -670,7 +757,6 @@ const PLAYER_OPTIONS = ["Rico", "Aida", "Tony", "Mike", "Mayra", "Custom"];
 let names = [], scores = [], rounds = [], mode = "single";
 let gameHistory = [];
 
-// --- THE AUTHENTIC COQUI SOUND SYNTHESIZER ---
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 let audioCtx;
 
@@ -679,7 +765,6 @@ function playCoquiSound() {
   
   const now = audioCtx.currentTime;
   
-  // "Co" note
   const coOsc = audioCtx.createOscillator();
   const coGain = audioCtx.createGain();
   coOsc.type = 'sine';
@@ -692,7 +777,6 @@ function playCoquiSound() {
   coOsc.start(now);
   coOsc.stop(now + 0.12);
 
-  // "Qui" note
   const quiOsc = audioCtx.createOscillator();
   const quiGain = audioCtx.createGain();
   quiOsc.type = 'sine';
@@ -727,7 +811,6 @@ const elements = {
   winnerText: document.getElementById('winnerText')
 };
 
-// Add sound to buttons AND checkboxes
 document.querySelectorAll('button, .checkbox-label').forEach(el => {
   el.addEventListener('click', () => {
     playCoquiSound();
@@ -838,18 +921,15 @@ function addRound() {
   render();
   saveGameState();
 
-  // CHECK FOR WINNER
   if (scores[w] >= 500) {
     celebrateWinner(names[w]);
   }
 }
 
-// --- CELEBRATION LOGIC ---
 function celebrateWinner(winnerName) {
   elements.winnerText.textContent = winnerName + " Wins!";
-  elements.winnerOverlay.classList.add('active'); // Use class to show
+  elements.winnerOverlay.classList.add('active');
   
-  // Coqui Chorus (Extended)
   playCoquiSound();
   setTimeout(playCoquiSound, 800);
   setTimeout(playCoquiSound, 1600);
@@ -859,23 +939,20 @@ function celebrateWinner(winnerName) {
   setTimeout(playCoquiSound, 4800); 
   setTimeout(playCoquiSound, 5600); 
   
-  // Confetti & Balloons
   createConfetti();
   createBalloons();
 }
 
 function createConfetti() {
   const colors = ['#dc2626', '#ffffff', '#0050F0'];
-  for (let i = 0; i < 100; i++) { // Increased count
+  for (let i = 0; i < 100; i++) {
     const conf = document.createElement('div');
     conf.classList.add('confetti');
     conf.style.left = Math.random() * 100 + 'vw';
-    // Slower fall: 6s to 12s
     conf.style.animationDuration = (Math.random() * 6 + 6) + 's';
     conf.style.background = colors[Math.floor(Math.random() * colors.length)];
     elements.winnerOverlay.appendChild(conf);
     
-    // Remove after animation (15s)
     setTimeout(() => conf.remove(), 15000);
   }
 }
@@ -887,50 +964,42 @@ function createBalloons() {
     balloon.classList.add('balloon');
     balloon.style.left = (Math.random() * 90 + 5) + 'vw';
     balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
-    // Randomize speed and delay
     balloon.style.animationDuration = (Math.random() * 5 + 6) + 's';
     balloon.style.animationDelay = (Math.random() * 3) + 's';
     elements.winnerOverlay.appendChild(balloon);
     
-    // Cleanup
     setTimeout(() => balloon.remove(), 15000);
   }
 }
 
 function closeOverlay() {
   elements.winnerOverlay.classList.remove('active');
-  // Clean up animation elements
   const confettis = document.querySelectorAll('.confetti');
   confettis.forEach(c => c.remove());
   const balloons = document.querySelectorAll('.balloon');
   balloons.forEach(b => b.remove());
 }
 
-// RESUME GAME FUNCTIONALITY
 function resumeGame(index) {
   if(!confirm('Resume this game? Current progress will be lost.')) return;
 
   const gameToResume = gameHistory[index];
 
-  // Check if saved state exists in history
   if (gameToResume.savedNames) {
     names = gameToResume.savedNames;
     rounds = gameToResume.savedRounds;
     mode = gameToResume.savedMode;
     
-    // Re-calculate total scores
     scores = new Array(names.length).fill(0);
     rounds.forEach(r => {
        const extra = (r.capicu ? 100 : 0) + (r.chuchazo ? 100 : 0);
        scores[r.w] += r.rScores[r.w] + r.base + extra;
     });
 
-    // Remove from history (move back to active)
     gameHistory.splice(index, 1);
     saveToStorage();
     renderGameHistory();
 
-    // Activate Game
     saveGameState();
     elements.setup.classList.add('hidden');
     elements.game.classList.remove('hidden');
@@ -1002,7 +1071,6 @@ function saveGameToHistory() {
     date: new Date().toLocaleString(),
     players: playerStats,
     totalRounds: rounds.length,
-    // SAVE RAW DATA FOR RESUMING
     savedNames: names,
     savedRounds: rounds,
     savedMode: mode
@@ -1038,7 +1106,6 @@ function renderGameHistory() {
       historyHTML += '</div>';
     });
     
-    // RESUME BUTTON
     historyHTML += '<div style="display: flex; justify-content: flex-end; margin-top: 0.8rem; border-top: 1px solid #e2e8f0; padding-top: 0.8rem;">';
     historyHTML += '<button class="secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="resumeGame(' + gameIdx + ')">Resume Game</button>';
     historyHTML += '</div>';
