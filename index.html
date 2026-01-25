@@ -5,15 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>El BORICUA Domino Score Keeper</title>
 
-<!-- Favicon -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 600'%3E%3Crect width='900' height='600' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='0' fill='%23ED0000'/%3E%3Crect width='900' height='120' y='120' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='240' fill='%23ED0000'/%3E%3Crect width='900' height='120' y='360' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='480' fill='%23ED0000'/%3E%3Cpath d='M 0 0 L 360 300 L 0 600 Z' fill='%230050F0'/%3E%3Cpath d='M 130 270 L 150 330 L 215 330 L 165 365 L 185 425 L 130 385 L 75 425 L 95 365 L 45 330 L 110 330 Z' fill='%23ffffff'/%3E%3C/svg%3E">
-
+<!-- PWA & Mobile Meta Tags -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Domino PR">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 600'%3E%3Crect width='900' height='600' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='0' fill='%23ED0000'/%3E%3Crect width='900' height='120' y='120' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='240' fill='%23ED0000'/%3E%3Crect width='900' height='120' y='360' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='480' fill='%23ED0000'/%3E%3Cpath d='M 0 0 L 360 300 L 0 600 Z' fill='%230050F0'/%3E%3Cpath d='M 130 270 L 150 330 L 215 330 L 165 365 L 185 425 L 130 385 L 75 425 L 95 365 L 45 330 L 110 330 Z' fill='%23ffffff'/%3E%3C/svg%3E">
 <meta name="theme-color" content="#0050F0">
 <meta name="description" content="Puerto Rican Domino Score Keeper">
+
+<!-- App Icons -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 600'%3E%3Crect width='900' height='600' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='0' fill='%23ED0000'/%3E%3Crect width='900' height='120' y='120' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='240' fill='%23ED0000'/%3E%3Crect width='900' height='120' y='360' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='480' fill='%23ED0000'/%3E%3Cpath d='M 0 0 L 360 300 L 0 600 Z' fill='%230050F0'/%3E%3Cpath d='M 130 270 L 150 330 L 215 330 L 165 365 L 185 425 L 130 385 L 75 425 L 95 365 L 45 330 L 110 330 Z' fill='%23ffffff'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 600'%3E%3Crect width='900' height='600' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='0' fill='%23ED0000'/%3E%3Crect width='900' height='120' y='120' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='240' fill='%23ED0000'/%3E%3Crect width='900' height='120' y='360' fill='%23ffffff'/%3E%3Crect width='900' height='120' y='480' fill='%23ED0000'/%3E%3Cpath d='M 0 0 L 360 300 L 0 600 Z' fill='%230050F0'/%3E%3Cpath d='M 130 270 L 150 330 L 215 330 L 165 365 L 185 425 L 130 385 L 75 425 L 95 365 L 45 330 L 110 330 Z' fill='%23ffffff'/%3E%3C/svg%3E">
 
 <style>
 * {
@@ -24,7 +25,17 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  background: linear-gradient(120deg, #cbd5e1, #bfdbfe);
+  /* LIQUID MESH BACKGROUND */
+  background-color: #eef2f9;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(220, 38, 38, 0.4) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(28, 57, 142, 0.4) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(220, 38, 38, 0.4) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(28, 57, 142, 0.4) 0px, transparent 50%);
+  background-attachment: fixed; /* Keeps background still while scrolling */
+  background-size: 150% 150%;
+  animation: liquid-bg 15s ease-in-out infinite alternate;
+  
   color: #111827;
   min-height: 100vh;
   padding: 0.5rem;
@@ -32,6 +43,11 @@ body {
   -webkit-text-size-adjust: 100%;
   touch-action: manipulation;
   overflow-x: hidden;
+}
+
+@keyframes liquid-bg {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
 }
 
 .container {
@@ -54,30 +70,31 @@ body {
 .domino-tile {
   width: 45px;
   height: 90px;
-  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+  /* Glassy Domino Texture */
+  background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(240,240,240,0.8) 100%);
+  backdrop-filter: blur(4px);
   border-radius: 6px;
   position: relative;
   box-shadow: 
-    1px 1px 0px #bbb,
-    2px 2px 0px #bbb,
-    3px 3px 0px #bbb,
-    4px 4px 10px rgba(0,0,0,0.3);
+    1px 1px 0px rgba(255,255,255,0.5),
+    2px 2px 0px rgba(200,200,200,0.5),
+    3px 3px 0px rgba(180,180,180,0.5),
+    4px 4px 15px rgba(0,0,0,0.2);
   
   transform: rotate(-15deg) translateY(-5px);
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
-  border: 1px solid rgba(0,0,0,0.1);
+  border: 1px solid rgba(255,255,255,0.6);
 }
 
 .domino-tile:hover {
   transform: rotate(-12deg) translateY(-10px) scale(1.05);
   box-shadow: 
-    1px 1px 0px #bbb,
-    2px 2px 0px #bbb,
-    3px 3px 0px #bbb,
-    4px 4px 0px #bbb,
-    5px 5px 0px #bbb,
-    6px 6px 15px rgba(0,0,0,0.25);
+    1px 1px 0px rgba(255,255,255,0.5),
+    2px 2px 0px rgba(200,200,200,0.5),
+    3px 3px 0px rgba(180,180,180,0.5),
+    5px 5px 0px rgba(160,160,160,0.5),
+    8px 8px 20px rgba(0,0,0,0.15);
 }
 
 .line {
@@ -85,7 +102,7 @@ body {
   background: linear-gradient(to right, #b45309, #f59e0b, #b45309);
   margin: 2px 5px;
   border-radius: 1px;
-  box-shadow: inset 0 1px 1px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .half {
@@ -104,21 +121,29 @@ body {
   height: 7px;
   background-color: #111;
   border-radius: 50%;
-  box-shadow: inset 1px 1px 2px rgba(255,255,255,0.5), inset -1px -1px 2px rgba(0,0,0,0.9);
+  box-shadow: inset 1px 1px 1px rgba(255,255,255,0.3);
   background: radial-gradient(circle at 30% 30%, #444, #000);
 }
 
-/* --- CARD DESIGN --- */
+/* --- APPLE LIQUID GLASS CARD --- */
 .card {
-  background-color: #ffffff;
-  background-image: repeating-linear-gradient(45deg, transparent, transparent 1px, #f9fafb 1px, #f9fafb 4px);
-  border-radius: 16px;
+  /* Translucent White */
+  background: rgba(255, 255, 255, 0.65);
+  /* The Blur Magic */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  
+  border-radius: 20px; /* Slightly rounder */
   padding: 1.5rem;
   margin-bottom: 1rem;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  
+  /* Soft Glass Shadow */
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+  
+  /* Subtle White Border */
+  border: 1px solid rgba(255, 255, 255, 0.4);
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(0,0,0,0.05);
 }
 
 .card::before {
@@ -128,7 +153,9 @@ body {
   left: 0;
   right: 0;
   height: 4px;
+  /* Flag gradient kept, but made slightly glossy */
   background: linear-gradient(to right, #1e3a8a, #ffffff, #dc2626);
+  opacity: 0.8;
 }
 
 /* --- PERFECT GEOMETRIC BADGE --- */
@@ -142,7 +169,8 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   z-index: 1000;
   overflow: hidden;
-  border: 3px solid white;
+  border: 2px solid rgba(255,255,255,0.8);
+  backdrop-filter: blur(4px);
 }
 .pr-flag-badge svg { width: 100%; height: 100%; }
 
@@ -159,7 +187,9 @@ h1 {
   text-align: center;
   margin: 0.2rem 0 0.5rem 0;
   font-size: 2rem;
-  text-shadow: 0 6px 15px rgba(0,0,0,0.15);
+  font-weight: 800;
+  /* Glassy Text Shadow */
+  text-shadow: 0 2px 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255,255,255,0.5);
 }
 
 h2 {
@@ -167,7 +197,8 @@ h2 {
   text-align: center;
   margin-bottom: 1rem;
   font-size: 1.5rem;
-  text-shadow: 0 6px 15px rgba(0,0,0,0.15);
+  font-weight: 700;
+  text-shadow: 0 1px 1px rgba(255,255,255,0.5);
 }
 
 .pr-accent {
@@ -178,6 +209,7 @@ h2 {
   background: linear-gradient(to right, #b91c1c, #ffffff, #1e3a8a);
   background-size: 200% 100%;
   animation: shine 3s linear infinite;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 @keyframes shine {
@@ -195,25 +227,31 @@ h2 {
 }
 
 select, button {
-  padding: 0.6rem 1.2rem;
+  padding: 0.7rem 1.4rem; /* Slightly plumper for liquid look */
   font-size: 1rem;
-  border-radius: 8px;
+  border-radius: 12px; /* Rounder corners */
   border: none;
   font-weight: 600;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+  letter-spacing: 0.5px;
 }
 
-/* Dropdown Styles */
+/* --- LIQUID GLASS DROPDOWNS --- */
 select {
-  background-color: #DC2626;
+  /* Red Base with Gloss Overlay */
+  background: linear-gradient(145deg, #DC2626, #b91c1c);
   color: white;
   -webkit-appearance: none;
   appearance: none;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(255, 255, 255, 0.6)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  /* Liquid Shadow */
+  box-shadow: 
+    0 4px 6px rgba(220, 38, 38, 0.2), 
+    inset 0 1px 0 rgba(255,255,255,0.2);
+  
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(255, 255, 255, 0.7)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.7rem center;
   background-size: 1.2em;
@@ -221,20 +259,27 @@ select {
 }
 
 select:hover {
-  background-color: #F44336;
+  background: linear-gradient(145deg, #F44336, #DC2626);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(220, 38, 38, 0.3), inset 0 1px 0 rgba(255,255,255,0.3);
 }
 
-/* Button Styles */
+/* --- LIQUID GLASS BUTTONS --- */
 button {
-  background-color: #1C398E;
+  /* Blue Base with Gloss Overlay */
+  background: linear-gradient(145deg, #2a4cc7, #1C398E);
   color: white;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 
+    0 4px 6px rgba(28, 57, 142, 0.25),
+    inset 0 1px 0 rgba(255,255,255,0.2) !important;
 }
 
 button:hover {
-  background-color: #193CB8;
-  transform: translateY(-1px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1) !important;
+  background: linear-gradient(145deg, #3b5fe0, #193CB8);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 15px rgba(28, 57, 142, 0.3),
+    inset 0 1px 0 rgba(255,255,255,0.3) !important;
 }
 
 button:active {
@@ -243,13 +288,14 @@ button:active {
 }
 
 button.secondary {
-  background-color: #64748b;
+  background: linear-gradient(145deg, #64748b, #475569);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
 }
 button.secondary:hover {
-  background-color: #475569;
+  background: linear-gradient(145deg, #788fa5, #56667a);
 }
 
-/* --- ENHANCED INPUTS (Deep Slot Style) --- */
+/* --- CRYSTAL INPUTS (Inset Glass) --- */
 input[type="text"],
 input[type="number"] {
   padding: 0.8rem 0.5rem;
@@ -258,19 +304,24 @@ input[type="number"] {
   text-align: center;
   width: 85px;
   color: #1e3a8a;
-  background-color: #f1f5f9;
-  border: 2px solid #cbd5e1;
+  
+  /* Semi-transparent background for glass effect */
+  background: rgba(241, 245, 249, 0.5);
+  border: 1px solid rgba(203, 213, 225, 0.6);
   border-radius: 12px;
-  box-shadow: inset 0 3px 6px rgba(0,0,0,0.1); 
-  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  
+  /* Inset Shadow */
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.06); 
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
 }
 
 input:focus {
   outline: none;
-  background-color: #ffffff;
+  background: rgba(255, 255, 255, 0.9);
   border-color: #1C398E;
-  box-shadow: 0 0 0 4px rgba(28, 57, 142, 0.2); 
-  transform: scale(1.1);
+  box-shadow: 0 0 0 3px rgba(28, 57, 142, 0.15); 
+  transform: scale(1.05);
 }
 
 input::placeholder {
@@ -280,9 +331,9 @@ input::placeholder {
 }
 
 input:disabled {
-  background: #f1f5f9;
+  background: rgba(241, 245, 249, 0.3);
   cursor: not-allowed;
-  border-color: #e2e8f0;
+  border-color: rgba(0,0,0,0.05);
   color: #94a3b8;
   box-shadow: none;
 }
@@ -291,33 +342,28 @@ input:disabled {
 .badge {
   display: inline-block;
   padding: 0.35rem 0.8rem;
-  border-radius: 999px; /* Pill shape */
+  border-radius: 50px;
   font-size: 0.75rem;
   font-weight: 700;
   color: white;
   margin: 2px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  /* Glassy badge shadow */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
   white-space: nowrap;
   text-shadow: 0 1px 1px rgba(0,0,0,0.1);
   line-height: 1;
 }
 
-.bonus { background: #f59e0b; }
-.capicu { background: #ea580c; }
-.chuchazo { background: #dc2626; }
+.bonus { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.capicu { background: linear-gradient(135deg, #ea580c, #c2410c); }
+.chuchazo { background: linear-gradient(135deg, #dc2626, #b91c1c); }
 
-/* --- NEON OUTLINE TOGGLES (Option 2) --- */
+/* --- NEON GLASS PILL TOGGLES --- */
 .checkbox-group {
   display: flex;
   gap: 0.8rem;
   justify-content: center;
   margin-bottom: 1.5rem;
-  background: transparent;
-  padding: 0;
-  border: none;
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .checkbox-label {
@@ -336,34 +382,40 @@ input:disabled {
   font-size: 0.9rem;
   font-weight: 800;
   border-radius: 50px;
-  background: white;
-  border: 2px solid #cbd5e1;
-  color: #64748b;
+  
+  /* Glassy Off State */
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  color: #475569;
+  
   transition: all 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  backdrop-filter: blur(4px);
 }
 
+/* Capicu Active (Neon Glow) */
 .checkbox-label input:checked + .badge.capicu {
-  background: #ea580c;
+  background: linear-gradient(135deg, #ea580c, #c2410c);
   border-color: #ea580c;
   color: white;
-  box-shadow: 0 0 15px rgba(234, 88, 12, 0.5);
+  box-shadow: 0 0 15px rgba(234, 88, 12, 0.4);
   transform: scale(1.05);
 }
 
+/* Chuchazo Active (Neon Glow) */
 .checkbox-label input:checked + .badge.chuchazo {
-  background: #dc2626;
+  background: linear-gradient(135deg, #dc2626, #991b1b);
   border-color: #dc2626;
   color: white;
-  box-shadow: 0 0 15px rgba(220, 38, 38, 0.5);
+  box-shadow: 0 0 15px rgba(220, 38, 38, 0.4);
   transform: scale(1.05);
 }
 
 /* --- TABLE --- */
 table { width: 100%; border-collapse: collapse; }
 th, td { padding: 0.75rem 0.5rem; text-align: center; color: #1e3a8a; }
-th { font-weight: 800; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px; }
-tbody tr { border-top: 1px solid #e2e8f0; }
+th { font-weight: 800; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px; opacity: 0.8; }
+tbody tr { border-top: 1px solid rgba(0,0,0,0.05); }
 
 td .winner-cell {
   display: flex;
@@ -383,9 +435,9 @@ td .badge-stack {
 
 /* --- ANIMATIONS --- */
 @keyframes pulse-winner {
-  0% { transform: scale(1); box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-  50% { transform: scale(1.05); box-shadow: 0 8px 16px rgba(220, 38, 38, 0.25); border-color: #fca5a5; }
-  100% { transform: scale(1); box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+  0% { transform: scale(1); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+  50% { transform: scale(1.05); box-shadow: 0 10px 20px rgba(220, 38, 38, 0.15); border-color: rgba(220, 38, 38, 0.3); }
+  100% { transform: scale(1); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 }
 
 .scores-display {
@@ -400,43 +452,44 @@ td .badge-stack {
   font-weight: 700;
   color: #1e3a8a;
   padding: 0.5rem 1rem;
-  border-radius: 12px;
-  border: 2px solid transparent;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(255,255,255,0.6);
   transition: all 0.3s ease;
   text-align: center;
 }
 
 .score.winner {
   color: #dc2626;
-  background-color: #fef2f2;
-  border: 2px solid #fee2e2;
+  background-color: rgba(254, 242, 242, 0.8);
+  border: 1px solid rgba(220, 38, 38, 0.3);
   animation: pulse-winner 2.5s infinite;
   font-size: 1.7rem;
 }
 
 .hidden { display: none !important; }
 
-/* --- WINNER OVERLAY --- */
+/* --- WINNER OVERLAY (FROSTED GLASS) --- */
 .winner-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255,255,255,0.95);
+  background: rgba(255,255,255,0.3);
   z-index: 2000;
-  /* Hidden by default in CSS */
   display: none; 
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   padding: 2rem;
-  backdrop-filter: blur(5px);
+  /* Strong blur for the overlay */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   overflow: hidden;
 }
 
-/* Only show when active class is present */
 .winner-overlay.active {
   display: flex;
 }
@@ -446,6 +499,7 @@ td .badge-stack {
   color: #dc2626;
   margin-bottom: 1rem;
   z-index: 2002;
+  text-shadow: 0 2px 10px rgba(255,255,255,0.8);
   animation: pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -454,6 +508,7 @@ td .badge-stack {
   color: #1e3a8a;
   margin-bottom: 2rem;
   z-index: 2002;
+  text-shadow: 0 2px 10px rgba(255,255,255,0.8);
 }
 
 .confetti {
@@ -475,6 +530,7 @@ td .badge-stack {
   z-index: 2001;
   animation: floatUp linear forwards;
   opacity: 0.9;
+  box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1);
 }
 
 /* Balloon String */
@@ -519,7 +575,6 @@ td .badge-stack {
 @media (max-width: 640px) {
   h1 { font-size: 1.4rem; }
   
-  /* SMALLER DOMINO FOR MOBILE */
   .domino-stage { height: 70px; margin-top: 0.25rem; }
   .domino-tile { width: 32px; height: 64px; border-radius: 4px; }
   .half { padding: 3px; height: 28px; gap: 2px; }
@@ -613,7 +668,6 @@ td .badge-stack {
     <div class="card" id="historyCard" style="display: none;">
       <h2>Game History</h2>
       <div id="gameHistory"></div>
-      <!-- ADDED MARGIN TO PUSH BUTTON INTO CARD PADDING -->
       <div class="controls" style="margin-top: 1.5rem;">
         <button class="secondary" onclick="clearHistory()">Clear History</button>
       </div>
@@ -635,7 +689,7 @@ td .badge-stack {
         <select id="winner"></select>
       </div>
       
-      <!-- NEON OUTLINE TOGGLES -->
+      <!-- NEON GLASS PILL TOGGLES -->
       <div class="checkbox-group">
         <label class="checkbox-label">
           <input type="checkbox" id="capicu">
@@ -671,7 +725,6 @@ const PLAYER_OPTIONS = ["Rico", "Aida", "Tony", "Mike", "Mayra", "Custom"];
 let names = [], scores = [], rounds = [], mode = "single";
 let gameHistory = [];
 
-// --- THE AUTHENTIC COQUI SOUND SYNTHESIZER ---
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 let audioCtx;
 
@@ -680,7 +733,6 @@ function playCoquiSound() {
   
   const now = audioCtx.currentTime;
   
-  // "Co" note
   const coOsc = audioCtx.createOscillator();
   const coGain = audioCtx.createGain();
   coOsc.type = 'sine';
@@ -693,7 +745,6 @@ function playCoquiSound() {
   coOsc.start(now);
   coOsc.stop(now + 0.12);
 
-  // "Qui" note
   const quiOsc = audioCtx.createOscillator();
   const quiGain = audioCtx.createGain();
   quiOsc.type = 'sine';
@@ -728,7 +779,6 @@ const elements = {
   winnerText: document.getElementById('winnerText')
 };
 
-// Add sound to buttons AND checkboxes
 document.querySelectorAll('button, .checkbox-label').forEach(el => {
   el.addEventListener('click', () => {
     playCoquiSound();
@@ -839,18 +889,15 @@ function addRound() {
   render();
   saveGameState();
 
-  // CHECK FOR WINNER
   if (scores[w] >= 500) {
     celebrateWinner(names[w]);
   }
 }
 
-// --- CELEBRATION LOGIC ---
 function celebrateWinner(winnerName) {
   elements.winnerText.textContent = winnerName + " Wins!";
-  elements.winnerOverlay.classList.add('active'); // Use class to show
+  elements.winnerOverlay.classList.add('active');
   
-  // Coqui Chorus (Extended)
   playCoquiSound();
   setTimeout(playCoquiSound, 800);
   setTimeout(playCoquiSound, 1600);
@@ -860,23 +907,20 @@ function celebrateWinner(winnerName) {
   setTimeout(playCoquiSound, 4800); 
   setTimeout(playCoquiSound, 5600); 
   
-  // Confetti & Balloons
   createConfetti();
   createBalloons();
 }
 
 function createConfetti() {
   const colors = ['#dc2626', '#ffffff', '#0050F0'];
-  for (let i = 0; i < 100; i++) { // Increased count
+  for (let i = 0; i < 100; i++) {
     const conf = document.createElement('div');
     conf.classList.add('confetti');
     conf.style.left = Math.random() * 100 + 'vw';
-    // Slower fall: 6s to 12s
     conf.style.animationDuration = (Math.random() * 6 + 6) + 's';
     conf.style.background = colors[Math.floor(Math.random() * colors.length)];
     elements.winnerOverlay.appendChild(conf);
     
-    // Remove after animation (15s)
     setTimeout(() => conf.remove(), 15000);
   }
 }
@@ -888,50 +932,42 @@ function createBalloons() {
     balloon.classList.add('balloon');
     balloon.style.left = (Math.random() * 90 + 5) + 'vw';
     balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
-    // Randomize speed and delay
     balloon.style.animationDuration = (Math.random() * 5 + 6) + 's';
     balloon.style.animationDelay = (Math.random() * 3) + 's';
     elements.winnerOverlay.appendChild(balloon);
     
-    // Cleanup
     setTimeout(() => balloon.remove(), 15000);
   }
 }
 
 function closeOverlay() {
   elements.winnerOverlay.classList.remove('active');
-  // Clean up animation elements
   const confettis = document.querySelectorAll('.confetti');
   confettis.forEach(c => c.remove());
   const balloons = document.querySelectorAll('.balloon');
   balloons.forEach(b => b.remove());
 }
 
-// RESUME GAME FUNCTIONALITY
 function resumeGame(index) {
   if(!confirm('Resume this game? Current progress will be lost.')) return;
 
   const gameToResume = gameHistory[index];
 
-  // Check if saved state exists in history
   if (gameToResume.savedNames) {
     names = gameToResume.savedNames;
     rounds = gameToResume.savedRounds;
     mode = gameToResume.savedMode;
     
-    // Re-calculate total scores
     scores = new Array(names.length).fill(0);
     rounds.forEach(r => {
        const extra = (r.capicu ? 100 : 0) + (r.chuchazo ? 100 : 0);
        scores[r.w] += r.rScores[r.w] + r.base + extra;
     });
 
-    // Remove from history (move back to active)
     gameHistory.splice(index, 1);
     saveToStorage();
     renderGameHistory();
 
-    // Activate Game
     saveGameState();
     elements.setup.classList.add('hidden');
     elements.game.classList.remove('hidden');
@@ -1003,7 +1039,6 @@ function saveGameToHistory() {
     date: new Date().toLocaleString(),
     players: playerStats,
     totalRounds: rounds.length,
-    // SAVE RAW DATA FOR RESUMING
     savedNames: names,
     savedRounds: rounds,
     savedMode: mode
@@ -1039,7 +1074,6 @@ function renderGameHistory() {
       historyHTML += '</div>';
     });
     
-    // RESUME BUTTON
     historyHTML += '<div style="display: flex; justify-content: flex-end; margin-top: 0.8rem; border-top: 1px solid #e2e8f0; padding-top: 0.8rem;">';
     historyHTML += '<button class="secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="resumeGame(' + gameIdx + ')">Resume Game</button>';
     historyHTML += '</div>';
