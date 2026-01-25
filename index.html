@@ -13,18 +13,47 @@
 <meta name="description" content="Puerto Rican Domino Score Keeper">
 
 <!-- 
-  ICON GENERATOR SCRIPT (RESTORED)
-  Generates the Premium "Glass Flag" Icon as a PNG for iOS Home Screen
+  ICON GENERATOR SCRIPT (FIXED)
+  Forces the "Glass Flag + Double Six" Icon for iOS
 -->
 <script>
 (function() {
-  // The "Glass Flag + Double Six" SVG Design (Base64 Encoded)
-  const svgData = `
-  PHN2ZyB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnTCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I2ZmNmI2YjtzdG9wLW9wYWNpdHk6MSIvPjxzdG9wIG9mZnNldD0iNTAlIiBzdHlsZT0ic3RvcC1jb2xvcIjojZDkwMDAwO3N0b3Atb3BhY2l0eToxIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcIjojOGEwMDAwO3N0b3Atb3BhY2l0eToxIi8+PC9saW5lYXJHcmFkaWVudD48bGluZWFyR3JhZGllbnQgaWQ9ImdXIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcIjojZmZmZmZmO3N0b3Atb3BhY2l0eToxIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcIjojZDFkNWRiO3N0b3Atb3BhY2l0eToxIi8+PC9saW5lYXJHcmFkaWVudD48cmFkaWFsR3JhZGllbnQgaWQ9ImdCIiBjeD0iMzAlIiBjeT0iMzAlIiByPSI5MCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM0ZmFjZmU7c3RvcC1vcGFjaXR5OjEiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMwMDJhN2E7c3RvcC1vcGFjaXR5OjEiLz48L3JhZGlhbEdyYWRpZW50PjxsaW5lYXJHcmFkaWVudCBpZD0iZ0QiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZmZmZmY7c3RvcC1vcGFjaXR5OjEiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNlMmU4ZjA7c3RvcC1vcGFjaXR5OjEiLz48L2xpbmVhckdyYWRpZW50PjxmaWx0ZXIgaWQ9ImRTIiB4PSItNTAlIiB5PSItNTAlIiB3aWR0aD0iMjAwJSIgaGVpZ2h0PSIyMDAlIj48ZmVHYXVzc2lhbkJsdXIgaW49IlNvdXJjZUFscGhhIiBzdGREZXZpYXRpb249IjEyIi8+PGZlT2Zmc2V0IGR4PSI2IiBkeT0iMTIiIHJlc3VsdD0ib2Zmc2V0Ymx1ciIvPjxmZUNvbXBvbmVudFRyYW5zZmVyPjxmZUZ1bmNBIHR5cGU9ImxpbmVhciIgc2xvcGU9IjAuNCIvPjwvZmVDb21wb25lbnRUcmFuc2Zlcj48ZmVNZXJnZT48ZmVNZXJnZU5vZGUvPjxmZU1lcmdlTm9kZSBpbj0iU291cmNlR3JhcGhpYyIvPjwvZmVNZXJnZT48L2ZpbHRlcj48Y2xpcFBhdGggaWQ9ImlDIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExMCIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNpQykiPjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiBmaWxsPSJ1cmwoI2dMKSIvPjxyZWN0IHk9IjEwMi40IiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjEwMi40IiBmaWxsPSJ1cmwoI2dXKSIvPjxyZWN0IHk9IjMwNy4yIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjEwMi40IiBmaWxsPSJ1cmwoI2dXKSIvPjxwYXRoIGQ9Ik0wIDAgTDMwMCAyNTYgTDAgNTEyIFoiIGZpbGw9InVybCgjZ0IpIi8+PHBhdGggZmlsbD0id2hpdGUiIGZpbHRlcj0iZHJvcC1zaGFkb3coMCAycHggNHB4IHJnYmEoMCwwLDAsMC4zKSkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDk1LCAyNTYpIHNjYWxlKDAuNjUpIiBkPSJNIDAgLTEwMCBMIDIyLjQ1IC0zMC45IEwgOTUuMSAtMzAuOSBMIDM2LjMgMTEuOCBMIDU4LjggODAuOSBMIDAgMzguMiBMIC01OC44IDgwLjkgTCAtMzYuMyAxMS44IEwgLTk1LjEgLTMwLjkgTCAtMjIuNDUgLTMwLjkgWiIvPjxwYXRoIGQ9Ik0wIDAgSDUxMiBWMjIwIEMgMzUwIDI4MCwgMTUwIDE4MCwgMCAzMDAgWiIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuMTUiLz48cGF0aCBkPSJNMCAwIEg1MTIgVjUwIEMgMjU2IDEwMCwgMjU2IDEwLCAwIDIwIFoiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjMiLz48L2c+PGcgdHJhbnNmb3JtPSJyb3RhdGUoLTEwLCAyNTYsIDI1NikiIGZpbHRlcj0idXJsKCNkUykiPjxyZWN0IHg9IjE5MSIgeT0iMTI2IiB3aWR0aD0iMTMwIiBoZWlnaHQ9IjI2MCIgcng9IjEyIiBmaWxsPSJ1cmwoI2dEKSIgc3Ryb2tlPSIjY2JkNWUxIiBzdHJva2Utd2lkdGg9IjIiLz48bGluZSB4MT0iMjAxIiB5MT0iMjU2IiB4Mj0iMzExIiB5Mj0iMjU2IiBzdHJva2U9IiNkOTc3MDYiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGcgZmlsbD0iIzExMSI+PGNpcmNsZSBjeD0iMjI2IiBjeT0iMTU2IiByPSIxMCIvPjxjaXJjbGUgY3g9IjIyNiIgY3k9IjE5MSIgcj0iMTAiLz48Y2lyY2xlIGN4PSIyMjYiIGN5PSIyMjYiIHI9IjEwIi8+PGNpcmNsZSBjeD0iMjg2IiBjeT0iMTU2IiByPSIxMCIvPjxjaXJjbGUgY3g9IjI4NiIgY3k9IjE5MSIgcj0iMTAiLz48Y2lyY2xlIGN4PSIyODYiIGN5PSIyMjYiIHI9IjEwIi8+PGNpcmNsZSBjeD0iMjI2IiBjeT0iMjg2IiByPSIxMCIvPjxjaXJjbGUgY3g9IjIyNiIgY3k9IjMyMSIgcj0iMTAiLz48Y2lyY2xlIGN4PSIyMjYiIGN5PSIzNTYiIHI9IjEwIi8+PGNpcmNsZSBjeD0iMjg2IiBjeT0iMjg2IiByPSIxMCIvPjxjaXJjbGUgY3g9IjI4NiIgY3k9IjMyMSIgcj0iMTAiLz48Y2lyY2xlIGN4PSIyODYiIGN5PSIzNTYiIHI9IjEwIi8+PC9nPjwvZz48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSI4IiBvcGFjaXR5PSIwLjEiIGNsaXAtcGF0aD0idXJsKCNpQykiLz48L3N2Zz4=
-  `;
+  // The Explicit "Glass Flag" SVG Code
+  const svgString = `
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <defs>
+      <linearGradient id="R" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6b6b"/><stop offset="1" stop-color="#8a0000"/></linearGradient>
+      <linearGradient id="W" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#d1d5db"/></linearGradient>
+      <radialGradient id="B" cx="0.3" cy="0.3" r="0.9"><stop offset="0" stop-color="#4facfe"/><stop offset="1" stop-color="#002a7a"/></radialGradient>
+      <clipPath id="C"><rect width="512" height="512" rx="110"/></clipPath>
+      <filter id="S"><feGaussianBlur in="SourceAlpha" stdDeviation="8"/><feOffset dx="4" dy="8"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+    <g clip-path="url(#C)">
+      <rect width="512" height="512" fill="url(#R)"/>
+      <rect y="102" width="512" height="102" fill="url(#W)"/>
+      <rect y="307" width="512" height="102" fill="url(#W)"/>
+      <path d="M0 0 L300 256 L0 512 Z" fill="url(#B)"/>
+      <path fill="white" transform="translate(95, 256) scale(0.65)" d="M 0 -100 L 22 -30 L 95 -30 L 36 11 L 58 80 L 0 38 L -58 80 L -36 11 L -95 -30 L -22 -30 Z"/>
+      <path d="M0 0 H512 V220 C 350 280, 150 180, 0 300 Z" fill="white" opacity="0.2"/>
+    </g>
+    <g transform="rotate(-10, 256, 256)" filter="url(#S)">
+      <rect x="191" y="96" width="130" height="260" rx="12" fill="white" stroke="#cbd5e1" stroke-width="2"/>
+      <line x1="201" y1="226" x2="311" y2="226" stroke="#d97706" stroke-width="6"/>
+      <g fill="#111" transform="translate(191, 96)">
+         <circle cx="35" cy="35" r="10"/><circle cx="95" cy="35" r="10"/>
+         <circle cx="35" cy="65" r="10"/><circle cx="95" cy="65" r="10"/>
+         <circle cx="35" cy="95" r="10"/><circle cx="95" cy="95" r="10"/>
+         <circle cx="35" cy="165" r="10"/><circle cx="95" cy="165" r="10"/>
+         <circle cx="35" cy="195" r="10"/><circle cx="95" cy="195" r="10"/>
+         <circle cx="35" cy="225" r="10"/><circle cx="95" cy="225" r="10"/>
+      </g>
+    </g>
+  </svg>`;
 
+  // Convert SVG to PNG
   var img = new Image();
-  img.src = 'data:image/svg+xml;base64,' + svgData;
+  img.src = 'data:image/svg+xml;base64,' + btoa(svgString);
+  
   img.onload = function() {
     var canvas = document.createElement('canvas');
     canvas.width = 512;
@@ -34,11 +63,13 @@
     
     var pngUrl = canvas.toDataURL('image/png');
     
+    // Inject Touch Icon (iOS)
     var link = document.createElement('link');
     link.rel = 'apple-touch-icon';
     link.href = pngUrl;
     document.head.appendChild(link);
     
+    // Inject Favicon (Browser)
     var fav = document.createElement('link');
     fav.rel = 'icon';
     fav.type = 'image/png';
@@ -662,7 +693,6 @@ td .badge-stack {
         <select id="winner"></select>
       </div>
       
-      <!-- NEON OUTLINE TOGGLES -->
       <div class="checkbox-group">
         <label class="checkbox-label">
           <input type="checkbox" id="capicu">
@@ -698,7 +728,6 @@ const PLAYER_OPTIONS = ["Rico", "Aida", "Tony", "Mike", "Mayra", "Custom"];
 let names = [], scores = [], rounds = [], mode = "single";
 let gameHistory = [];
 
-// --- THE AUTHENTIC COQUI SOUND SYNTHESIZER ---
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 let audioCtx;
 
@@ -707,7 +736,6 @@ function playCoquiSound() {
   
   const now = audioCtx.currentTime;
   
-  // "Co" note
   const coOsc = audioCtx.createOscillator();
   const coGain = audioCtx.createGain();
   coOsc.type = 'sine';
@@ -720,7 +748,6 @@ function playCoquiSound() {
   coOsc.start(now);
   coOsc.stop(now + 0.12);
 
-  // "Qui" note
   const quiOsc = audioCtx.createOscillator();
   const quiGain = audioCtx.createGain();
   quiOsc.type = 'sine';
@@ -755,7 +782,6 @@ const elements = {
   winnerText: document.getElementById('winnerText')
 };
 
-// Add sound to buttons AND checkboxes
 document.querySelectorAll('button, .checkbox-label').forEach(el => {
   el.addEventListener('click', () => {
     playCoquiSound();
@@ -866,18 +892,15 @@ function addRound() {
   render();
   saveGameState();
 
-  // CHECK FOR WINNER
   if (scores[w] >= 500) {
     celebrateWinner(names[w]);
   }
 }
 
-// --- CELEBRATION LOGIC ---
 function celebrateWinner(winnerName) {
   elements.winnerText.textContent = winnerName + " Wins!";
-  elements.winnerOverlay.classList.add('active'); // Use class to show
+  elements.winnerOverlay.classList.add('active');
   
-  // Coqui Chorus (Extended)
   playCoquiSound();
   setTimeout(playCoquiSound, 800);
   setTimeout(playCoquiSound, 1600);
@@ -887,23 +910,20 @@ function celebrateWinner(winnerName) {
   setTimeout(playCoquiSound, 4800); 
   setTimeout(playCoquiSound, 5600); 
   
-  // Confetti & Balloons
   createConfetti();
   createBalloons();
 }
 
 function createConfetti() {
   const colors = ['#dc2626', '#ffffff', '#0050F0'];
-  for (let i = 0; i < 100; i++) { // Increased count
+  for (let i = 0; i < 100; i++) {
     const conf = document.createElement('div');
     conf.classList.add('confetti');
     conf.style.left = Math.random() * 100 + 'vw';
-    // Slower fall: 6s to 12s
     conf.style.animationDuration = (Math.random() * 6 + 6) + 's';
     conf.style.background = colors[Math.floor(Math.random() * colors.length)];
     elements.winnerOverlay.appendChild(conf);
     
-    // Remove after animation (15s)
     setTimeout(() => conf.remove(), 15000);
   }
 }
@@ -915,50 +935,42 @@ function createBalloons() {
     balloon.classList.add('balloon');
     balloon.style.left = (Math.random() * 90 + 5) + 'vw';
     balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
-    // Randomize speed and delay
     balloon.style.animationDuration = (Math.random() * 5 + 6) + 's';
     balloon.style.animationDelay = (Math.random() * 3) + 's';
     elements.winnerOverlay.appendChild(balloon);
     
-    // Cleanup
     setTimeout(() => balloon.remove(), 15000);
   }
 }
 
 function closeOverlay() {
   elements.winnerOverlay.classList.remove('active');
-  // Clean up animation elements
   const confettis = document.querySelectorAll('.confetti');
   confettis.forEach(c => c.remove());
   const balloons = document.querySelectorAll('.balloon');
   balloons.forEach(b => b.remove());
 }
 
-// RESUME GAME FUNCTIONALITY
 function resumeGame(index) {
   if(!confirm('Resume this game? Current progress will be lost.')) return;
 
   const gameToResume = gameHistory[index];
 
-  // Check if saved state exists in history
   if (gameToResume.savedNames) {
     names = gameToResume.savedNames;
     rounds = gameToResume.savedRounds;
     mode = gameToResume.savedMode;
     
-    // Re-calculate total scores
     scores = new Array(names.length).fill(0);
     rounds.forEach(r => {
        const extra = (r.capicu ? 100 : 0) + (r.chuchazo ? 100 : 0);
        scores[r.w] += r.rScores[r.w] + r.base + extra;
     });
 
-    // Remove from history (move back to active)
     gameHistory.splice(index, 1);
     saveToStorage();
     renderGameHistory();
 
-    // Activate Game
     saveGameState();
     elements.setup.classList.add('hidden');
     elements.game.classList.remove('hidden');
@@ -1030,7 +1042,6 @@ function saveGameToHistory() {
     date: new Date().toLocaleString(),
     players: playerStats,
     totalRounds: rounds.length,
-    // SAVE RAW DATA FOR RESUMING
     savedNames: names,
     savedRounds: rounds,
     savedMode: mode
@@ -1066,7 +1077,6 @@ function renderGameHistory() {
       historyHTML += '</div>';
     });
     
-    // RESUME BUTTON
     historyHTML += '<div style="display: flex; justify-content: flex-end; margin-top: 0.8rem; border-top: 1px solid #e2e8f0; padding-top: 0.8rem;">';
     historyHTML += '<button class="secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="resumeGame(' + gameIdx + ')">Resume Game</button>';
     historyHTML += '</div>';
