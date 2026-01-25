@@ -13,17 +13,16 @@
 <meta name="description" content="Puerto Rican Domino Score Keeper">
 
 <!-- 
-  ICON GENERATOR SCRIPT 
+  ICON GENERATOR SCRIPT (RESTORED)
   Generates the Premium "Glass Flag" Icon as a PNG for iOS Home Screen
 -->
 <script>
 (function() {
-  // The "Glass Flag + Double Six" SVG Design (Base64 Encoded for safety)
+  // The "Glass Flag + Double Six" SVG Design (Base64 Encoded)
   const svgData = `
   PHN2ZyB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnTCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I2ZmNmI2YjtzdG9wLW9wYWNpdHk6MSIvPjxzdG9wIG9mZnNldD0iNTAlIiBzdHlsZT0ic3RvcC1jb2xvcIjojZDkwMDAwO3N0b3Atb3BhY2l0eToxIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcIjojOGEwMDAwO3N0b3Atb3BhY2l0eToxIi8+PC9saW5lYXJHcmFkaWVudD48bGluZWFyR3JhZGllbnQgaWQ9ImdXIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcIjojZmZmZmZmO3N0b3Atb3BhY2l0eToxIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcIjojZDFkNWRiO3N0b3Atb3BhY2l0eToxIi8+PC9saW5lYXJHcmFkaWVudD48cmFkaWFsR3JhZGllbnQgaWQ9ImdCIiBjeD0iMzAlIiBjeT0iMzAlIiByPSI5MCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM0ZmFjZmU7c3RvcC1vcGFjaXR5OjEiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMwMDJhN2E7c3RvcC1vcGFjaXR5OjEiLz48L3JhZGlhbEdyYWRpZW50PjxsaW5lYXJHcmFkaWVudCBpZD0iZ0QiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZmZmZmY7c3RvcC1vcGFjaXR5OjEiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNlMmU4ZjA7c3RvcC1vcGFjaXR5OjEiLz48L2xpbmVhckdyYWRpZW50PjxmaWx0ZXIgaWQ9ImRTIiB4PSItNTAlIiB5PSItNTAlIiB3aWR0aD0iMjAwJSIgaGVpZ2h0PSIyMDAlIj48ZmVHYXVzc2lhbkJsdXIgaW49IlNvdXJjZUFscGhhIiBzdGREZXZpYXRpb249IjEyIi8+PGZlT2Zmc2V0IGR4PSI2IiBkeT0iMTIiIHJlc3VsdD0ib2Zmc2V0Ymx1ciIvPjxmZUNvbXBvbmVudFRyYW5zZmVyPjxmZUZ1bmNBIHR5cGU9ImxpbmVhciIgc2xvcGU9IjAuNCIvPjwvZmVDb21wb25lbnRUcmFuc2Zlcj48ZmVNZXJnZT48ZmVNZXJnZU5vZGUvPjxmZU1lcmdlTm9kZSBpbj0iU291cmNlR3JhcGhpYyIvPjwvZmVNZXJnZT48L2ZpbHRlcj48Y2xpcFBhdGggaWQ9ImlDIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExMCIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNpQykiPjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiBmaWxsPSJ1cmwoI2dMKSIvPjxyZWN0IHk9IjEwMi40IiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjEwMi40IiBmaWxsPSJ1cmwoI2dXKSIvPjxyZWN0IHk9IjMwNy4yIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjEwMi40IiBmaWxsPSJ1cmwoI2dXKSIvPjxwYXRoIGQ9Ik0wIDAgTDMwMCAyNTYgTDAgNTEyIFoiIGZpbGw9InVybCgjZ0IpIi8+PHBhdGggZmlsbD0id2hpdGUiIGZpbHRlcj0iZHJvcC1zaGFkb3coMCAycHggNHB4IHJnYmEoMCwwLDAsMC4zKSkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDk1LCAyNTYpIHNjYWxlKDAuNjUpIiBkPSJNIDAgLTEwMCBMIDIyLjQ1IC0zMC45IEwgOTUuMSAtMzAuOSBMIDM2LjMgMTEuOCBMIDU4LjggODAuOSBMIDAgMzguMiBMIC01OC44IDgwLjkgTCAtMzYuMyAxMS44IEwgLTk1LjEgLTMwLjkgTCAtMjIuNDUgLTMwLjkgWiIvPjxwYXRoIGQ9Ik0wIDAgSDUxMiBWMjIwIEMgMzUwIDI4MCwgMTUwIDE4MCwgMCAzMDAgWiIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuMTUiLz48cGF0aCBkPSJNMCAwIEg1MTIgVjUwIEMgMjU2IDEwMCwgMjU2IDEwLCAwIDIwIFoiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjMiLz48L2c+PGcgdHJhbnNmb3JtPSJyb3RhdGUoLTEwLCAyNTYsIDI1NikiIGZpbHRlcj0idXJsKCNkUykiPjxyZWN0IHg9IjE5MSIgeT0iMTI2IiB3aWR0aD0iMTMwIiBoZWlnaHQ9IjI2MCIgcng9IjEyIiBmaWxsPSJ1cmwoI2dEKSIgc3Ryb2tlPSIjY2JkNWUxIiBzdHJva2Utd2lkdGg9IjIiLz48bGluZSB4MT0iMjAxIiB5MT0iMjU2IiB4Mj0iMzExIiB5Mj0iMjU2IiBzdHJva2U9IiNkOTc3MDYiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGcgZmlsbD0iIzExMSI+PGNpcmNsZSBjeD0iMjI2IiBjeT0iMTU2IiByPSIxMCIvPjxjaXJjbGUgY3g9IjIyNiIgY3k9IjE5MSIgcj0iMTAiLz48Y2lyY2xlIGN4PSIyMjYiIGN5PSIyMjYiIHI9IjEwIi8+PGNpcmNsZSBjeD0iMjg2IiBjeT0iMTU2IiByPSIxMCIvPjxjaXJjbGUgY3g9IjI4NiIgY3k9IjE5MSIgcj0iMTAiLz48Y2lyY2xlIGN4PSIyODYiIGN5PSIyMjYiIHI9IjEwIi8+PGNpcmNsZSBjeD0iMjI2IiBjeT0iMjg2IiByPSIxMCIvPjxjaXJjbGUgY3g9IjIyNiIgY3k9IjMyMSIgcj0iMTAiLz48Y2lyY2xlIGN4PSIyMjYiIGN5PSIzNTYiIHI9IjEwIi8+PGNpcmNsZSBjeD0iMjg2IiBjeT0iMjg2IiByPSIxMCIvPjxjaXJjbGUgY3g9IjI4NiIgY3k9IjMyMSIgcj0iMTAiLz48Y2lyY2xlIGN4PSIyODYiIGN5PSIzNTYiIHI9IjEwIi8+PC9nPjwvZz48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSI4IiBvcGFjaXR5PSIwLjEiIGNsaXAtcGF0aD0idXJsKCNpQykiLz48L3N2Zz4=
   `;
 
-  // Draw to Canvas and Export as PNG
   var img = new Image();
   img.src = 'data:image/svg+xml;base64,' + svgData;
   img.onload = function() {
@@ -35,13 +34,11 @@
     
     var pngUrl = canvas.toDataURL('image/png');
     
-    // Inject Apple Touch Icon
     var link = document.createElement('link');
     link.rel = 'apple-touch-icon';
     link.href = pngUrl;
     document.head.appendChild(link);
     
-    // Inject Favicon
     var fav = document.createElement('link');
     fav.rel = 'icon';
     fav.type = 'image/png';
@@ -461,7 +458,6 @@ td .badge-stack {
   height: 100%;
   background: rgba(255,255,255,0.95);
   z-index: 2000;
-  /* Hidden by default in CSS */
   display: none; 
   flex-direction: column;
   justify-content: center;
@@ -472,7 +468,6 @@ td .badge-stack {
   overflow: hidden;
 }
 
-/* Only show when active class is present */
 .winner-overlay.active {
   display: flex;
 }
@@ -555,7 +550,6 @@ td .badge-stack {
 @media (max-width: 640px) {
   h1 { font-size: 1.4rem; }
   
-  /* SMALLER DOMINO FOR MOBILE */
   .domino-stage { height: 70px; margin-top: 0.25rem; }
   .domino-tile { width: 32px; height: 64px; border-radius: 4px; }
   .half { padding: 3px; height: 28px; gap: 2px; }
@@ -572,7 +566,6 @@ td .badge-stack {
 
 <body>
 
-<!-- OFFICIAL GEOMETRIC PUERTO RICO FLAG BADGE -->
 <div class="pr-flag-badge">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
     <rect width="900" height="600" fill="#ED0000"/>
@@ -583,7 +576,6 @@ td .badge-stack {
   </svg>
 </div>
 
-<!-- WINNER OVERLAY (Default hidden via CSS) -->
 <div id="winnerOverlay" class="winner-overlay">
   <h1>¡WEPA!</h1>
   <h2 id="winnerText"></h2>
@@ -649,7 +641,6 @@ td .badge-stack {
     <div class="card" id="historyCard" style="display: none;">
       <h2>Game History</h2>
       <div id="gameHistory"></div>
-      <!-- ADDED MARGIN TO PUSH BUTTON INTO CARD PADDING -->
       <div class="controls" style="margin-top: 1.5rem;">
         <button class="secondary" onclick="clearHistory()">Clear History</button>
       </div>
