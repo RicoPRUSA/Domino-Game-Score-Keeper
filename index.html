@@ -48,7 +48,6 @@ body {
   justify-content: center;
   align-items: center;
   margin-top: 0.5rem;
-  /* UPDATED: Adjusted to 0px to lift it up away from title */
   margin-bottom: 0px; 
 }
 
@@ -160,7 +159,6 @@ h1 {
   text-align: center;
   margin: 0.2rem 0 0.5rem 0;
   font-size: 2rem;
-  /* UPDATED: Soft dark shadow instead of white */
   text-shadow: 0 6px 15px rgba(0,0,0,0.15);
 }
 
@@ -169,7 +167,6 @@ h2 {
   text-align: center;
   margin-bottom: 1rem;
   font-size: 1.5rem;
-  /* UPDATED: Added shadow to match buttons/title */
   text-shadow: 0 6px 15px rgba(0,0,0,0.15);
 }
 
@@ -252,7 +249,7 @@ button.secondary:hover {
   background-color: #475569;
 }
 
-/* --- ENHANCED INPUTS (Deep Slot - Restored) --- */
+/* --- ENHANCED INPUTS (Deep Slot Style) --- */
 input[type="text"],
 input[type="number"] {
   padding: 0.8rem 0.5rem;
@@ -290,7 +287,7 @@ input:disabled {
   box-shadow: none;
 }
 
-/* --- BADGES (For History/Table) --- */
+/* --- BADGES --- */
 .badge {
   display: inline-block;
   padding: 0.35rem 0.8rem;
@@ -315,6 +312,12 @@ input:disabled {
   gap: 0.8rem;
   justify-content: center;
   margin-bottom: 1.5rem;
+  background: transparent;
+  padding: 0;
+  border: none;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .checkbox-label {
@@ -340,21 +343,19 @@ input:disabled {
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-/* Capicu Active (Neon Glow) */
 .checkbox-label input:checked + .badge.capicu {
   background: #ea580c;
   border-color: #ea580c;
   color: white;
-  box-shadow: 0 0 15px rgba(234, 88, 12, 0.5); /* Orange Glow */
+  box-shadow: 0 0 15px rgba(234, 88, 12, 0.5);
   transform: scale(1.05);
 }
 
-/* Chuchazo Active (Neon Glow) */
 .checkbox-label input:checked + .badge.chuchazo {
   background: #dc2626;
   border-color: #dc2626;
   color: white;
-  box-shadow: 0 0 15px rgba(220, 38, 38, 0.5); /* Red Glow */
+  box-shadow: 0 0 15px rgba(220, 38, 38, 0.5);
   transform: scale(1.05);
 }
 
@@ -612,7 +613,8 @@ td .badge-stack {
     <div class="card" id="historyCard" style="display: none;">
       <h2>Game History</h2>
       <div id="gameHistory"></div>
-      <div class="controls">
+      <!-- ADDED MARGIN TO PUSH BUTTON INTO CARD PADDING -->
+      <div class="controls" style="margin-top: 1.5rem;">
         <button class="secondary" onclick="clearHistory()">Clear History</button>
       </div>
     </div>
@@ -905,6 +907,41 @@ function closeOverlay() {
   balloons.forEach(b => b.remove());
 }
 
+// RESUME GAME FUNCTIONALITY
+function resumeGame(index) {
+  if(!confirm('Resume this game? Current progress will be lost.')) return;
+
+  const gameToResume = gameHistory[index];
+
+  // Check if saved state exists in history
+  if (gameToResume.savedNames) {
+    names = gameToResume.savedNames;
+    rounds = gameToResume.savedRounds;
+    mode = gameToResume.savedMode;
+    
+    // Re-calculate total scores
+    scores = new Array(names.length).fill(0);
+    rounds.forEach(r => {
+       const extra = (r.capicu ? 100 : 0) + (r.chuchazo ? 100 : 0);
+       scores[r.w] += r.rScores[r.w] + r.base + extra;
+    });
+
+    // Remove from history (move back to active)
+    gameHistory.splice(index, 1);
+    saveToStorage();
+    renderGameHistory();
+
+    // Activate Game
+    saveGameState();
+    elements.setup.classList.add('hidden');
+    elements.game.classList.remove('hidden');
+    setupRoundInputs();
+    render();
+  } else {
+    alert("Cannot resume this game (old format).");
+  }
+}
+
 function undoRound() {
   if (rounds.length === 0) return;
   rounds.pop();
@@ -965,7 +1002,11 @@ function saveGameToHistory() {
   gameHistory.push({
     date: new Date().toLocaleString(),
     players: playerStats,
-    totalRounds: rounds.length
+    totalRounds: rounds.length,
+    // SAVE RAW DATA FOR RESUMING
+    savedNames: names,
+    savedRounds: rounds,
+    savedMode: mode
   });
   
   saveToStorage();
@@ -997,6 +1038,12 @@ function renderGameHistory() {
       historyHTML += '<span>' + player.finalScore + '</span>';
       historyHTML += '</div>';
     });
+    
+    // RESUME BUTTON
+    historyHTML += '<div style="display: flex; justify-content: flex-end; margin-top: 0.8rem; border-top: 1px solid #e2e8f0; padding-top: 0.8rem;">';
+    historyHTML += '<button class="secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="resumeGame(' + gameIdx + ')">Resume Game</button>';
+    historyHTML += '</div>';
+    
     historyHTML += '</div>';
   });
   
