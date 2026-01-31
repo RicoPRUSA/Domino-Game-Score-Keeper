@@ -13,12 +13,11 @@
 <meta name="description" content="Puerto Rican Domino Score Keeper">
 
 <!-- 
-  ICON GENERATOR SCRIPT (FIXED)
-  Forces the "Glass Flag + Double Six" Icon for iOS
+  ICON GENERATOR SCRIPT
+  Generates the Premium "Glass Flag" Icon as a PNG for iOS Home Screen
 -->
 <script>
 (function() {
-  // The Explicit "Glass Flag" SVG Code
   const svgString = `
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
     <defs>
@@ -50,26 +49,19 @@
     </g>
   </svg>`;
 
-  // Convert SVG to PNG
   var img = new Image();
   img.src = 'data:image/svg+xml;base64,' + btoa(svgString);
-  
   img.onload = function() {
     var canvas = document.createElement('canvas');
     canvas.width = 512;
     canvas.height = 512;
     var ctx = canvas.getContext('2d');
     ctx.drawImage(img, 0, 0);
-    
     var pngUrl = canvas.toDataURL('image/png');
-    
-    // Inject Touch Icon (iOS)
     var link = document.createElement('link');
     link.rel = 'apple-touch-icon';
     link.href = pngUrl;
     document.head.appendChild(link);
-    
-    // Inject Favicon (Browser)
     var fav = document.createElement('link');
     fav.rel = 'icon';
     fav.type = 'image/png';
@@ -732,7 +724,12 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
 let audioCtx;
 
 function playCoquiSound() {
-  if (!audioCtx) audioCtx = new AudioContext();
+  if (!audioCtx) {
+    audioCtx = new AudioContext();
+  }
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
   
   const now = audioCtx.currentTime;
   
