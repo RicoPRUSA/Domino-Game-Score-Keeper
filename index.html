@@ -302,44 +302,6 @@ button.secondary:hover {
   background-color: #475569;
 }
 
-/* --- VOICE BUTTON STYLE --- */
-button.voice-btn {
-  background-color: #DC2626; 
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  box-shadow: 0 10px 20px rgba(220, 38, 38, 0.3) !important;
-  font-size: 1.5rem;
-}
-
-button.voice-btn.listening {
-  background-color: #ef4444;
-  animation: pulse-red 1.5s infinite;
-  box-shadow: 0 0 0 10px rgba(239, 68, 68, 0.2) !important;
-}
-
-@keyframes pulse-red {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
-
-/* --- FEEDBACK TEXT --- */
-#voiceFeedback {
-  width: 100%;
-  text-align: center;
-  font-size: 0.85rem;
-  color: #64748b;
-  margin-top: -0.5rem;
-  margin-bottom: 0.5rem;
-  height: 1.2em; /* Reserve space */
-  font-style: italic;
-}
-
 /* --- ENHANCED INPUTS (Deep Slot Style) --- */
 input[type="text"],
 input[type="number"] {
@@ -716,17 +678,11 @@ td .badge-stack {
     <div class="card">
       <h2>Add Round</h2>
       <div id="scoreInputs" class="controls"></div>
-      
-      <!-- VOICE BUTTON ADDED HERE -->
-      <div class="controls" style="justify-content: center; align-items: center; margin-bottom: 0.5rem;">
-         <button id="voiceBtn" class="voice-btn" title="Speak Score">🎤</button>
-         <div id="voiceFeedback"></div>
-      </div>
-
       <div class="controls">
         <select id="winner"></select>
       </div>
       
+      <!-- NEON OUTLINE TOGGLES -->
       <div class="checkbox-group">
         <label class="checkbox-label">
           <input type="checkbox" id="capicu">
@@ -801,6 +757,9 @@ function playCoquiSound() {
   quiGain.connect(audioCtx.destination);
   quiOsc.start(now + 0.15);
   quiOsc.stop(now + 0.38);
+  
+  // Cleanup
+  setTimeout(() => { if (ctx.state !== 'closed') ctx.close(); }, 1000);
 }
 
 const elements = {
@@ -818,9 +777,7 @@ const elements = {
   gameHistory: document.getElementById('gameHistory'),
   historyCard: document.getElementById('historyCard'),
   winnerOverlay: document.getElementById('winnerOverlay'),
-  winnerText: document.getElementById('winnerText'),
-  voiceBtn: document.getElementById('voiceBtn'),
-  voiceFeedback: document.getElementById('voiceFeedback')
+  winnerText: document.getElementById('winnerText')
 };
 
 document.querySelectorAll('button, .checkbox-label').forEach(el => {
@@ -828,84 +785,6 @@ document.querySelectorAll('button, .checkbox-label').forEach(el => {
     playCoquiSound();
   });
 });
-
-// --- PHONETIC TRANSLATOR (SMART VOICE RECOGNITION) ---
-if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const recognition = new SpeechRecognition();
-  
-  recognition.continuous = false;
-  recognition.lang = 'en-US';
-  recognition.interimResults = false;
-
-  elements.voiceBtn.addEventListener('click', () => {
-    recognition.start();
-    elements.voiceFeedback.textContent = "Listening...";
-  });
-
-  recognition.onstart = function() {
-    elements.voiceBtn.classList.add('listening');
-  };
-
-  recognition.onend = function() {
-    elements.voiceBtn.classList.remove('listening');
-  };
-
-  recognition.onresult = function(event) {
-    const text = event.results[0][0].transcript.toLowerCase();
-    elements.voiceFeedback.textContent = '"' + text + '"';
-    console.log("Heard: ", text);
-
-    const chuchazoTerms = ['chuchazo', 'chu cha', 'choo cha', 'shoe cha', 'cha zo', 'church', 'true cha', 'two chances'];
-    if (chuchazoTerms.some(term => text.includes(term))) {
-        elements.chuchazo.checked = true;
-    }
-
-    const capicuTerms = ['capicu', 'capicú', 'copy', 'cappy', 'kapi', 'coo', 'cool', 'coffee'];
-    if (capicuTerms.some(term => text.includes(term))) {
-         elements.capicu.checked = true;
-    }
-
-    const pointsMatch = text.match(/\d+/);
-    const points = pointsMatch ? parseInt(pointsMatch[0]) : null;
-
-    let foundIndex = -1;
-    
-    // Updated Phonetic Map for Names
-    const phoneticMap = {
-        'aida': ['ada', 'ida', 'i da', 'ayda', 'aiden', 'item'],
-        'rico': ['reeco', 'reko', 'rick'],
-        'mayra': ['myra', 'mira', 'maira', 'mara'],
-        'tony': ['toni', 'tone'],
-        'mike': ['mic', 'mikey']
-    };
-
-    names.forEach((name, i) => {
-        const lowerName = name.toLowerCase();
-        // Check exact match
-        if (text.includes(lowerName)) {
-            foundIndex = i;
-        } 
-        // Check phonetic aliases
-        else if (phoneticMap[lowerName]) {
-            if (phoneticMap[lowerName].some(alias => text.includes(alias))) {
-                foundIndex = i;
-            }
-        }
-    });
-
-    if (foundIndex > -1) {
-        elements.winner.value = foundIndex; 
-        if (points !== null) {
-            document.querySelectorAll('#scoreInputs input').forEach(input => input.value = '');
-            document.getElementById('score' + foundIndex).value = points;
-        }
-    }
-  };
-} else {
-  elements.voiceBtn.style.display = 'none';
-  elements.voiceFeedback.style.display = 'none';
-}
 
 elements.mode.addEventListener('change', renderPlayerSelects);
 elements.playerCount.addEventListener('change', renderPlayerSelects);
@@ -1010,7 +889,6 @@ function addRound() {
   resetInputs();
   render();
   saveGameState();
-  elements.voiceFeedback.textContent = "";
 
   if (scores[w] >= 500) {
     celebrateWinner(names[w]);
@@ -1119,7 +997,6 @@ function resetInputs() {
   });
   elements.capicu.checked = false;
   elements.chuchazo.checked = false;
-  elements.voiceFeedback.textContent = "";
 }
 
 function newGame() {
