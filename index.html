@@ -304,10 +304,10 @@ button.secondary:hover {
 
 /* --- VOICE BUTTON STYLE --- */
 button.voice-btn {
-  background-color: #DC2626; /* Red for recording */
+  background-color: #DC2626; 
   width: 50px;
   height: 50px;
-  border-radius: 50%; /* Circle */
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -326,6 +326,18 @@ button.voice-btn.listening {
   0% { transform: scale(1); }
   50% { transform: scale(1.1); }
   100% { transform: scale(1); }
+}
+
+/* --- FEEDBACK TEXT --- */
+#voiceFeedback {
+  width: 100%;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-top: -0.5rem;
+  margin-bottom: 0.5rem;
+  height: 1.2em; /* Reserve space */
+  font-style: italic;
 }
 
 /* --- ENHANCED INPUTS (Deep Slot Style) --- */
@@ -704,9 +716,14 @@ td .badge-stack {
     <div class="card">
       <h2>Add Round</h2>
       <div id="scoreInputs" class="controls"></div>
+      
+      <!-- VOICE BUTTON ADDED HERE -->
+      <div class="controls" style="justify-content: center; align-items: center; margin-bottom: 0.5rem;">
+         <button id="voiceBtn" class="voice-btn" title="Speak Score">🎤</button>
+         <div id="voiceFeedback"></div>
+      </div>
+
       <div class="controls">
-        <!-- Added Voice Button -->
-        <button id="voiceBtn" class="voice-btn" title="Speak Score">🎤</button>
         <select id="winner"></select>
       </div>
       
@@ -749,7 +766,12 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
 let audioCtx;
 
 function playCoquiSound() {
-  if (!audioCtx) audioCtx = new AudioContext();
+  if (!audioCtx) {
+    audioCtx = new AudioContext();
+  }
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
   
   const now = audioCtx.currentTime;
   
@@ -797,7 +819,8 @@ const elements = {
   historyCard: document.getElementById('historyCard'),
   winnerOverlay: document.getElementById('winnerOverlay'),
   winnerText: document.getElementById('winnerText'),
-  voiceBtn: document.getElementById('voiceBtn')
+  voiceBtn: document.getElementById('voiceBtn'),
+  voiceFeedback: document.getElementById('voiceFeedback')
 };
 
 document.querySelectorAll('button, .checkbox-label').forEach(el => {
@@ -806,17 +829,18 @@ document.querySelectorAll('button, .checkbox-label').forEach(el => {
   });
 });
 
-// --- VOICE RECOGNITION SETUP ---
+// --- PHONETIC TRANSLATOR (SMART VOICE RECOGNITION) ---
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   const recognition = new SpeechRecognition();
   
   recognition.continuous = false;
-  recognition.lang = 'en-US'; // Or 'es-PR' if you prefer
+  recognition.lang = 'en-US';
   recognition.interimResults = false;
 
   elements.voiceBtn.addEventListener('click', () => {
     recognition.start();
+    elements.voiceFeedback.textContent = "Listening...";
   });
 
   recognition.onstart = function() {
@@ -828,39 +852,48 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   };
 
   recognition.onresult = function(event) {
-    const transcript = event.results[0][0].transcript.toLowerCase();
-    console.log("Heard: ", transcript);
+    const text = event.results[0][0].transcript.toLowerCase();
+    elements.voiceFeedback.textContent = '"' + text + '"';
+    console.log("Heard: ", text);
 
-    // 1. Find Name
-    let matchedIndex = -1;
-    names.forEach((name, index) => {
-      if (transcript.includes(name.toLowerCase())) {
-        matchedIndex = index;
-      }
+    // 1. PHONETIC KEYWORD MATCHING
+    const chuchazoTerms = ['chuchazo', 'chu cha', 'choo cha', 'shoe cha', 'cha zo', 'church', 'true cha', 'two chances'];
+    if (chuchazoTerms.some(term => text.includes(term))) {
+        elements.chuchazo.checked = true;
+    }
+
+    const capicuTerms = ['capicu', 'capicú', 'copy', 'cappy', 'kapi', 'coo', 'cool', 'coffee'];
+    if (capicuTerms.some(term => text.includes(term))) {
+         elements.capicu.checked = true;
+    }
+
+    // 2. FIND NUMBER
+    const pointsMatch = text.match(/\d+/);
+    const points = pointsMatch ? parseInt(pointsMatch[0]) : null;
+
+    // 3. FIND PLAYER NAME
+    let foundIndex = -1;
+    names.forEach((name, i) => {
+        if (text.includes(name.toLowerCase())) {
+            foundIndex = i;
+        }
     });
 
-    if (matchedIndex !== -1) {
-      // Set Winner
-      elements.winner.value = matchedIndex;
-      
-      // 2. Find Number (Score)
-      const points = transcript.match(/\d+/);
-      if (points) {
-        document.getElementById('score' + matchedIndex).value = points[0];
-      }
-    }
-
-    // 3. Check Keywords
-    if (transcript.includes('capicú') || transcript.includes('capicu')) {
-      elements.capicu.checked = true;
-    }
-    if (transcript.includes('chuchazo')) {
-      elements.chuchazo.checked = true;
+    // 4. APPLY LOGIC
+    if (foundIndex > -1) {
+        elements.winner.value = foundIndex; // Select Winner
+        
+        if (points !== null) {
+            // Clear other inputs so only the winner has points
+            document.querySelectorAll('#scoreInputs input').forEach(input => input.value = '');
+            // Set points for winner
+            document.getElementById('score' + foundIndex).value = points;
+        }
     }
   };
 } else {
-  // Hide mic if not supported
   elements.voiceBtn.style.display = 'none';
+  elements.voiceFeedback.style.display = 'none';
 }
 
 elements.mode.addEventListener('change', renderPlayerSelects);
@@ -966,6 +999,7 @@ function addRound() {
   resetInputs();
   render();
   saveGameState();
+  elements.voiceFeedback.textContent = ""; // Clear voice text on submit
 
   if (scores[w] >= 500) {
     celebrateWinner(names[w]);
@@ -1074,6 +1108,7 @@ function resetInputs() {
   });
   elements.capicu.checked = false;
   elements.chuchazo.checked = false;
+  elements.voiceFeedback.textContent = "";
 }
 
 function newGame() {
