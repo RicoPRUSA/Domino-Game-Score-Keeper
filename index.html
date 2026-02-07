@@ -12,10 +12,7 @@
 <meta name="theme-color" content="#0050F0">
 <meta name="description" content="Puerto Rican Domino Score Keeper">
 
-<!-- 
-  ICON GENERATOR SCRIPT
-  Generates the Premium "Glass Flag" Icon as a PNG for iOS Home Screen
--->
+<!-- ICON GENERATOR SCRIPT -->
 <script>
 (function() {
   const svgString = `
@@ -305,6 +302,32 @@ button.secondary:hover {
   background-color: #475569;
 }
 
+/* --- VOICE BUTTON STYLE --- */
+button.voice-btn {
+  background-color: #DC2626; /* Red for recording */
+  width: 50px;
+  height: 50px;
+  border-radius: 50%; /* Circle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-shadow: 0 10px 20px rgba(220, 38, 38, 0.3) !important;
+  font-size: 1.5rem;
+}
+
+button.voice-btn.listening {
+  background-color: #ef4444;
+  animation: pulse-red 1.5s infinite;
+  box-shadow: 0 0 0 10px rgba(239, 68, 68, 0.2) !important;
+}
+
+@keyframes pulse-red {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
 /* --- ENHANCED INPUTS (Deep Slot Style) --- */
 input[type="text"],
 input[type="number"] {
@@ -481,7 +504,6 @@ td .badge-stack {
   height: 100%;
   background: rgba(255,255,255,0.95);
   z-index: 2000;
-  /* Hidden by default in CSS */
   display: none; 
   flex-direction: column;
   justify-content: center;
@@ -492,7 +514,6 @@ td .badge-stack {
   overflow: hidden;
 }
 
-/* Only show when active class is present */
 .winner-overlay.active {
   display: flex;
 }
@@ -575,7 +596,6 @@ td .badge-stack {
 @media (max-width: 640px) {
   h1 { font-size: 1.4rem; }
   
-  /* SMALLER DOMINO FOR MOBILE */
   .domino-stage { height: 70px; margin-top: 0.25rem; }
   .domino-tile { width: 32px; height: 64px; border-radius: 4px; }
   .half { padding: 3px; height: 28px; gap: 2px; }
@@ -592,7 +612,6 @@ td .badge-stack {
 
 <body>
 
-<!-- OFFICIAL GEOMETRIC PUERTO RICO FLAG BADGE -->
 <div class="pr-flag-badge">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
     <rect width="900" height="600" fill="#ED0000"/>
@@ -603,7 +622,6 @@ td .badge-stack {
   </svg>
 </div>
 
-<!-- WINNER OVERLAY (Default hidden via CSS) -->
 <div id="winnerOverlay" class="winner-overlay">
   <h1>¡WEPA!</h1>
   <h2 id="winnerText"></h2>
@@ -687,6 +705,8 @@ td .badge-stack {
       <h2>Add Round</h2>
       <div id="scoreInputs" class="controls"></div>
       <div class="controls">
+        <!-- Added Voice Button -->
+        <button id="voiceBtn" class="voice-btn" title="Speak Score">🎤</button>
         <select id="winner"></select>
       </div>
       
@@ -725,30 +745,28 @@ const PLAYER_OPTIONS = ["Rico", "Aida", "Tony", "Mike", "Mayra", "Custom"];
 let names = [], scores = [], rounds = [], mode = "single";
 let gameHistory = [];
 
-// --- THE AUTHENTIC COQUI SOUND SYNTHESIZER (MOBILE FIX) ---
-// We use a fresh context on every click to bypass iOS suspend/mute behavior
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+let audioCtx;
+
 function playCoquiSound() {
-  const AudioContext = window.AudioContext || window.webkitAudioContext;
-  const ctx = new AudioContext(); // New context every time
+  if (!audioCtx) audioCtx = new AudioContext();
   
-  const now = ctx.currentTime;
+  const now = audioCtx.currentTime;
   
-  // "Co" note
-  const coOsc = ctx.createOscillator();
-  const coGain = ctx.createGain();
+  const coOsc = audioCtx.createOscillator();
+  const coGain = audioCtx.createGain();
   coOsc.type = 'sine';
   coOsc.frequency.setValueAtTime(1160, now);
   coGain.gain.setValueAtTime(0, now);
   coGain.gain.linearRampToValueAtTime(0.3, now + 0.02);
   coGain.gain.linearRampToValueAtTime(0, now + 0.1);
   coOsc.connect(coGain);
-  coGain.connect(ctx.destination);
+  coGain.connect(audioCtx.destination);
   coOsc.start(now);
   coOsc.stop(now + 0.12);
 
-  // "Qui" note
-  const quiOsc = ctx.createOscillator();
-  const quiGain = ctx.createGain();
+  const quiOsc = audioCtx.createOscillator();
+  const quiGain = audioCtx.createGain();
   quiOsc.type = 'sine';
   quiOsc.frequency.setValueAtTime(1800, now + 0.15);
   quiOsc.frequency.linearRampToValueAtTime(2200, now + 0.35);
@@ -758,14 +776,9 @@ function playCoquiSound() {
   quiGain.gain.linearRampToValueAtTime(0, now + 0.35);
   
   quiOsc.connect(quiGain);
-  quiGain.connect(ctx.destination);
+  quiGain.connect(audioCtx.destination);
   quiOsc.start(now + 0.15);
   quiOsc.stop(now + 0.38);
-  
-  // Cleanup context after sound finishes to save memory
-  setTimeout(() => {
-    ctx.close();
-  }, 500);
 }
 
 const elements = {
@@ -783,15 +796,72 @@ const elements = {
   gameHistory: document.getElementById('gameHistory'),
   historyCard: document.getElementById('historyCard'),
   winnerOverlay: document.getElementById('winnerOverlay'),
-  winnerText: document.getElementById('winnerText')
+  winnerText: document.getElementById('winnerText'),
+  voiceBtn: document.getElementById('voiceBtn')
 };
 
-// Add sound to buttons AND checkboxes
 document.querySelectorAll('button, .checkbox-label').forEach(el => {
   el.addEventListener('click', () => {
     playCoquiSound();
   });
 });
+
+// --- VOICE RECOGNITION SETUP ---
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new SpeechRecognition();
+  
+  recognition.continuous = false;
+  recognition.lang = 'en-US'; // Or 'es-PR' if you prefer
+  recognition.interimResults = false;
+
+  elements.voiceBtn.addEventListener('click', () => {
+    recognition.start();
+  });
+
+  recognition.onstart = function() {
+    elements.voiceBtn.classList.add('listening');
+  };
+
+  recognition.onend = function() {
+    elements.voiceBtn.classList.remove('listening');
+  };
+
+  recognition.onresult = function(event) {
+    const transcript = event.results[0][0].transcript.toLowerCase();
+    console.log("Heard: ", transcript);
+
+    // 1. Find Name
+    let matchedIndex = -1;
+    names.forEach((name, index) => {
+      if (transcript.includes(name.toLowerCase())) {
+        matchedIndex = index;
+      }
+    });
+
+    if (matchedIndex !== -1) {
+      // Set Winner
+      elements.winner.value = matchedIndex;
+      
+      // 2. Find Number (Score)
+      const points = transcript.match(/\d+/);
+      if (points) {
+        document.getElementById('score' + matchedIndex).value = points[0];
+      }
+    }
+
+    // 3. Check Keywords
+    if (transcript.includes('capicú') || transcript.includes('capicu')) {
+      elements.capicu.checked = true;
+    }
+    if (transcript.includes('chuchazo')) {
+      elements.chuchazo.checked = true;
+    }
+  };
+} else {
+  // Hide mic if not supported
+  elements.voiceBtn.style.display = 'none';
+}
 
 elements.mode.addEventListener('change', renderPlayerSelects);
 elements.playerCount.addEventListener('change', renderPlayerSelects);
@@ -897,18 +967,15 @@ function addRound() {
   render();
   saveGameState();
 
-  // CHECK FOR WINNER
   if (scores[w] >= 500) {
     celebrateWinner(names[w]);
   }
 }
 
-// --- CELEBRATION LOGIC ---
 function celebrateWinner(winnerName) {
   elements.winnerText.textContent = winnerName + " Wins!";
-  elements.winnerOverlay.classList.add('active'); // Use class to show
+  elements.winnerOverlay.classList.add('active');
   
-  // Coqui Chorus (Extended)
   playCoquiSound();
   setTimeout(playCoquiSound, 800);
   setTimeout(playCoquiSound, 1600);
@@ -918,23 +985,20 @@ function celebrateWinner(winnerName) {
   setTimeout(playCoquiSound, 4800); 
   setTimeout(playCoquiSound, 5600); 
   
-  // Confetti & Balloons
   createConfetti();
   createBalloons();
 }
 
 function createConfetti() {
   const colors = ['#dc2626', '#ffffff', '#0050F0'];
-  for (let i = 0; i < 100; i++) { // Increased count
+  for (let i = 0; i < 100; i++) {
     const conf = document.createElement('div');
     conf.classList.add('confetti');
     conf.style.left = Math.random() * 100 + 'vw';
-    // Slower fall: 6s to 12s
     conf.style.animationDuration = (Math.random() * 6 + 6) + 's';
     conf.style.background = colors[Math.floor(Math.random() * colors.length)];
     elements.winnerOverlay.appendChild(conf);
     
-    // Remove after animation (15s)
     setTimeout(() => conf.remove(), 15000);
   }
 }
@@ -946,23 +1010,50 @@ function createBalloons() {
     balloon.classList.add('balloon');
     balloon.style.left = (Math.random() * 90 + 5) + 'vw';
     balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
-    // Randomize speed and delay
     balloon.style.animationDuration = (Math.random() * 5 + 6) + 's';
     balloon.style.animationDelay = (Math.random() * 3) + 's';
     elements.winnerOverlay.appendChild(balloon);
     
-    // Cleanup
     setTimeout(() => balloon.remove(), 15000);
   }
 }
 
 function closeOverlay() {
   elements.winnerOverlay.classList.remove('active');
-  // Clean up animation elements
   const confettis = document.querySelectorAll('.confetti');
   confettis.forEach(c => c.remove());
   const balloons = document.querySelectorAll('.balloon');
   balloons.forEach(b => b.remove());
+}
+
+function resumeGame(index) {
+  if(!confirm('Resume this game? Current progress will be lost.')) return;
+
+  const gameToResume = gameHistory[index];
+
+  if (gameToResume.savedNames) {
+    names = gameToResume.savedNames;
+    rounds = gameToResume.savedRounds;
+    mode = gameToResume.savedMode;
+    
+    scores = new Array(names.length).fill(0);
+    rounds.forEach(r => {
+       const extra = (r.capicu ? 100 : 0) + (r.chuchazo ? 100 : 0);
+       scores[r.w] += r.rScores[r.w] + r.base + extra;
+    });
+
+    gameHistory.splice(index, 1);
+    saveToStorage();
+    renderGameHistory();
+
+    saveGameState();
+    elements.setup.classList.add('hidden');
+    elements.game.classList.remove('hidden');
+    setupRoundInputs();
+    render();
+  } else {
+    alert("Cannot resume this game (old format).");
+  }
 }
 
 function undoRound() {
@@ -1061,7 +1152,6 @@ function renderGameHistory() {
       historyHTML += '</div>';
     });
     
-    // RESUME BUTTON
     historyHTML += '<div style="display: flex; justify-content: flex-end; margin-top: 0.8rem; border-top: 1px solid #e2e8f0; padding-top: 0.8rem;">';
     historyHTML += '<button class="secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="resumeGame(' + gameIdx + ')">Resume Game</button>';
     historyHTML += '</div>';
