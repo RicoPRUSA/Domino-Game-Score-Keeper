@@ -12,7 +12,10 @@
 <meta name="theme-color" content="#0050F0">
 <meta name="description" content="Puerto Rican Domino Score Keeper">
 
-<!-- ICON GENERATOR SCRIPT -->
+<!-- 
+  ICON GENERATOR SCRIPT 
+  Generates the Premium "Glass Flag" Icon as a PNG for iOS Home Screen
+-->
 <script>
 (function() {
   const svgString = `
@@ -516,6 +519,7 @@ td .badge-stack {
   height: 100%;
   background: rgba(255,255,255,0.95);
   z-index: 2000;
+  /* Hidden by default in CSS */
   display: none; 
   flex-direction: column;
   justify-content: center;
@@ -526,6 +530,7 @@ td .badge-stack {
   overflow: hidden;
 }
 
+/* Only show when active class is present */
 .winner-overlay.active {
   display: flex;
 }
@@ -608,6 +613,7 @@ td .badge-stack {
 @media (max-width: 640px) {
   h1 { font-size: 1.4rem; }
   
+  /* SMALLER DOMINO FOR MOBILE */
   .domino-stage { height: 70px; margin-top: 0.25rem; }
   .domino-tile { width: 32px; height: 64px; border-radius: 4px; }
   .half { padding: 3px; height: 28px; gap: 2px; }
@@ -624,6 +630,7 @@ td .badge-stack {
 
 <body>
 
+<!-- OFFICIAL GEOMETRIC PUERTO RICO FLAG BADGE -->
 <div class="pr-flag-badge">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
     <rect width="900" height="600" fill="#ED0000"/>
@@ -634,6 +641,7 @@ td .badge-stack {
   </svg>
 </div>
 
+<!-- WINNER OVERLAY (Default hidden via CSS) -->
 <div id="winnerOverlay" class="winner-overlay">
   <h1>¡WEPA!</h1>
   <h2 id="winnerText"></h2>
@@ -762,33 +770,29 @@ const PLAYER_OPTIONS = ["Rico", "Aida", "Tony", "Mike", "Mayra", "Custom"];
 let names = [], scores = [], rounds = [], mode = "single";
 let gameHistory = [];
 
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-let audioCtx;
-
+// --- THE AUTHENTIC COQUI SOUND SYNTHESIZER (BULLETPROOF FIX) ---
 function playCoquiSound() {
-  if (!audioCtx) {
-    audioCtx = new AudioContext();
-  }
-  if (audioCtx.state === 'suspended') {
-    audioCtx.resume();
-  }
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  const ctx = new AudioContext(); // Fresh context every time
   
-  const now = audioCtx.currentTime;
+  const now = ctx.currentTime;
   
-  const coOsc = audioCtx.createOscillator();
-  const coGain = audioCtx.createGain();
+  // "Co" note
+  const coOsc = ctx.createOscillator();
+  const coGain = ctx.createGain();
   coOsc.type = 'sine';
   coOsc.frequency.setValueAtTime(1160, now);
   coGain.gain.setValueAtTime(0, now);
   coGain.gain.linearRampToValueAtTime(0.3, now + 0.02);
   coGain.gain.linearRampToValueAtTime(0, now + 0.1);
   coOsc.connect(coGain);
-  coGain.connect(audioCtx.destination);
+  coGain.connect(ctx.destination);
   coOsc.start(now);
   coOsc.stop(now + 0.12);
 
-  const quiOsc = audioCtx.createOscillator();
-  const quiGain = audioCtx.createGain();
+  // "Qui" note
+  const quiOsc = ctx.createOscillator();
+  const quiGain = ctx.createGain();
   quiOsc.type = 'sine';
   quiOsc.frequency.setValueAtTime(1800, now + 0.15);
   quiOsc.frequency.linearRampToValueAtTime(2200, now + 0.35);
@@ -798,9 +802,12 @@ function playCoquiSound() {
   quiGain.gain.linearRampToValueAtTime(0, now + 0.35);
   
   quiOsc.connect(quiGain);
-  quiGain.connect(audioCtx.destination);
+  quiGain.connect(ctx.destination);
   quiOsc.start(now + 0.15);
   quiOsc.stop(now + 0.38);
+  
+  // Clean up
+  setTimeout(() => { if (ctx.state !== 'closed') ctx.close(); }, 1000);
 }
 
 const elements = {
@@ -856,7 +863,6 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     elements.voiceFeedback.textContent = '"' + text + '"';
     console.log("Heard: ", text);
 
-    // 1. PHONETIC KEYWORD MATCHING
     const chuchazoTerms = ['chuchazo', 'chu cha', 'choo cha', 'shoe cha', 'cha zo', 'church', 'true cha', 'two chances'];
     if (chuchazoTerms.some(term => text.includes(term))) {
         elements.chuchazo.checked = true;
@@ -867,11 +873,9 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
          elements.capicu.checked = true;
     }
 
-    // 2. FIND NUMBER
     const pointsMatch = text.match(/\d+/);
     const points = pointsMatch ? parseInt(pointsMatch[0]) : null;
 
-    // 3. FIND PLAYER NAME
     let foundIndex = -1;
     names.forEach((name, i) => {
         if (text.includes(name.toLowerCase())) {
@@ -879,14 +883,10 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         }
     });
 
-    // 4. APPLY LOGIC
     if (foundIndex > -1) {
-        elements.winner.value = foundIndex; // Select Winner
-        
+        elements.winner.value = foundIndex; 
         if (points !== null) {
-            // Clear other inputs so only the winner has points
             document.querySelectorAll('#scoreInputs input').forEach(input => input.value = '');
-            // Set points for winner
             document.getElementById('score' + foundIndex).value = points;
         }
     }
@@ -999,7 +999,7 @@ function addRound() {
   resetInputs();
   render();
   saveGameState();
-  elements.voiceFeedback.textContent = ""; // Clear voice text on submit
+  elements.voiceFeedback.textContent = "";
 
   if (scores[w] >= 500) {
     celebrateWinner(names[w]);
@@ -1108,7 +1108,6 @@ function resetInputs() {
   });
   elements.capicu.checked = false;
   elements.chuchazo.checked = false;
-  elements.voiceFeedback.textContent = "";
 }
 
 function newGame() {
