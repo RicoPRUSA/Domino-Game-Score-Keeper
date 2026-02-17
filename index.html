@@ -434,10 +434,6 @@ td .badge-stack {
   max-width: 150px;
 }
 
-/* --- WIN/LOSS COLUMN COLORS --- */
-.win-col { color: #15803d; font-weight: 700; }
-.loss-col { color: #dc2626; font-weight: 700; }
-
 /* --- ANIMATIONS --- */
 @keyframes pulse-winner {
   0% { transform: scale(1); box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
@@ -662,11 +658,26 @@ td .badge-stack {
       </div>
     </div>
 
-    <!-- LEADERBOARD CARD -->
-    <div class="card" id="leaderboardCard" style="display: none;">
+    <!-- ADDED LEADERBOARD CARD -->
+    <div class="card" id="leaderboardCard" style="display: block;">
       <h2>Leaderboard</h2>
-      <div style="overflow-x: auto;">
-        <table id="leaderboardTable"></table>
+      <div style="overflow-x: auto; margin-bottom: 1rem;">
+        <table id="leaderboardTable" style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr>
+              <th style="text-align: left;">Player</th>
+              <th>Wins</th>
+              <th>%</th>
+              <th>Pts</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboardBody">
+            <!-- Rows injected by JS -->
+          </tbody>
+        </table>
+      </div>
+      <div class="controls">
+         <button class="secondary" onclick="clearLeaderboard()">Clear Leaderboard</button>
       </div>
     </div>
 
@@ -694,7 +705,6 @@ td .badge-stack {
         <select id="winner"></select>
       </div>
       
-      <!-- NEON OUTLINE TOGGLES -->
       <div class="checkbox-group">
         <label class="checkbox-label">
           <input type="checkbox" id="capicu">
@@ -729,6 +739,8 @@ const PLAYER_OPTIONS = ["Rico", "Aida", "Tony", "Mike", "Mayra", "Custom"];
 
 let names = [], scores = [], rounds = [], mode = "single";
 let gameHistory = [];
+// LEADERBOARD DATA
+let leaderboard = JSON.parse(localStorage.getItem('dominoLeaderboard')) || {};
 
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 let audioCtx;
@@ -789,8 +801,7 @@ const elements = {
   historyCard: document.getElementById('historyCard'),
   winnerOverlay: document.getElementById('winnerOverlay'),
   winnerText: document.getElementById('winnerText'),
-  leaderboardCard: document.getElementById('leaderboardCard'),
-  leaderboardTable: document.getElementById('leaderboardTable')
+  leaderboardBody: document.getElementById('leaderboardBody')
 };
 
 document.querySelectorAll('button, .checkbox-label').forEach(el => {
@@ -981,7 +992,6 @@ function resumeGame(index) {
     gameHistory.splice(index, 1);
     saveToStorage();
     renderGameHistory();
-    renderLeaderboard();
 
     saveGameState();
     elements.setup.classList.add('hidden');
@@ -1059,42 +1069,27 @@ function saveGameToHistory() {
     savedRounds: rounds,
     savedMode: mode
   });
-  
-  saveToStorage();
-}
 
-function renderLeaderboard() {
-  if (gameHistory.length === 0) {
-    elements.leaderboardCard.style.display = 'none';
-    return;
+  // UPDATE LEADERBOARD
+  names.forEach((name, i) => {
+      if (!leaderboard[name]) leaderboard[name] = { wins: 0, games: 0, points: 0 };
+      leaderboard[name].games++;
+      leaderboard[name].points += scores[i];
+  });
+  
+  // Find Winner
+  let maxScore = -1;
+  let winnerIndex = -1;
+  scores.forEach((s, i) => {
+      if(s > maxScore) { maxScore = s; winnerIndex = i; }
+  });
+  
+  if (winnerIndex > -1 && maxScore >= 500) {
+       leaderboard[names[winnerIndex]].wins++;
   }
-  elements.leaderboardCard.style.display = 'block';
-
-  const stats = {};
   
-  gameHistory.forEach(game => {
-     game.players.forEach((p, i) => {
-       if(!stats[p.name]) stats[p.name] = { wins: 0, losses: 0 };
-       // Since game.players is sorted by score, index 0 is the winner
-       if(i === 0) stats[p.name].wins++;
-       else stats[p.name].losses++;
-     });
-  });
-  
-  // Sort by Wins
-  const sortedStats = Object.entries(stats).map(([name, data]) => ({name, ...data}))
-                        .sort((a,b) => b.wins - a.wins);
-
-  let html = '<thead><tr><th>Player</th><th>W</th><th>L</th></tr></thead><tbody>';
-  sortedStats.forEach(p => {
-    html += `<tr>
-      <td><strong>${p.name}</strong></td>
-      <td class="win-col">${p.wins}</td>
-      <td class="loss-col">${p.losses}</td>
-    </tr>`;
-  });
-  html += '</tbody>';
-  elements.leaderboardTable.innerHTML = html;
+  localStorage.setItem('dominoLeaderboard', JSON.stringify(leaderboard));
+  saveToStorage();
 }
 
 function renderGameHistory() {
@@ -1124,7 +1119,6 @@ function renderGameHistory() {
       historyHTML += '</div>';
     });
     
-    // RESUME BUTTON
     historyHTML += '<div style="display: flex; justify-content: flex-end; margin-top: 0.8rem; border-top: 1px solid #e2e8f0; padding-top: 0.8rem;">';
     historyHTML += '<button class="secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="resumeGame(' + gameIdx + ')">Resume Game</button>';
     historyHTML += '</div>';
@@ -1136,13 +1130,36 @@ function renderGameHistory() {
   elements.gameHistory.innerHTML = historyHTML;
 }
 
+function renderLeaderboard() {
+    elements.leaderboardBody.innerHTML = '';
+    const sortedPlayers = Object.keys(leaderboard).sort((a,b) => leaderboard[b].wins - leaderboard[a].wins);
+    
+    sortedPlayers.forEach(name => {
+        const stats = leaderboard[name];
+        const winPct = stats.games > 0 ? Math.round((stats.wins / stats.games) * 100) : 0;
+        const row = `<tr>
+            <td style="text-align: left; padding: 0.5rem; color: #1e3a8a; font-weight: 600;">${name}</td>
+            <td style="text-align: center; padding: 0.5rem;">${stats.wins}</td>
+            <td style="text-align: center; padding: 0.5rem;">${winPct}%</td>
+            <td style="text-align: center; padding: 0.5rem;">${stats.points}</td>
+        </tr>`;
+        elements.leaderboardBody.innerHTML += row;
+    });
+}
+
+function clearLeaderboard() {
+    if(confirm("Clear Leaderboard? This cannot be undone.")) {
+        localStorage.removeItem('dominoLeaderboard');
+        leaderboard = {};
+        renderLeaderboard();
+    }
+}
+
 function clearHistory() {
   gameHistory = [];
   localStorage.removeItem('dominoGameHistory');
   const historyCard = document.getElementById('historyCard');
-  const leaderboardCard = document.getElementById('leaderboardCard');
   if (historyCard) historyCard.style.display = 'none';
-  if (leaderboardCard) leaderboardCard.style.display = 'none';
 }
 
 function render() {
@@ -1200,8 +1217,9 @@ function loadGameState() {
   if (savedHistory) {
     gameHistory = JSON.parse(savedHistory);
     renderGameHistory();
-    renderLeaderboard();
   }
+  
+  renderLeaderboard();
 }
 
 renderPlayerSelects();
