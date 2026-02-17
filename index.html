@@ -434,6 +434,10 @@ td .badge-stack {
   max-width: 150px;
 }
 
+/* --- WIN/LOSS COLUMN COLORS --- */
+.win-col { color: #15803d; font-weight: 700; }
+.loss-col { color: #dc2626; font-weight: 700; }
+
 /* --- ANIMATIONS --- */
 @keyframes pulse-winner {
   0% { transform: scale(1); box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
@@ -658,6 +662,14 @@ td .badge-stack {
       </div>
     </div>
 
+    <!-- LEADERBOARD CARD -->
+    <div class="card" id="leaderboardCard" style="display: none;">
+      <h2>Leaderboard</h2>
+      <div style="overflow-x: auto;">
+        <table id="leaderboardTable"></table>
+      </div>
+    </div>
+
     <div class="card" id="historyCard" style="display: none;">
       <h2>Game History</h2>
       <div id="gameHistory"></div>
@@ -758,7 +770,6 @@ function playCoquiSound() {
   quiOsc.start(now + 0.15);
   quiOsc.stop(now + 0.38);
   
-  // Cleanup
   setTimeout(() => { if (ctx.state !== 'closed') ctx.close(); }, 1000);
 }
 
@@ -777,7 +788,9 @@ const elements = {
   gameHistory: document.getElementById('gameHistory'),
   historyCard: document.getElementById('historyCard'),
   winnerOverlay: document.getElementById('winnerOverlay'),
-  winnerText: document.getElementById('winnerText')
+  winnerText: document.getElementById('winnerText'),
+  leaderboardCard: document.getElementById('leaderboardCard'),
+  leaderboardTable: document.getElementById('leaderboardTable')
 };
 
 document.querySelectorAll('button, .checkbox-label').forEach(el => {
@@ -968,6 +981,7 @@ function resumeGame(index) {
     gameHistory.splice(index, 1);
     saveToStorage();
     renderGameHistory();
+    renderLeaderboard();
 
     saveGameState();
     elements.setup.classList.add('hidden');
@@ -1011,6 +1025,7 @@ function newGame() {
   elements.setup.classList.remove('hidden');
   renderPlayerSelects();
   renderGameHistory();
+  renderLeaderboard();
 }
 
 function saveGameToHistory() {
@@ -1048,6 +1063,40 @@ function saveGameToHistory() {
   saveToStorage();
 }
 
+function renderLeaderboard() {
+  if (gameHistory.length === 0) {
+    elements.leaderboardCard.style.display = 'none';
+    return;
+  }
+  elements.leaderboardCard.style.display = 'block';
+
+  const stats = {};
+  
+  gameHistory.forEach(game => {
+     game.players.forEach((p, i) => {
+       if(!stats[p.name]) stats[p.name] = { wins: 0, losses: 0 };
+       // Since game.players is sorted by score, index 0 is the winner
+       if(i === 0) stats[p.name].wins++;
+       else stats[p.name].losses++;
+     });
+  });
+  
+  // Sort by Wins
+  const sortedStats = Object.entries(stats).map(([name, data]) => ({name, ...data}))
+                        .sort((a,b) => b.wins - a.wins);
+
+  let html = '<thead><tr><th>Player</th><th>W</th><th>L</th></tr></thead><tbody>';
+  sortedStats.forEach(p => {
+    html += `<tr>
+      <td><strong>${p.name}</strong></td>
+      <td class="win-col">${p.wins}</td>
+      <td class="loss-col">${p.losses}</td>
+    </tr>`;
+  });
+  html += '</tbody>';
+  elements.leaderboardTable.innerHTML = html;
+}
+
 function renderGameHistory() {
   if (gameHistory.length === 0) {
     elements.historyCard.style.display = 'none';
@@ -1075,6 +1124,7 @@ function renderGameHistory() {
       historyHTML += '</div>';
     });
     
+    // RESUME BUTTON
     historyHTML += '<div style="display: flex; justify-content: flex-end; margin-top: 0.8rem; border-top: 1px solid #e2e8f0; padding-top: 0.8rem;">';
     historyHTML += '<button class="secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="resumeGame(' + gameIdx + ')">Resume Game</button>';
     historyHTML += '</div>';
@@ -1090,7 +1140,9 @@ function clearHistory() {
   gameHistory = [];
   localStorage.removeItem('dominoGameHistory');
   const historyCard = document.getElementById('historyCard');
+  const leaderboardCard = document.getElementById('leaderboardCard');
   if (historyCard) historyCard.style.display = 'none';
+  if (leaderboardCard) leaderboardCard.style.display = 'none';
 }
 
 function render() {
@@ -1148,6 +1200,7 @@ function loadGameState() {
   if (savedHistory) {
     gameHistory = JSON.parse(savedHistory);
     renderGameHistory();
+    renderLeaderboard();
   }
 }
 
