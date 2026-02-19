@@ -658,7 +658,7 @@ td .badge-stack {
       </div>
     </div>
 
-    <!-- ADDED LEADERBOARD CARD -->
+    <!-- LEADERBOARD CARD -->
     <div class="card" id="leaderboardCard" style="display: block;">
       <h2>Leaderboard</h2>
       <div style="overflow-x: auto; margin-bottom: 1rem;">
@@ -667,8 +667,7 @@ td .badge-stack {
             <tr>
               <th style="text-align: left;">Player</th>
               <th>Wins</th>
-              <th>%</th>
-              <th>Pts</th>
+              <th>Losses</th>
             </tr>
           </thead>
           <tbody id="leaderboardBody">
@@ -742,6 +741,7 @@ let gameHistory = [];
 // LEADERBOARD DATA
 let leaderboard = JSON.parse(localStorage.getItem('dominoLeaderboard')) || {};
 
+// --- THE AUTHENTIC COQUI SOUND SYNTHESIZER ---
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 let audioCtx;
 
@@ -804,6 +804,7 @@ const elements = {
   leaderboardBody: document.getElementById('leaderboardBody')
 };
 
+// Add sound to buttons AND checkboxes
 document.querySelectorAll('button, .checkbox-label').forEach(el => {
   el.addEventListener('click', () => {
     playCoquiSound();
@@ -1071,21 +1072,41 @@ function saveGameToHistory() {
   });
 
   // UPDATE LEADERBOARD
-  names.forEach((name, i) => {
-      if (!leaderboard[name]) leaderboard[name] = { wins: 0, games: 0, points: 0 };
-      leaderboard[name].games++;
-      leaderboard[name].points += scores[i];
-  });
-  
-  // Find Winner
-  let maxScore = -1;
-  let winnerIndex = -1;
-  scores.forEach((s, i) => {
-      if(s > maxScore) { maxScore = s; winnerIndex = i; }
-  });
-  
-  if (winnerIndex > -1 && maxScore >= 500) {
-       leaderboard[names[winnerIndex]].wins++;
+  // Check if history has any new data to add
+  if (leaderboard && Object.keys(leaderboard).length === 0 && gameHistory.length > 0) {
+      // Rebuild entire leaderboard from history
+      gameHistory.forEach(game => {
+          let maxScore = -1;
+          let winnerIndex = -1;
+          game.players.forEach((p, idx) => {
+             if(p.finalScore > maxScore) { maxScore = p.finalScore; winnerIndex = idx; }
+          });
+
+          game.players.forEach((p, idx) => {
+              if(!leaderboard[p.name]) leaderboard[p.name] = { wins: 0, losses: 0 };
+              if(idx === winnerIndex && maxScore >= 500) {
+                  leaderboard[p.name].wins++;
+              } else {
+                  leaderboard[p.name].losses++;
+              }
+          });
+      });
+  } else {
+      // Add just the current game
+      let maxScore = -1;
+      let winnerIndex = -1;
+      scores.forEach((s, i) => {
+          if(s > maxScore) { maxScore = s; winnerIndex = i; }
+      });
+      
+      names.forEach((name, i) => {
+          if(!leaderboard[name]) leaderboard[name] = { wins: 0, losses: 0 };
+          if(i === winnerIndex && maxScore >= 500) {
+              leaderboard[name].wins++;
+          } else {
+              leaderboard[name].losses++;
+          }
+      });
   }
   
   localStorage.setItem('dominoLeaderboard', JSON.stringify(leaderboard));
@@ -1136,12 +1157,10 @@ function renderLeaderboard() {
     
     sortedPlayers.forEach(name => {
         const stats = leaderboard[name];
-        const winPct = stats.games > 0 ? Math.round((stats.wins / stats.games) * 100) : 0;
         const row = `<tr>
             <td style="text-align: left; padding: 0.5rem; color: #1e3a8a; font-weight: 600;">${name}</td>
             <td style="text-align: center; padding: 0.5rem;">${stats.wins}</td>
-            <td style="text-align: center; padding: 0.5rem;">${winPct}%</td>
-            <td style="text-align: center; padding: 0.5rem;">${stats.points}</td>
+            <td style="text-align: center; padding: 0.5rem;">${stats.losses}</td>
         </tr>`;
         elements.leaderboardBody.innerHTML += row;
     });
