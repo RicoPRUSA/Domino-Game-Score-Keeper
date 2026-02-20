@@ -1080,7 +1080,9 @@ function saveGameToHistory() {
   });
 
   // UPDATE LEADERBOARD
+  // Check if history has any new data to add
   if (leaderboard && Object.keys(leaderboard).length === 0 && gameHistory.length > 0) {
+      // Rebuild entire leaderboard from history
       gameHistory.forEach(game => {
           let maxScore = -1;
           let winnerIndex = -1;
@@ -1088,30 +1090,43 @@ function saveGameToHistory() {
              if(p.finalScore > maxScore) { maxScore = p.finalScore; winnerIndex = idx; }
           });
 
-          game.players.forEach((p, idx) => {
-              if(!leaderboard[p.name]) leaderboard[p.name] = { wins: 0, losses: 0 };
-              if(idx === winnerIndex && maxScore >= 500) {
-                  leaderboard[p.name].wins++;
-              } else {
-                  leaderboard[p.name].losses++;
-              }
-          });
+          const validGame = maxScore >= 500;
+
+          if (validGame) {
+             game.players.forEach((p, idx) => {
+                if(!leaderboard[p.name]) leaderboard[p.name] = { wins: 0, losses: 0 };
+                if (typeof leaderboard[p.name].losses === 'undefined') leaderboard[p.name].losses = 0;
+                
+                if(idx === winnerIndex) {
+                    leaderboard[p.name].wins++;
+                } else {
+                    leaderboard[p.name].losses++;
+                }
+             });
+          }
       });
   } else {
+      // Add just the current game
       let maxScore = -1;
       let winnerIndex = -1;
       scores.forEach((s, i) => {
           if(s > maxScore) { maxScore = s; winnerIndex = i; }
       });
+
+      const validGame = maxScore >= 500;
       
-      names.forEach((name, i) => {
-          if(!leaderboard[name]) leaderboard[name] = { wins: 0, losses: 0 };
-          if(i === winnerIndex && maxScore >= 500) {
-              leaderboard[name].wins++;
-          } else {
-              leaderboard[name].losses++;
-          }
-      });
+      if (validGame) {
+          names.forEach((name, i) => {
+              if(!leaderboard[name]) leaderboard[name] = { wins: 0, losses: 0 };
+              if (typeof leaderboard[name].losses === 'undefined') leaderboard[name].losses = 0;
+              
+              if(i === winnerIndex) {
+                  leaderboard[name].wins++;
+              } else {
+                  leaderboard[name].losses++;
+              }
+          });
+      }
   }
   
   localStorage.setItem('dominoLeaderboard', JSON.stringify(leaderboard));
