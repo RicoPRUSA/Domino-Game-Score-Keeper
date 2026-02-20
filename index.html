@@ -741,34 +741,41 @@ let gameHistory = [];
 // LEADERBOARD DATA
 let leaderboard = JSON.parse(localStorage.getItem('dominoLeaderboard')) || {};
 
-// --- THE AUTHENTIC COQUI SOUND SYNTHESIZER ---
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-let audioCtx;
+// --- GLOBAL AUDIO CONTEXT MANAGER ---
+// Kept global to ensure only one context is ever active, but resumed on clicks.
+let globalAudioCtx = null;
+
+function getAudioContext() {
+  if (!globalAudioCtx) {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    globalAudioCtx = new AudioContext();
+  }
+  if (globalAudioCtx.state === 'suspended') {
+    globalAudioCtx.resume();
+  }
+  return globalAudioCtx;
+}
 
 function playCoquiSound() {
-  if (!audioCtx) {
-    audioCtx = new AudioContext();
-  }
-  if (audioCtx.state === 'suspended') {
-    audioCtx.resume();
-  }
+  const ctx = getAudioContext();
+  const now = ctx.currentTime;
   
-  const now = audioCtx.currentTime;
-  
-  const coOsc = audioCtx.createOscillator();
-  const coGain = audioCtx.createGain();
+  // "Co" note
+  const coOsc = ctx.createOscillator();
+  const coGain = ctx.createGain();
   coOsc.type = 'sine';
   coOsc.frequency.setValueAtTime(1160, now);
   coGain.gain.setValueAtTime(0, now);
   coGain.gain.linearRampToValueAtTime(0.3, now + 0.02);
   coGain.gain.linearRampToValueAtTime(0, now + 0.1);
   coOsc.connect(coGain);
-  coGain.connect(audioCtx.destination);
+  coGain.connect(ctx.destination);
   coOsc.start(now);
   coOsc.stop(now + 0.12);
 
-  const quiOsc = audioCtx.createOscillator();
-  const quiGain = audioCtx.createGain();
+  // "Qui" note
+  const quiOsc = ctx.createOscillator();
+  const quiGain = ctx.createGain();
   quiOsc.type = 'sine';
   quiOsc.frequency.setValueAtTime(1800, now + 0.15);
   quiOsc.frequency.linearRampToValueAtTime(2200, now + 0.35);
@@ -778,11 +785,9 @@ function playCoquiSound() {
   quiGain.gain.linearRampToValueAtTime(0, now + 0.35);
   
   quiOsc.connect(quiGain);
-  quiGain.connect(audioCtx.destination);
+  quiGain.connect(ctx.destination);
   quiOsc.start(now + 0.15);
   quiOsc.stop(now + 0.38);
-  
-  setTimeout(() => { if (ctx.state !== 'closed') ctx.close(); }, 1000);
 }
 
 const elements = {
@@ -849,6 +854,9 @@ function renderPlayerSelects() {
 }
 
 function startGame() {
+  // Ensure Audio Context is unlocked on first interaction
+  getAudioContext();
+
   const count = mode === 'teams' ? 4 : +elements.playerCount.value;
   names = [];
   
@@ -1072,9 +1080,7 @@ function saveGameToHistory() {
   });
 
   // UPDATE LEADERBOARD
-  // Check if history has any new data to add
   if (leaderboard && Object.keys(leaderboard).length === 0 && gameHistory.length > 0) {
-      // Rebuild entire leaderboard from history
       gameHistory.forEach(game => {
           let maxScore = -1;
           let winnerIndex = -1;
@@ -1092,7 +1098,6 @@ function saveGameToHistory() {
           });
       });
   } else {
-      // Add just the current game
       let maxScore = -1;
       let winnerIndex = -1;
       scores.forEach((s, i) => {
@@ -1157,6 +1162,9 @@ function renderLeaderboard() {
     
     sortedPlayers.forEach(name => {
         const stats = leaderboard[name];
+        // SAFETY CHECK: Ensure losses exists
+        stats.losses = stats.losses || 0;
+        
         const row = `<tr>
             <td style="text-align: left; padding: 0.5rem; color: #1e3a8a; font-weight: 600;">${name}</td>
             <td style="text-align: center; padding: 0.5rem;">${stats.wins}</td>
