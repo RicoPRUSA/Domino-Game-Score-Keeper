@@ -485,7 +485,7 @@ td .badge-stack {
   text-align: center;
   padding: 2rem;
   backdrop-filter: blur(5px);
-  overflow: auto; /* Allow scrolling on small screens if content overflows */
+  overflow: hidden;
 }
 
 .winner-overlay.active {
@@ -513,15 +513,15 @@ td .badge-stack {
   align-items: center;
   gap: 0.8rem;
   margin-bottom: 0.8rem;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: #1e3a8a;
   font-weight: 800;
   width: 100%;
   justify-content: space-between;
-  max-width: 320px;
+  max-width: 300px;
 }
 .edit-controls span { flex: 1; text-align: left; }
-.edit-controls .val { min-width: 30px; text-align: center; }
+.edit-controls .val { min-width: 40px; text-align: center; }
 
 .round-btn {
   width: 35px;
@@ -642,6 +642,7 @@ td .badge-stack {
   </svg>
 </div>
 
+<!-- WINNER OVERLAY (Default hidden via CSS) -->
 <div id="winnerOverlay" class="winner-overlay">
   <h1>¡WEPA!</h1>
   <h2 id="winnerText"></h2>
@@ -664,73 +665,40 @@ td .badge-stack {
   </div>
 </div>
 
-<!-- EDIT PLAYER OVERLAY (EXPANDED) -->
+<!-- EDIT PLAYER OVERLAY (UPDATED WITH BONUS) -->
 <div id="editOverlay" class="winner-overlay">
-  <h2 style="color: #1e3a8a; margin-bottom: 0.5rem;">Edit Stats</h2>
-  <h1 id="editPlayerName" style="font-size: 2rem; color: #DC2626; margin-bottom: 1rem;"></h1>
+  <h2 style="color: #1e3a8a; margin-bottom: 0.5rem;">Edit Player Stats</h2>
+  <h1 id="editPlayerName" style="font-size: 2.2rem; color: #DC2626; margin-bottom: 1.5rem;"></h1>
   
-  <div style="width: 100%; max-width: 320px; overflow-y: auto; max-height: 60vh;">
-    <!-- Basic Stats -->
-    <div class="edit-controls">
-      <span>Wins</span>
-      <button class="round-btn minus" onclick="adjustStats('wins', -1)">-</button>
-      <span id="editWinsVal" class="val">0</span>
-      <button class="round-btn plus" onclick="adjustStats('wins', 1)">+</button>
-    </div>
-
-    <div class="edit-controls">
-      <span>Losses</span>
-      <button class="round-btn minus" onclick="adjustStats('losses', -1)">-</button>
-      <span id="editLossesVal" class="val">0</span>
-      <button class="round-btn plus" onclick="adjustStats('losses', 1)">+</button>
-    </div>
-
-    <!-- Special Bonuses -->
-    <div class="edit-controls">
-      <span class="badge capicu">Capicú</span>
-      <button class="round-btn minus" onclick="adjustStats('capicu', -1)">-</button>
-      <span id="editCapicuVal" class="val">0</span>
-      <button class="round-btn plus" onclick="adjustStats('capicu', 1)">+</button>
-    </div>
-
-    <div class="edit-controls">
-      <span class="badge chuchazo">Chuchazo</span>
-      <button class="round-btn minus" onclick="adjustStats('chuchazo', -1)">-</button>
-      <span id="editChuchazoVal" class="val">0</span>
-      <button class="round-btn plus" onclick="adjustStats('chuchazo', 1)">+</button>
-    </div>
-    
-    <!-- Round Bonuses -->
-    <div class="edit-controls">
-      <span class="badge bonus">100 Pts</span>
-      <button class="round-btn minus" onclick="adjustStats('b100', -1)">-</button>
-      <span id="editB100Val" class="val">0</span>
-      <button class="round-btn plus" onclick="adjustStats('b100', 1)">+</button>
-    </div>
-    
-    <div class="edit-controls">
-      <span class="badge bonus">75 Pts</span>
-      <button class="round-btn minus" onclick="adjustStats('b75', -1)">-</button>
-      <span id="editB75Val" class="val">0</span>
-      <button class="round-btn plus" onclick="adjustStats('b75', 1)">+</button>
-    </div>
-    
-    <div class="edit-controls">
-      <span class="badge bonus">50 Pts</span>
-      <button class="round-btn minus" onclick="adjustStats('b50', -1)">-</button>
-      <span id="editB50Val" class="val">0</span>
-      <button class="round-btn plus" onclick="adjustStats('b50', 1)">+</button>
-    </div>
-    
-    <div class="edit-controls">
-      <span class="badge bonus">25 Pts</span>
-      <button class="round-btn minus" onclick="adjustStats('b25', -1)">-</button>
-      <span id="editB25Val" class="val">0</span>
-      <button class="round-btn plus" onclick="adjustStats('b25', 1)">+</button>
-    </div>
+  <div class="edit-controls">
+    <span>Wins</span>
+    <button class="round-btn minus" onclick="adjustStats('wins', -1)">-</button>
+    <span id="editWinsVal" class="val">0</span>
+    <button class="round-btn plus" onclick="adjustStats('wins', 1)">+</button>
   </div>
 
-  <div class="controls" style="margin-top: 1rem; z-index: 2002;">
+  <div class="edit-controls">
+    <span>Losses</span>
+    <button class="round-btn minus" onclick="adjustStats('losses', -1)">-</button>
+    <span id="editLossesVal" class="val">0</span>
+    <button class="round-btn plus" onclick="adjustStats('losses', 1)">+</button>
+  </div>
+
+  <div class="edit-controls">
+    <span class="badge capicu">Capicú</span>
+    <button class="round-btn minus" onclick="adjustStats('capicu', -1)">-</button>
+    <span id="editCapicuVal" class="val">0</span>
+    <button class="round-btn plus" onclick="adjustStats('capicu', 1)">+</button>
+  </div>
+
+  <div class="edit-controls">
+    <span class="badge chuchazo">Chuchazo</span>
+    <button class="round-btn minus" onclick="adjustStats('chuchazo', -1)">-</button>
+    <span id="editChuchazoVal" class="val">0</span>
+    <button class="round-btn plus" onclick="adjustStats('chuchazo', 1)">+</button>
+  </div>
+
+  <div class="controls" style="margin-top: 1.5rem; z-index: 2002;">
     <button onclick="savePlayerStats()">Save Changes</button>
     <button class="secondary" onclick="closeEditOverlay()">Cancel</button>
   </div>
@@ -807,12 +775,8 @@ td .badge-stack {
           <thead>
             <tr>
               <th style="text-align: left;">Player</th>
-              <th style="text-align: center;">100</th>
-              <th style="text-align: center;">75</th>
-              <th style="text-align: center;">50</th>
-              <th style="text-align: center;">25</th>
-              <th style="text-align: center;">Cap</th>
-              <th style="text-align: center;">Chu</th>
+              <th style="text-align: center;"><span class="badge capicu">Capicú</span></th>
+              <th style="text-align: center;"><span class="badge chuchazo">Chuchazo</span></th>
               <th style="text-align: center;">Edit</th>
             </tr>
           </thead>
@@ -949,11 +913,7 @@ const elements = {
   editWinsVal: document.getElementById('editWinsVal'),
   editLossesVal: document.getElementById('editLossesVal'),
   editCapicuVal: document.getElementById('editCapicuVal'),
-  editChuchazoVal: document.getElementById('editChuchazoVal'),
-  editB100Val: document.getElementById('editB100Val'),
-  editB75Val: document.getElementById('editB75Val'),
-  editB50Val: document.getElementById('editB50Val'),
-  editB25Val: document.getElementById('editB25Val')
+  editChuchazoVal: document.getElementById('editChuchazoVal')
 };
 
 document.querySelectorAll('button, .checkbox-label').forEach(el => {
@@ -1196,21 +1156,20 @@ function saveGameToHistory() {
           });
           const validGame = maxScore >= 500;
           
+          // Rebuild stats from history
           game.players.forEach((p, idx) => {
-                if(!leaderboard[p.name]) leaderboard[p.name] = { wins: 0, losses: 0, capicu: 0, chuchazo: 0, b100: 0, b75: 0, b50: 0, b25: 0 };
-                
-                // Wins/Losses
+                if(!leaderboard[p.name]) leaderboard[p.name] = { wins: 0, losses: 0, capicu: 0, chuchazo: 0 };
                 if (validGame) {
                     if(idx === winnerIndex) leaderboard[p.name].wins++;
                     else leaderboard[p.name].losses++;
                 }
-                
-                // Bonuses
+                // Add Bonuses (stored in p.capicuCount)
                 leaderboard[p.name].capicu = (leaderboard[p.name].capicu || 0) + (p.capicuCount || 0);
                 leaderboard[p.name].chuchazo = (leaderboard[p.name].chuchazo || 0) + (p.chuchazoCount || 0);
           });
       });
   } else {
+      // Add current game results
       let maxScore = -1;
       let winnerIndex = -1;
       scores.forEach((s, i) => {
@@ -1219,8 +1178,10 @@ function saveGameToHistory() {
       const validGame = maxScore >= 500;
       
       names.forEach((name, i) => {
-          if(!leaderboard[name]) leaderboard[name] = { wins: 0, losses: 0, capicu: 0, chuchazo: 0, b100: 0, b75: 0, b50: 0, b25: 0 };
-          
+          if(!leaderboard[name]) leaderboard[name] = { wins: 0, losses: 0, capicu: 0, chuchazo: 0 };
+          if (typeof leaderboard[name].capicu === 'undefined') leaderboard[name].capicu = 0;
+          if (typeof leaderboard[name].chuchazo === 'undefined') leaderboard[name].chuchazo = 0;
+
           if (validGame) {
               if(i === winnerIndex) leaderboard[name].wins++;
               else leaderboard[name].losses++;
@@ -1228,15 +1189,10 @@ function saveGameToHistory() {
       });
 
       // ADD BONUSES from current game rounds
-      rounds.forEach((r, idx) => {
+      rounds.forEach(r => {
            const winnerName = names[r.w];
            if (r.capicu) leaderboard[winnerName].capicu++;
            if (r.chuchazo) leaderboard[winnerName].chuchazo++;
-           
-           if (idx === 0) leaderboard[winnerName].b100 = (leaderboard[winnerName].b100 || 0) + 1;
-           if (idx === 1) leaderboard[winnerName].b75 = (leaderboard[winnerName].b75 || 0) + 1;
-           if (idx === 2) leaderboard[winnerName].b50 = (leaderboard[winnerName].b50 || 0) + 1;
-           if (idx === 3) leaderboard[winnerName].b25 = (leaderboard[winnerName].b25 || 0) + 1;
       });
   }
   
@@ -1299,25 +1255,19 @@ function renderLeaderboard() {
 
 function renderBonusBoard() {
     elements.bonusBoardBody.innerHTML = '';
+    // Sort by most Capicús
     const sortedPlayers = Object.keys(leaderboard).sort((a,b) => (leaderboard[b].capicu || 0) - (leaderboard[a].capicu || 0));
     
     sortedPlayers.forEach(name => {
         const stats = leaderboard[name];
         const cap = stats.capicu || 0;
         const chu = stats.chuchazo || 0;
-        const b100 = stats.b100 || 0;
-        const b75 = stats.b75 || 0;
-        const b50 = stats.b50 || 0;
-        const b25 = stats.b25 || 0;
         
+        // Only show if they have at least one bonus? No, show all for consistency.
         const row = `<tr>
-            <td style="text-align: left; padding: 0.5rem; color: #1e3a8a; font-weight: 600; font-size: 0.8rem;">${name}</td>
-            <td style="text-align: center; padding: 0.5rem; font-size: 0.8rem;">${b100}</td>
-            <td style="text-align: center; padding: 0.5rem; font-size: 0.8rem;">${b75}</td>
-            <td style="text-align: center; padding: 0.5rem; font-size: 0.8rem;">${b50}</td>
-            <td style="text-align: center; padding: 0.5rem; font-size: 0.8rem;">${b25}</td>
-            <td style="text-align: center; padding: 0.5rem; font-size: 0.8rem;">${cap}</td>
-            <td style="text-align: center; padding: 0.5rem; font-size: 0.8rem;">${chu}</td>
+            <td style="text-align: left; padding: 0.5rem; color: #1e3a8a; font-weight: 600;">${name}</td>
+            <td style="text-align: center; padding: 0.5rem;">${cap}</td>
+            <td style="text-align: center; padding: 0.5rem;">${chu}</td>
             <td style="text-align: center; padding: 0.5rem;">
                 <button class="icon-btn" onclick="openEditPlayer('${name}')">✏️</button>
             </td>
@@ -1331,16 +1281,12 @@ function openEditPlayer(name) {
     elements.editPlayerName.textContent = name;
     
     // Safety check
-    if (!leaderboard[name]) leaderboard[name] = { wins: 0, losses: 0, capicu: 0, chuchazo: 0, b100: 0, b75: 0, b50: 0, b25: 0 };
+    if (!leaderboard[name]) leaderboard[name] = { wins: 0, losses: 0, capicu: 0, chuchazo: 0 };
     
     elements.editWinsVal.textContent = leaderboard[name].wins || 0;
     elements.editLossesVal.textContent = leaderboard[name].losses || 0;
     elements.editCapicuVal.textContent = leaderboard[name].capicu || 0;
     elements.editChuchazoVal.textContent = leaderboard[name].chuchazo || 0;
-    elements.editB100Val.textContent = leaderboard[name].b100 || 0;
-    elements.editB75Val.textContent = leaderboard[name].b75 || 0;
-    elements.editB50Val.textContent = leaderboard[name].b50 || 0;
-    elements.editB25Val.textContent = leaderboard[name].b25 || 0;
     
     elements.editOverlay.classList.add('active');
 }
@@ -1360,10 +1306,6 @@ function adjustStats(type, delta) {
     if (type === 'losses') elements.editLossesVal.textContent = newVal;
     if (type === 'capicu') elements.editCapicuVal.textContent = newVal;
     if (type === 'chuchazo') elements.editChuchazoVal.textContent = newVal;
-    if (type === 'b100') elements.editB100Val.textContent = newVal;
-    if (type === 'b75') elements.editB75Val.textContent = newVal;
-    if (type === 'b50') elements.editB50Val.textContent = newVal;
-    if (type === 'b25') elements.editB25Val.textContent = newVal;
 }
 
 function savePlayerStats() {
@@ -1378,7 +1320,7 @@ function closeEditOverlay() {
 }
 
 function clearLeaderboard() {
-    if(confirm("Clear Leaderboard? This cannot be undone.")) {
+    if(confirm("Clear Leaderboard & Bonus Stats? This cannot be undone.")) {
         localStorage.removeItem('dominoLeaderboard');
         leaderboard = {};
         renderLeaderboard();
