@@ -436,11 +436,11 @@ td .badge-stack {
 
 /* --- COMPACT BONUS BOARD STYLES --- */
 #bonusBoardTable th, #bonusBoardTable td {
-    padding: 4px 1px !important;
-    font-size: 0.75rem !important;
+    padding: 6px 4px !important;
+    font-size: 0.85rem !important;
 }
 #bonusBoardTable .icon-btn, #bonusBoardTable .delete-btn {
-    font-size: 1rem !important;
+    font-size: 1.1rem !important;
     padding: 0 !important;
 }
 
@@ -687,7 +687,7 @@ td .badge-stack {
   </div>
 </div>
 
-<!-- EDIT PLAYER OVERLAY (EXPANDED) -->
+<!-- EDIT PLAYER OVERLAY (CLEANED) -->
 <div id="editOverlay" class="winner-overlay">
   <h2 style="color: #1e3a8a; margin-bottom: 0.5rem;">Edit Stats</h2>
   <h1 id="editPlayerName" style="font-size: 2rem; color: #DC2626; margin-bottom: 1rem;"></h1>
@@ -723,34 +723,6 @@ td .badge-stack {
       <button class="round-btn plus" onclick="adjustStats('chuchazo', 1)">+</button>
     </div>
     
-    <!-- Round Bonuses -->
-    <div class="edit-controls">
-      <span class="badge bonus">100 Pts</span>
-      <button class="round-btn minus" onclick="adjustStats('b100', -1)">-</button>
-      <span id="editB100Val" class="val">0</span>
-      <button class="round-btn plus" onclick="adjustStats('b100', 1)">+</button>
-    </div>
-    
-    <div class="edit-controls">
-      <span class="badge bonus">75 Pts</span>
-      <button class="round-btn minus" onclick="adjustStats('b75', -1)">-</button>
-      <span id="editB75Val" class="val">0</span>
-      <button class="round-btn plus" onclick="adjustStats('b75', 1)">+</button>
-    </div>
-    
-    <div class="edit-controls">
-      <span class="badge bonus">50 Pts</span>
-      <button class="round-btn minus" onclick="adjustStats('b50', -1)">-</button>
-      <span id="editB50Val" class="val">0</span>
-      <button class="round-btn plus" onclick="adjustStats('b50', 1)">+</button>
-    </div>
-    
-    <div class="edit-controls">
-      <span class="badge bonus">25 Pts</span>
-      <button class="round-btn minus" onclick="adjustStats('b25', -1)">-</button>
-      <span id="editB25Val" class="val">0</span>
-      <button class="round-btn plus" onclick="adjustStats('b25', 1)">+</button>
-    </div>
   </div>
 
   <div class="controls" style="margin-top: 1rem; z-index: 2002;">
@@ -828,14 +800,10 @@ td .badge-stack {
         <table id="bonusBoardTable" style="width: 100%; border-collapse: collapse;">
           <thead>
             <tr>
-              <th style="width: 30px;"></th>
+              <th style="width: 40px;"></th>
               <th style="text-align: left;">Player</th>
-              <th style="text-align: center;">100</th>
-              <th style="text-align: center;">75</th>
-              <th style="text-align: center;">50</th>
-              <th style="text-align: center;">25</th>
-              <th style="text-align: center;">Cap</th>
-              <th style="text-align: center;">Chu</th>
+              <th style="text-align: center;">Capicú</th>
+              <th style="text-align: center;">Chuchazo</th>
               <th style="text-align: center;">Edit</th>
             </tr>
           </thead>
@@ -968,11 +936,7 @@ const elements = {
   editWinsVal: document.getElementById('editWinsVal'),
   editLossesVal: document.getElementById('editLossesVal'),
   editCapicuVal: document.getElementById('editCapicuVal'),
-  editChuchazoVal: document.getElementById('editChuchazoVal'),
-  editB100Val: document.getElementById('editB100Val'),
-  editB75Val: document.getElementById('editB75Val'),
-  editB50Val: document.getElementById('editB50Val'),
-  editB25Val: document.getElementById('editB25Val')
+  editChuchazoVal: document.getElementById('editChuchazoVal')
 };
 
 document.querySelectorAll('button, .checkbox-label').forEach(el => {
@@ -1205,7 +1169,7 @@ function saveGameToHistory() {
     savedMode: mode
   });
 
-  // UPDATE LEADERBOARD
+  // UPDATE LEADERBOARD (AND BONUS BOARD)
   if (leaderboard && Object.keys(leaderboard).length === 0 && gameHistory.length > 0) {
       gameHistory.forEach(game => {
           let maxScore = -1;
@@ -1319,18 +1283,10 @@ function renderBonusBoard() {
         const stats = leaderboard[name];
         const cap = stats.capicu || 0;
         const chu = stats.chuchazo || 0;
-        const b100 = stats.b100 || 0;
-        const b75 = stats.b75 || 0;
-        const b50 = stats.b50 || 0;
-        const b25 = stats.b25 || 0;
         
         const row = `<tr>
             <td style="text-align: center;"><button class="delete-btn" onclick="deletePlayer('${name}')">🗑️</button></td>
             <td style="text-align: left; padding: 0.5rem; color: #1e3a8a; font-weight: 600; font-size: 0.8rem;">${name}</td>
-            <td style="text-align: center; padding: 0.5rem; font-size: 0.8rem;">${b100}</td>
-            <td style="text-align: center; padding: 0.5rem; font-size: 0.8rem;">${b75}</td>
-            <td style="text-align: center; padding: 0.5rem; font-size: 0.8rem;">${b50}</td>
-            <td style="text-align: center; padding: 0.5rem; font-size: 0.8rem;">${b25}</td>
             <td style="text-align: center; padding: 0.5rem; font-size: 0.8rem;">${cap}</td>
             <td style="text-align: center; padding: 0.5rem; font-size: 0.8rem;">${chu}</td>
             <td style="text-align: center; padding: 0.5rem;">
@@ -1358,10 +1314,6 @@ function openEditPlayer(name) {
     elements.editLossesVal.textContent = leaderboard[name].losses || 0;
     elements.editCapicuVal.textContent = leaderboard[name].capicu || 0;
     elements.editChuchazoVal.textContent = leaderboard[name].chuchazo || 0;
-    elements.editB100Val.textContent = leaderboard[name].b100 || 0;
-    elements.editB75Val.textContent = leaderboard[name].b75 || 0;
-    elements.editB50Val.textContent = leaderboard[name].b50 || 0;
-    elements.editB25Val.textContent = leaderboard[name].b25 || 0;
     
     elements.editOverlay.classList.add('active');
 }
@@ -1380,10 +1332,6 @@ function adjustStats(type, delta) {
     if (type === 'losses') elements.editLossesVal.textContent = newVal;
     if (type === 'capicu') elements.editCapicuVal.textContent = newVal;
     if (type === 'chuchazo') elements.editChuchazoVal.textContent = newVal;
-    if (type === 'b100') elements.editB100Val.textContent = newVal;
-    if (type === 'b75') elements.editB75Val.textContent = newVal;
-    if (type === 'b50') elements.editB50Val.textContent = newVal;
-    if (type === 'b25') elements.editB25Val.textContent = newVal;
 }
 
 function savePlayerStats() {
