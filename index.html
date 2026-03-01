@@ -637,6 +637,150 @@ td .badge-stack {
   100% { transform: translateY(-130vh) rotate(20deg); opacity: 0; }
 }
 
+
+/* --- TEAM NAME INPUTS --- */
+.team-name-input {
+  width: 140px;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  border: 2px solid #cbd5e1;
+  background: #f1f5f9;
+  color: #1e3a8a;
+  text-align: center;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.08);
+  transition: all 0.2s ease;
+}
+.team-name-input:focus {
+  outline: none;
+  border-color: #1C398E;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(28,57,142,0.15);
+}
+.team-label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  margin-bottom: 0.25rem;
+  text-align: center;
+}
+.team-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+/* --- PLAYER STATS DETAIL OVERLAY --- */
+#statsOverlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(255,255,255,0.97);
+  z-index: 2100;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 1rem;
+  overflow-y: auto;
+  backdrop-filter: blur(6px);
+}
+#statsOverlay.active { display: flex; }
+.stats-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+.stats-header h2 { font-size: 1.8rem; color: #DC2626; margin-bottom: 0.25rem; }
+.stats-header p  { color: #64748b; font-size: 0.9rem; }
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 360px;
+  margin-bottom: 1.5rem;
+}
+.stat-tile {
+  background: #f1f5f9;
+  border-radius: 14px;
+  padding: 1rem 0.75rem;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+}
+.stat-tile .stat-val {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #1e3a8a;
+  line-height: 1;
+}
+.stat-tile .stat-lbl {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  margin-top: 0.3rem;
+}
+.stat-tile.highlight .stat-val { color: #DC2626; }
+.stat-tile.gold .stat-val { color: #d97706; }
+.streak-bar {
+  width: 100%;
+  max-width: 360px;
+  background: #f1f5f9;
+  border-radius: 14px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #e2e8f0;
+}
+.streak-bar h3 {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+.streak-dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.streak-dot {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px;
+}
+.streak-dot.win  { background: #dcfce7; color: #16a34a; font-weight: 900; }
+.streak-dot.loss { background: #fee2e2; color: #dc2626; font-weight: 900; }
+
+/* --- PR STAR CONFETTI SHAPE --- */
+.confetti-star {
+  position: absolute;
+  top: -20px;
+  z-index: 2001;
+  animation: fall linear forwards;
+  pointer-events: none;
+}
+
+/* --- REMATCH BUTTON --- */
+button.rematch {
+  background: linear-gradient(135deg, #d97706, #f59e0b);
+  color: white;
+}
+button.rematch:hover {
+  background: linear-gradient(135deg, #b45309, #d97706);
+}
+
 /* Mobile Tweaks */
 @media (max-width: 640px) {
   h1 { font-size: 1.4rem; }
@@ -684,8 +828,26 @@ td .badge-stack {
     </div>
   </div>
   <div class="controls" style="margin-top: 2rem; z-index: 2002;">
-    <button onclick="newGame()">Start New Game</button>
+    <button onclick="newGame()">New Game</button>
+    <button class="rematch" onclick="rematchGame()">🔁 Rematch!</button>
     <button class="secondary" onclick="closeOverlay()">Close</button>
+  </div>
+</div>
+
+
+<!-- PLAYER STATS DETAIL OVERLAY -->
+<div id="statsOverlay">
+  <div class="stats-header">
+    <h2 id="statsPlayerName"></h2>
+    <p id="statsPlayerSub"></p>
+  </div>
+  <div class="stats-grid" id="statsGrid"></div>
+  <div class="streak-bar">
+    <h3>Recent Games (newest → oldest)</h3>
+    <div class="streak-dots" id="streakDots"></div>
+  </div>
+  <div class="controls" style="margin-top: 0.5rem;">
+    <button onclick="closeStatsOverlay()">Close</button>
   </div>
 </div>
 
@@ -767,6 +929,7 @@ td .badge-stack {
           <option value="4" selected>4 Players</option>
         </select>
       </div>
+      <div id="teamNames" class="controls" style="display:none; flex-direction:column; gap:0.5rem;"></div>
       <div id="playerSelects" class="controls"></div>
       <div class="controls">
         <button onclick="startGame()">¡A Jugar!</button>
@@ -877,6 +1040,8 @@ const BONUSES = [100, 75, 50, 25];
 const PLAYER_OPTIONS = ["Rico", "Aida", "Tony", "Mike", "Mayra", "Custom"];
 
 let names = [], scores = [], rounds = [], mode = "single";
+let teamNames = ['Team 1', 'Team 2'];
+let lastGameNames = [], lastGameMode = 'single', lastTeamNames = ['Team 1','Team 2'];
 let gameHistory = [];
 let leaderboard = JSON.parse(localStorage.getItem('dominoLeaderboard')) || {};
 let editingPlayer = null;
@@ -884,23 +1049,41 @@ let editingPlayer = null;
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 let audioCtx;
 
-function playCoquiSound() {
-  // Create the AudioContext once on first user gesture and keep it alive for the whole session
-  if (!audioCtx) {
-    audioCtx = new AudioContext();
-  }
-  // Some browsers suspend the context until a user gesture — resume if needed
-  if (audioCtx.state === 'suspended') {
-    audioCtx.resume();
-  }
-  // If for any reason the context got closed, recreate it
-  if (audioCtx.state === 'closed') {
-    audioCtx = new AudioContext();
-  }
+// ── AUDIO HELPERS ─────────────────────────────────────────────────────────
+function ensureAudio() {
+  if (!audioCtx) audioCtx = new AudioContext();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  if (audioCtx.state === 'closed')    audioCtx = new AudioContext();
+}
 
+// Haptic feedback — single short tap (iOS/Android PWA)
+function haptic(style) {
+  if (navigator.vibrate) {
+    if (style === 'light')  navigator.vibrate(10);
+    else if (style === 'medium') navigator.vibrate(25);
+    else if (style === 'heavy')  navigator.vibrate([40, 30, 40]);
+  }
+}
+
+// Subtle click — used for every normal button press
+function playClickSound() {
+  ensureAudio();
   const now = audioCtx.currentTime;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(900, now);
+  osc.frequency.exponentialRampToValueAtTime(600, now + 0.06);
+  gain.gain.setValueAtTime(0.18, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.start(now); osc.stop(now + 0.09);
+}
 
-  // "Co" note — short burst at ~1160 Hz
+// Standard coquí — used after adding a normal round
+function playCoquiSound() {
+  ensureAudio();
+  const now = audioCtx.currentTime;
   const coOsc = audioCtx.createOscillator();
   const coGain = audioCtx.createGain();
   coOsc.type = 'sine';
@@ -908,12 +1091,9 @@ function playCoquiSound() {
   coGain.gain.setValueAtTime(0, now);
   coGain.gain.linearRampToValueAtTime(0.3, now + 0.02);
   coGain.gain.linearRampToValueAtTime(0, now + 0.1);
-  coOsc.connect(coGain);
-  coGain.connect(audioCtx.destination);
-  coOsc.start(now);
-  coOsc.stop(now + 0.12);
+  coOsc.connect(coGain); coGain.connect(audioCtx.destination);
+  coOsc.start(now); coOsc.stop(now + 0.12);
 
-  // "Qui" note — rising chirp from 1800 → 2200 Hz
   const quiOsc = audioCtx.createOscillator();
   const quiGain = audioCtx.createGain();
   quiOsc.type = 'sine';
@@ -922,12 +1102,39 @@ function playCoquiSound() {
   quiGain.gain.setValueAtTime(0, now + 0.15);
   quiGain.gain.linearRampToValueAtTime(0.3, now + 0.18);
   quiGain.gain.linearRampToValueAtTime(0, now + 0.35);
-  quiOsc.connect(quiGain);
-  quiGain.connect(audioCtx.destination);
-  quiOsc.start(now + 0.15);
-  quiOsc.stop(now + 0.38);
-  // NOTE: AudioContext is intentionally kept open for the entire session
-  // so every button press can reuse it without needing a new user gesture.
+  quiOsc.connect(quiGain); quiGain.connect(audioCtx.destination);
+  quiOsc.start(now + 0.15); quiOsc.stop(now + 0.38);
+}
+
+// Big capicú / chuchazo coquí — double call with a trill
+function playBonusCoqui() {
+  ensureAudio();
+  const now = audioCtx.currentTime;
+  // Three rapid chirps
+  [0, 0.22, 0.44].forEach(offset => {
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(1300, now + offset);
+    o.frequency.linearRampToValueAtTime(2400, now + offset + 0.18);
+    g.gain.setValueAtTime(0, now + offset);
+    g.gain.linearRampToValueAtTime(0.35, now + offset + 0.03);
+    g.gain.linearRampToValueAtTime(0, now + offset + 0.18);
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(now + offset); o.stop(now + offset + 0.2);
+  });
+}
+
+// Full celebration — used on game win (existing multi-call pattern kept)
+function playCelebrationCoqui() {
+  playCoquiSound();
+  setTimeout(playCoquiSound, 500);
+  setTimeout(playBonusCoqui, 1000);
+  setTimeout(playCoquiSound, 1700);
+  setTimeout(playBonusCoqui, 2200);
+  setTimeout(playCoquiSound, 2900);
+  setTimeout(playBonusCoqui, 3400);
+  setTimeout(playCoquiSound, 4100);
 }
 
 const elements = {
@@ -962,7 +1169,8 @@ const elements = {
 
 document.querySelectorAll('button, .checkbox-label').forEach(el => {
   el.addEventListener('click', () => {
-    playCoquiSound();
+    playClickSound();
+    haptic('light');
   });
 });
 
@@ -973,6 +1181,28 @@ function renderPlayerSelects() {
   mode = elements.mode.value;
   const count = mode === 'teams' ? 4 : +elements.playerCount.value;
   elements.playerCount.style.display = mode === 'single' ? 'block' : 'none';
+
+  // Show team name inputs in Teams mode
+  const teamNamesDiv = document.getElementById('teamNames');
+  if (mode === 'teams') {
+    teamNamesDiv.style.display = 'flex';
+    teamNamesDiv.innerHTML = `
+      <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+        <div class="team-block">
+          <div class="team-label" style="color:#1C398E;">⚔️ Team 1</div>
+          <input class="team-name-input" id="teamName0" type="text" placeholder="Team 1" value="${teamNames[0]}">
+          <div style="font-size:0.7rem; color:#94a3b8; margin-top:2px;">Players 1 & 2</div>
+        </div>
+        <div class="team-block">
+          <div class="team-label" style="color:#DC2626;">⚔️ Team 2</div>
+          <input class="team-name-input" id="teamName1" type="text" placeholder="Team 2" value="${teamNames[1]}">
+          <div style="font-size:0.7rem; color:#94a3b8; margin-top:2px;">Players 3 & 4</div>
+        </div>
+      </div>`;
+  } else {
+    teamNamesDiv.style.display = 'none';
+    teamNamesDiv.innerHTML = '';
+  }
   
   elements.playerSelects.innerHTML = '';
   for (let i = 0; i < count; i++) {
@@ -1006,6 +1236,14 @@ function renderPlayerSelects() {
 function startGame() {
   const count = mode === 'teams' ? 4 : +elements.playerCount.value;
   names = [];
+
+  // Capture team names if in teams mode
+  if (mode === 'teams') {
+    const t0 = document.getElementById('teamName0');
+    const t1 = document.getElementById('teamName1');
+    teamNames[0] = (t0 && t0.value.trim()) ? t0.value.trim() : 'Team 1';
+    teamNames[1] = (t1 && t1.value.trim()) ? t1.value.trim() : 'Team 2';
+  }
   
   for (let i = 0; i < count; i++) {
     const select = document.getElementById('player' + i);
@@ -1020,7 +1258,9 @@ function startGame() {
   
   scores = new Array(names.length).fill(0);
   rounds = [];
-  
+  lastGameNames = [...names];
+  lastGameMode  = mode;
+  lastTeamNames = [...teamNames];
   elements.setup.classList.add('hidden');
   elements.game.classList.remove('hidden');
   
@@ -1070,6 +1310,15 @@ function addRound() {
   render();
   saveGameState();
 
+  // Sound: bonus events get the bigger chirp, normal rounds get standard coquí
+  if (elements.capicu.checked || elements.chuchazo.checked) {
+    playBonusCoqui();
+    haptic('medium');
+  } else {
+    playCoquiSound();
+    haptic('light');
+  }
+
   if (scores[w] >= 500) {
     celebrateWinner(names[w]);
   }
@@ -1078,28 +1327,60 @@ function addRound() {
 function celebrateWinner(winnerName) {
   elements.winnerText.textContent = winnerName + " Wins!";
   elements.winnerOverlay.classList.add('active');
-  playCoquiSound();
-  setTimeout(playCoquiSound, 800);
-  setTimeout(playCoquiSound, 1600);
-  setTimeout(playCoquiSound, 2400); 
-  setTimeout(playCoquiSound, 3200); 
-  setTimeout(playCoquiSound, 4000); 
-  setTimeout(playCoquiSound, 4800); 
-  setTimeout(playCoquiSound, 5600); 
+  haptic('heavy');
+  playCelebrationCoqui();
   createConfetti();
   createBalloons();
 }
 
+// Draw a 5-pointed star on a canvas and return a data URL
+function makeStarDataURL(color, size) {
+  const c = document.createElement('canvas');
+  c.width = size; c.height = size;
+  const ctx2 = c.getContext('2d');
+  const cx = size / 2, cy = size / 2, r = size / 2 - 1, ir = r * 0.42;
+  ctx2.beginPath();
+  for (let i = 0; i < 10; i++) {
+    const angle = (Math.PI / 5) * i - Math.PI / 2;
+    const rad   = i % 2 === 0 ? r : ir;
+    ctx2[i === 0 ? 'moveTo' : 'lineTo'](cx + rad * Math.cos(angle), cy + rad * Math.sin(angle));
+  }
+  ctx2.closePath();
+  ctx2.fillStyle = color;
+  ctx2.fill();
+  return c.toDataURL();
+}
+
 function createConfetti() {
-  const colors = ['#dc2626', '#ffffff', '#0050F0'];
-  for (let i = 0; i < 100; i++) {
-    const conf = document.createElement('div');
-    conf.classList.add('confetti');
-    conf.style.left = Math.random() * 100 + 'vw';
-    conf.style.animationDuration = (Math.random() * 6 + 6) + 's';
-    conf.style.background = colors[Math.floor(Math.random() * colors.length)];
-    elements.winnerOverlay.appendChild(conf);
-    setTimeout(() => conf.remove(), 15000);
+  // PR flag palette: red, white, blue
+  const pieces = [
+    { type: 'rect', color: '#dc2626' },
+    { type: 'rect', color: '#ffffff' },
+    { type: 'rect', color: '#0050F0' },
+    { type: 'star', color: '#ffffff' },
+    { type: 'star', color: '#fbbf24' }, // gold star for flair
+  ];
+  for (let i = 0; i < 110; i++) {
+    const piece = pieces[Math.floor(Math.random() * pieces.length)];
+    let el;
+    if (piece.type === 'star') {
+      el = document.createElement('img');
+      el.src = makeStarDataURL(piece.color, 14);
+      el.classList.add('confetti-star');
+      el.style.width = el.style.height = (Math.random() * 8 + 10) + 'px';
+    } else {
+      el = document.createElement('div');
+      el.classList.add('confetti');
+      el.style.background = piece.color;
+      el.style.width  = (Math.random() * 6 + 6) + 'px';
+      el.style.height = (Math.random() * 10 + 6) + 'px';
+      el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    }
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.animationDuration = (Math.random() * 5 + 6) + 's';
+    el.style.animationDelay    = (Math.random() * 2) + 's';
+    elements.winnerOverlay.appendChild(el);
+    setTimeout(() => el.remove(), 15000);
   }
 }
 
@@ -1143,6 +1424,24 @@ function resetInputs() {
   });
   elements.capicu.checked = false;
   elements.chuchazo.checked = false;
+}
+
+
+function rematchGame() {
+  closeOverlay();
+  // Restore the exact same players/teams but reset all scores and rounds
+  names  = [...lastGameNames];
+  mode   = lastGameMode;
+  teamNames = [...lastTeamNames];
+  scores = new Array(names.length).fill(0);
+  rounds = [];
+  elements.setup.classList.add('hidden');
+  elements.game.classList.remove('hidden');
+  setupRoundInputs();
+  render();
+  saveGameState();
+  haptic('medium');
+  playCoquiSound();
 }
 
 function newGame() {
@@ -1283,7 +1582,7 @@ function renderLeaderboard() {
         
         const row = `<tr>
             <td style="text-align: center;"><button class="delete-btn" onclick="deletePlayer('${name}')">🗑️</button></td>
-            <td style="text-align: left; padding: 0.5rem; color: #1e3a8a; font-weight: 600;">${name}</td>
+            <td style="text-align: left; padding: 0.5rem;"><button class="icon-btn" style="color:#1e3a8a;font-weight:700;font-size:0.95rem;text-decoration:underline;text-underline-offset:2px;" onclick="openStatsPlayer('${name}')">${name}</button></td>
             <td style="text-align: center; padding: 0.5rem;">${stats.wins}</td>
             <td style="text-align: center; padding: 0.5rem;">${stats.losses}</td>
             <td style="text-align: center; padding: 0.5rem;">
@@ -1316,6 +1615,87 @@ function renderBonusBoard() {
         </tr>`;
         elements.bonusBoardBody.innerHTML += row;
     });
+}
+
+
+// ── PLAYER STATS DETAIL ───────────────────────────────────────────────────
+function openStatsPlayer(name) {
+  const s = leaderboard[name];
+  if (!s) return;
+  document.getElementById('statsPlayerName').textContent = name;
+  const total = (s.wins || 0) + (s.losses || 0);
+  const pct   = total > 0 ? Math.round((s.wins / total) * 100) : 0;
+
+  // Win streak from gameHistory
+  let currentStreak = 0, bestStreak = 0, tmp = 0;
+  const results = [];
+  gameHistory.forEach(g => {
+    const p = g.players.find(p => p.name === name);
+    if (!p) return;
+    const won = g.players[0].name === name;
+    results.push(won);
+    if (won) { tmp++; bestStreak = Math.max(bestStreak, tmp); }
+    else tmp = 0;
+  });
+  // current streak (from end)
+  for (let i = results.length - 1; i >= 0; i--) {
+    if (results[i]) currentStreak++; else break;
+  }
+
+  const bestGame = gameHistory
+    .map(g => g.players.find(p => p.name === name))
+    .filter(Boolean)
+    .reduce((best, p) => p.finalScore > (best ? best.finalScore : -1) ? p : best, null);
+
+  document.getElementById('statsPlayerSub').textContent =
+    total + ' game' + (total !== 1 ? 's' : '') + ' played';
+
+  document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-tile highlight">
+      <div class="stat-val">${s.wins || 0}</div>
+      <div class="stat-lbl">🏆 Wins</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-val">${s.losses || 0}</div>
+      <div class="stat-lbl">❌ Losses</div>
+    </div>
+    <div class="stat-tile gold">
+      <div class="stat-val">${pct}%</div>
+      <div class="stat-lbl">Win Rate</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-val">${currentStreak}</div>
+      <div class="stat-lbl">🔥 Streak</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-val">${bestStreak}</div>
+      <div class="stat-lbl">⚡ Best Streak</div>
+    </div>
+    <div class="stat-tile gold">
+      <div class="stat-val">${bestGame ? bestGame.finalScore : '—'}</div>
+      <div class="stat-lbl">🎯 Best Score</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-val" style="color:#ea580c;">${s.capicu || 0}</div>
+      <div class="stat-lbl">Capicú</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-val" style="color:#dc2626;">${s.chuchazo || 0}</div>
+      <div class="stat-lbl">Chuchazo</div>
+    </div>
+  `;
+
+  // Streak dots — last 20 games
+  const recent = results.slice(-20).reverse();
+  document.getElementById('streakDots').innerHTML = recent.map(w =>
+    `<div class="streak-dot ${w ? 'win' : 'loss'}">${w ? 'W' : 'L'}</div>`
+  ).join('') || '<span style="color:#94a3b8;font-size:0.8rem;">No games recorded yet</span>';
+
+  document.getElementById('statsOverlay').classList.add('active');
+}
+
+function closeStatsOverlay() {
+  document.getElementById('statsOverlay').classList.remove('active');
 }
 
 function deletePlayer(name) {
@@ -1386,7 +1766,12 @@ function render() {
   elements.totals.innerHTML = names.map((name, i) => {
     const isWinner = scores[i] > 0 && scores[i] === max;
     const wepa = isWinner ? ' ¡Wepa!' : '';
-    return '<div class="score ' + (isWinner ? 'winner' : '') + '">' + (isWinner ? '🏆 ' : '') + name + ': ' + scores[i] + wepa + '</div>';
+    let teamLabel = '';
+    if (mode === 'teams') {
+      const tName = i < 2 ? teamNames[0] : teamNames[1];
+      teamLabel = '<div style="font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;margin-bottom:2px;">' + tName + '</div>';
+    }
+    return '<div class="score ' + (isWinner ? 'winner' : '') + '">' + teamLabel + (isWinner ? '🏆 ' : '') + name + ': ' + scores[i] + wepa + '</div>';
   }).join('');
   
   let table = '<thead><tr><th>#</th>' + names.map(n => '<th>' + n + '</th>').join('') + '<th>Winner</th></tr></thead><tbody>';
@@ -1404,7 +1789,7 @@ function render() {
 }
 
 function saveGameState() {
-  const state = { names, scores, rounds, mode };
+  const state = { names, scores, rounds, mode, teamNames };
   localStorage.setItem('dominoGame', JSON.stringify(state));
 }
 
@@ -1421,6 +1806,10 @@ function loadGameState() {
       scores = state.scores;
       rounds = state.rounds;
       mode = state.mode;
+      teamNames = state.teamNames || ['Team 1','Team 2'];
+      lastGameNames = [...names];
+      lastGameMode = mode;
+      lastTeamNames = [...teamNames];
       elements.setup.classList.add('hidden');
       elements.game.classList.remove('hidden');
       setupRoundInputs();
