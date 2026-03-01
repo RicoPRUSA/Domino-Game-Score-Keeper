@@ -436,10 +436,9 @@ td .badge-stack {
 
 /* --- COMPACT BONUS BOARD STYLES --- */
 #bonusBoardTable th, #bonusBoardTable td {
-    padding: 5px 1px !important;
+    padding: 6px 4px !important;
     font-size: 0.85rem !important;
 }
-/* Make delete col tight */
 #bonusBoardTable th:first-child { width: 25px !important; }
 
 #bonusBoardTable .icon-btn, #bonusBoardTable .delete-btn {
@@ -690,7 +689,7 @@ td .badge-stack {
   </div>
 </div>
 
-<!-- EDIT PLAYER OVERLAY (ONLY CAP & CHU) -->
+<!-- EDIT PLAYER OVERLAY -->
 <div id="editOverlay" class="winner-overlay">
   <h2 style="color: #1e3a8a; margin-bottom: 0.5rem;">Edit Stats</h2>
   <h1 id="editPlayerName" style="font-size: 2rem; color: #DC2626; margin-bottom: 1rem;"></h1>
@@ -711,7 +710,7 @@ td .badge-stack {
       <button class="round-btn plus" onclick="adjustStats('losses', 1)">+</button>
     </div>
 
-    <!-- Special Bonuses (Capicú & Chuchazo ONLY) -->
+    <!-- Special Bonuses -->
     <div class="edit-controls">
       <span class="badge capicu">Capicú</span>
       <button class="round-btn minus" onclick="adjustStats('capicu', -1)">-</button>
@@ -782,10 +781,10 @@ td .badge-stack {
           <thead>
             <tr>
               <th style="width: 40px;"></th>
-              <th style="text-align: left;">Player</th>
-              <th style="text-align: center;">Wins</th>
-              <th style="text-align: center;">Losses</th>
-              <th style="text-align: center;">Edit</th>
+              <th style="text-align: left;">👤</th>
+              <th style="text-align: center;">🏆</th>
+              <th style="text-align: center;">❌</th>
+              <th style="text-align: center;">⚙️</th>
             </tr>
           </thead>
           <tbody id="leaderboardBody"></tbody>
@@ -796,7 +795,7 @@ td .badge-stack {
       </div>
     </div>
 
-    <!-- BONUS BOARD CARD (COMPACT & CLEANED) -->
+    <!-- BONUS BOARD CARD (COMPACT) -->
     <div class="card" id="bonusBoardCard" style="display: block;">
       <h2>Bonus Board</h2>
       <div style="overflow-x: auto; margin-bottom: 1rem;">
@@ -804,10 +803,10 @@ td .badge-stack {
           <thead>
             <tr>
               <th style="width: 25px;"></th> <!-- Delete Icon -->
-              <th style="text-align: left;">Player</th>
-              <th style="text-align: center;"><span class="badge capicu">Capicú</span></th>
-              <th style="text-align: center;"><span class="badge chuchazo">Chuchazo</span></th>
-              <th style="text-align: center;">Edit</th>
+              <th style="text-align: left;">👤</th>
+              <th style="text-align: center;"><span class="badge capicu">Cap</span></th>
+              <th style="text-align: center;"><span class="badge chuchazo">Chu</span></th>
+              <th style="text-align: center;">⚙️</th>
             </tr>
           </thead>
           <tbody id="bonusBoardBody"></tbody>
@@ -1269,7 +1268,7 @@ function renderLeaderboard() {
             <td style="text-align: center; padding: 0.5rem;">${stats.wins}</td>
             <td style="text-align: center; padding: 0.5rem;">${stats.losses}</td>
             <td style="text-align: center; padding: 0.5rem;">
-                <button class="icon-btn" onclick="openEditPlayer('${name}')">✏️</button>
+                <button class="icon-btn" onclick="openEditPlayer('${name}')">⚙️</button>
             </td>
         </tr>`;
         elements.leaderboardBody.innerHTML += row;
@@ -1290,10 +1289,10 @@ function renderBonusBoard() {
         const row = `<tr>
             <td style="text-align: center;"><button class="delete-btn" onclick="deletePlayer('${name}')">🗑️</button></td>
             <td style="text-align: left; padding: 0.5rem; color: #1e3a8a; font-weight: 600; font-size: 0.8rem;">${name}</td>
-            <td style="text-align: center; padding: 0.5rem; font-size: 0.8rem;">${cap}</td>
-            <td style="text-align: center; padding: 0.5rem; font-size: 0.8rem;">${chu}</td>
+            <td style="text-align: center; padding: 0.5rem; font-size: 0.8rem;"><span class="badge capicu" style="font-size: 0.8rem;">${cap}</span></td>
+            <td style="text-align: center; padding: 0.5rem; font-size: 0.8rem;"><span class="badge chuchazo" style="font-size: 0.8rem;">${chu}</span></td>
             <td style="text-align: center; padding: 0.5rem;">
-                <button class="icon-btn" onclick="openEditPlayer('${name}')">✏️</button>
+                <button class="icon-btn" onclick="openEditPlayer('${name}')">⚙️</button>
             </td>
         </tr>`;
         elements.bonusBoardBody.innerHTML += row;
@@ -1339,7 +1338,7 @@ function adjustStats(type, delta) {
 
 function savePlayerStats() {
     localStorage.setItem('dominoLeaderboard', JSON.stringify(leaderboard));
-    renderLeaderboard(); // This also calls renderBonusBoard
+    renderLeaderboard();
     closeEditOverlay();
 }
 
