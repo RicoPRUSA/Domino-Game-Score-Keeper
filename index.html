@@ -436,9 +436,12 @@ td .badge-stack {
 
 /* --- COMPACT BONUS BOARD STYLES --- */
 #bonusBoardTable th, #bonusBoardTable td {
-    padding: 6px 4px !important;
+    padding: 5px 1px !important;
     font-size: 0.85rem !important;
 }
+/* Make delete col tight */
+#bonusBoardTable th:first-child { width: 25px !important; }
+
 #bonusBoardTable .icon-btn, #bonusBoardTable .delete-btn {
     font-size: 1.1rem !important;
     padding: 0 !important;
@@ -687,7 +690,7 @@ td .badge-stack {
   </div>
 </div>
 
-<!-- EDIT PLAYER OVERLAY (CLEANED) -->
+<!-- EDIT PLAYER OVERLAY (ONLY CAP & CHU) -->
 <div id="editOverlay" class="winner-overlay">
   <h2 style="color: #1e3a8a; margin-bottom: 0.5rem;">Edit Stats</h2>
   <h1 id="editPlayerName" style="font-size: 2rem; color: #DC2626; margin-bottom: 1rem;"></h1>
@@ -708,7 +711,7 @@ td .badge-stack {
       <button class="round-btn plus" onclick="adjustStats('losses', 1)">+</button>
     </div>
 
-    <!-- Special Bonuses -->
+    <!-- Special Bonuses (Capicú & Chuchazo ONLY) -->
     <div class="edit-controls">
       <span class="badge capicu">Capicú</span>
       <button class="round-btn minus" onclick="adjustStats('capicu', -1)">-</button>
@@ -793,14 +796,14 @@ td .badge-stack {
       </div>
     </div>
 
-    <!-- BONUS BOARD CARD -->
+    <!-- BONUS BOARD CARD (COMPACT & CLEANED) -->
     <div class="card" id="bonusBoardCard" style="display: block;">
       <h2>Bonus Board</h2>
       <div style="overflow-x: auto; margin-bottom: 1rem;">
         <table id="bonusBoardTable" style="width: 100%; border-collapse: collapse;">
           <thead>
             <tr>
-              <th style="width: 40px;"></th>
+              <th style="width: 25px;"></th> <!-- Delete Icon -->
               <th style="text-align: left;">Player</th>
               <th style="text-align: center;"><span class="badge capicu">Capicú</span></th>
               <th style="text-align: center;"><span class="badge chuchazo">Chuchazo</span></th>
@@ -936,11 +939,7 @@ const elements = {
   editWinsVal: document.getElementById('editWinsVal'),
   editLossesVal: document.getElementById('editLossesVal'),
   editCapicuVal: document.getElementById('editCapicuVal'),
-  editChuchazoVal: document.getElementById('editChuchazoVal'),
-  editB100Val: document.getElementById('editB100Val'),
-  editB75Val: document.getElementById('editB75Val'),
-  editB50Val: document.getElementById('editB50Val'),
-  editB25Val: document.getElementById('editB25Val')
+  editChuchazoVal: document.getElementById('editChuchazoVal')
 };
 
 document.querySelectorAll('button, .checkbox-label').forEach(el => {
@@ -1340,7 +1339,7 @@ function adjustStats(type, delta) {
 
 function savePlayerStats() {
     localStorage.setItem('dominoLeaderboard', JSON.stringify(leaderboard));
-    renderLeaderboard();
+    renderLeaderboard(); // This also calls renderBonusBoard
     closeEditOverlay();
 }
 
