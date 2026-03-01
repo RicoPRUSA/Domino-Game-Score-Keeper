@@ -578,14 +578,6 @@ td .badge-stack {
   color: #dc2626 !important;
 }
 
-/* Custom Player Icon Style */
-.player-header-icon {
-  width: 28px;
-  height: 28px;
-  vertical-align: middle;
-  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
-}
-
 .confetti {
   position: absolute;
   width: 10px;
@@ -790,7 +782,17 @@ td .badge-stack {
             <tr>
               <th style="width: 40px;"></th>
               <!-- CUSTOM COUPLE ICON -->
-              <th style="text-align: left;"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PCEtLSBNYW4gLS0+PHBhdGggZD0iTTM2IDY0IEwzNiA0OCBRNDYgNDIgNTYgNDggTDU2IDY0IFoiIGZpbGw9IiNDNEE0ODQiLz48Y2lyY2xlIGN4PSI0NiIgY3k9IjI4IiByPSIxNCIgZmlsbD0iI0Y1RDBCNSIvPjxwYXRoIGQ9Ik00NiAxNCBRNjAgMTQgNTggMzIgUTU2IDEyIDQ2IDEyIFEzNiAxMiAzNCAzMiBRMzIgMTQgNDYgMTQiIGZpbGw9IiM4QjVBMkIiLz48IS0tIFdvbWFuIC0tPjxwYXRoIGQ9Ik04IDY0IEw4IDQ4IFEyMCA0MCAzMiA0OCBMMzIgNjQgWiIgZmlsbD0iIzZBNUACRCIvPjxjaXJjbGUgY3g9IjIwIiBjeT0iMzAiIHI9IjEzIiBmaWxsPSIjRkZFMEJEIi8+PHBhdGggZD0iTTIwIDE2IFEzNiAxNiAzNCA0MCBMMzAgNDAgUTMyIDIwIDIwIDIwIFE4IDIwIDEwIDQwIEw2IDQwIFE0IDE2IDIwIDE2IiBmaWxsPSIjRjRDNDMwIi8+PC9zdmc+" class="player-header-icon" alt="Players"></th>
+              <th style="text-align: left;">
+                  <!-- INLINE SVG REPLACEMENT FOR BROKEN IMAGE -->
+                  <svg width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));">
+                    <circle cx="42" cy="25" r="12" fill="#F5D0B5"/>
+                    <path d="M42 50 C52 50 56 64 56 64 H28 C28 64 32 50 42 50" fill="#C4A484"/>
+                    <path d="M42 13 C52 13 54 25 54 25 C54 25 52 32 42 32 C32 32 30 25 30 25 C30 25 32 13 42 13" fill="#8B5A2B"/>
+                    <circle cx="22" cy="28" r="12" fill="#FFE0BD"/>
+                    <path d="M22 52 C32 52 36 64 36 64 H8 C8 64 12 52 22 52" fill="#6A5ACD"/>
+                    <path d="M22 14 C32 14 36 35 36 35 L32 35 C32 20 12 20 12 35 L8 35 C8 35 12 14 22 14" fill="#F4C430"/>
+                  </svg>
+              </th>
               <th style="text-align: center;">🏆</th>
               <th style="text-align: center;">❌</th>
               <th style="text-align: center;">✏️</th>
@@ -813,7 +815,16 @@ td .badge-stack {
             <tr>
               <th style="width: 25px;"></th> <!-- Delete Icon -->
               <!-- CUSTOM COUPLE ICON -->
-              <th style="text-align: left;"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PCEtLSBNYW4gLS0+PHBhdGggZD0iTTM2IDY0IEwzNiA0OCBRNDYgNDIgNTYgNDggTDU2IDY0IFoiIGZpbGw9IiNDNEE0ODQiLz48Y2lyY2xlIGN4PSI0NiIgY3k9IjI4IiByPSIxNCIgZmlsbD0iI0Y1RDBCNSIvPjxwYXRoIGQ9Ik00NiAxNCBRNjAgMTQgNTggMzIgUTU2IDEyIDQ2IDEyIFEzNiAxMiAzNCAzMiBRMzIgMTQgNDYgMTQiIGZpbGw9IiM4QjVBMkIiLz48IS0tIFdvbWFuIC0tPjxwYXRoIGQ9Ik04IDY0IEw4IDQ4IFEyMCA0MCAzMiA0OCBMMzIgNjQgWiIgZmlsbD0iIzZBNUACRCIvPjxjaXJjbGUgY3g9IjIwIiBjeT0iMzAiIHI9IjEzIiBmaWxsPSIjRkZFMEJEIi8+PHBhdGggZD0iTTIwIDE2IFEzNiAxNiAzNCA0MCBMMzAgNDAgUTMyIDIwIDIwIDIwIFE4IDIwIDEwIDQwIEw2IDQwIFE0IDE2IDIwIDE2IiBmaWxsPSIjRjRDNDMwIi8+PC9zdmc+" class="player-header-icon" alt="Players"></th>
+              <th style="text-align: left;">
+                  <svg width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));">
+                    <circle cx="42" cy="25" r="12" fill="#F5D0B5"/>
+                    <path d="M42 50 C52 50 56 64 56 64 H28 C28 64 32 50 42 50" fill="#C4A484"/>
+                    <path d="M42 13 C52 13 54 25 54 25 C54 25 52 32 42 32 C32 32 30 25 30 25 C30 25 32 13 42 13" fill="#8B5A2B"/>
+                    <circle cx="22" cy="28" r="12" fill="#FFE0BD"/>
+                    <path d="M22 52 C32 52 36 64 36 64 H8 C8 64 12 52 22 52" fill="#6A5ACD"/>
+                    <path d="M22 14 C32 14 36 35 36 35 L32 35 C32 20 12 20 12 35 L8 35 C8 35 12 14 22 14" fill="#F4C430"/>
+                  </svg>
+              </th>
               <th style="text-align: center;"><span class="badge capicu">Cap</span></th>
               <th style="text-align: center;"><span class="badge chuchazo">Chu</span></th>
               <th style="text-align: center;">✏️</th>
