@@ -134,27 +134,37 @@ body {
 }
 
 .line {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  right: 5px;
   height: 2px;
+  transform: translateY(-50%);
   background: linear-gradient(to right, #b45309, #f59e0b, #b45309);
-  margin: 2px 5px;
   border-radius: 1px;
   box-shadow: inset 0 1px 1px rgba(0,0,0,0.2);
+  z-index: 1;
 }
 
 .half {
-  height: 40px;
-  padding: 6px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 45px;
+  padding: 4px 5px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 4px;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 3px;
   align-items: center;
   justify-items: center;
 }
+.half.top    { top: 0; }
+.half.bottom { bottom: 0; }
 
 .dot {
-  width: 7px;
-  height: 7px;
+  width: 9px;
+  height: 9px;
   background-color: #111;
   border-radius: 50%;
   box-shadow: inset 1px 1px 2px rgba(255,255,255,0.5), inset -1px -1px 2px rgba(0,0,0,0.9);
@@ -181,8 +191,13 @@ body {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(to right, #1e3a8a, #ffffff, #dc2626);
+  background: linear-gradient(to right, #b91c1c, #ffffff, #1e3a8a);
+  background-size: 200% 100%;
+  animation: shine 3s linear infinite;
+  border-radius: 16px 16px 0 0;
 }
+
+
 
 /* --- PERFECT GEOMETRIC BADGE --- */
 .pr-flag-badge {
@@ -208,6 +223,7 @@ body {
 }
 
 h1 {
+  font-weight: 900;
   color: #1e3a8a;
   text-align: center;
   margin: 0.2rem 0 0.5rem 0;
@@ -216,6 +232,7 @@ h1 {
 }
 
 h2 {
+  font-weight: 800;
   color: #1e3a8a;
   text-align: center;
   margin-bottom: 1rem;
@@ -763,7 +780,61 @@ td .badge-stack {
 .streak-dot.win  { background: #dcfce7; color: #16a34a; font-weight: 900; }
 .streak-dot.loss { background: #fee2e2; color: #dc2626; font-weight: 900; }
 
-/* --- PR STAR CONFETTI SHAPE --- */
+/* --- PR FLAG RIBBON on winning score --- */
+.pr-ribbon {
+  display: inline-block;
+  margin-left: 6px;
+  vertical-align: middle;
+  animation: ribbon-wave 1.2s ease-in-out infinite;
+  transform-origin: left center;
+  font-size: 1.1rem;
+}
+@keyframes ribbon-wave {
+  0%,100% { transform: rotate(-4deg) scaleX(1);   }
+  25%      { transform: rotate(0deg)  scaleX(0.92); }
+  50%      { transform: rotate(4deg)  scaleX(1);   }
+  75%      { transform: rotate(0deg)  scaleX(0.92); }
+}
+
+/* --- ANIMATED COQUÍ frog during celebration --- */
+.coqui-hop {
+  position: fixed;
+  font-size: 2.8rem;
+  z-index: 2005;
+  pointer-events: none;
+  animation: coqui-journey 2.2s ease-in-out forwards;
+}
+@keyframes coqui-journey {
+  0%   { transform: translateX(0)   translateY(0)   rotate(0deg)   scale(0.5); opacity: 0; }
+  10%  { transform: translateX(0)   translateY(0)   rotate(0deg)   scale(1.1); opacity: 1; }
+  30%  { transform: translateX(80px) translateY(-60px) rotate(15deg) scale(1); }
+  50%  { transform: translateX(180px) translateY(20px) rotate(-10deg) scale(1.15); }
+  70%  { transform: translateX(280px) translateY(-50px) rotate(20deg) scale(1); }
+  90%  { transform: translateX(360px) translateY(10px) rotate(-5deg) scale(0.9); opacity:1; }
+  100% { transform: translateX(420px) translateY(0px) rotate(0deg) scale(0.6); opacity: 0; }
+}
+@keyframes coqui-journey-rtl {
+  0%   { transform: translateX(0)    translateY(0)    rotate(0deg)    scale(0.5); opacity: 0; }
+  10%  { transform: translateX(0)    translateY(0)    rotate(0deg)    scale(1.1); opacity: 1; }
+  30%  { transform: translateX(-80px) translateY(-60px) rotate(-15deg) scale(1); }
+  50%  { transform: translateX(-180px) translateY(20px) rotate(10deg)  scale(1.15); }
+  70%  { transform: translateX(-280px) translateY(-50px) rotate(-20deg) scale(1); }
+  90%  { transform: translateX(-360px) translateY(10px) rotate(5deg)   scale(0.9); opacity:1; }
+  100% { transform: translateX(-420px) translateY(0px) rotate(0deg)   scale(0.6); opacity: 0; }
+}
+
+/* --- WINNER PHRASE --- */
+#winnerPhrase {
+  font-size: 3.2rem;
+  color: #dc2626;
+  text-shadow: 0 4px 12px rgba(220,38,38,0.3);
+  animation: phrase-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.6) forwards;
+  transform: scale(0);
+  display: inline-block;
+}
+@keyframes phrase-pop {
+  to { transform: scale(1); }
+}
 .confetti-star {
   position: absolute;
   top: -20px;
@@ -787,9 +858,9 @@ button.rematch:hover {
   
   .domino-stage { height: 70px; margin-top: 0.25rem; }
   .domino-tile { width: 32px; height: 64px; border-radius: 4px; }
-  .half { padding: 3px; height: 28px; gap: 2px; }
-  .dot { width: 4px; height: 4px; }
-  .line { margin: 1px 3px; height: 1px; }
+  .half { padding: 2px 3px; height: 32px; gap: 2px; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); }
+  .dot { width: 6px; height: 6px; }
+  .line { left: 3px; right: 3px; }
   
   .card { padding: 1rem; }
   .pr-flag-badge { width: 45px; height: 45px; bottom: 0.5rem; right: 0.5rem; }
@@ -812,7 +883,7 @@ button.rematch:hover {
 </div>
 
 <div id="winnerOverlay" class="winner-overlay">
-  <h1>¡WEPA!</h1>
+  <h1 id="winnerPhrase">¡WEPA!</h1>
   <h2 id="winnerText"></h2>
   <div class="domino-stage" style="transform: scale(1.5); z-index: 2002;">
     <div class="domino-tile double-six">
@@ -1326,13 +1397,48 @@ function addRound() {
   }
 }
 
+// ── PR WIN PHRASES ────────────────────────────────────────────────────────
+const WIN_PHRASES = [
+  '¡WEPA!', '¡Brutal!', '¡Fuego!', '¡Qué Juego!',
+  '¡Candela!', '¡Dale!', '¡Eso Es!', '¡Tremendo!'
+];
+
+function spawnCoqui() {
+  const frog = document.createElement('div');
+  frog.className = 'coqui-hop';
+  frog.textContent = '🐸';
+  // random vertical start position
+  frog.style.bottom = (20 + Math.random() * 40) + 'vh';
+  frog.style.left   = (Math.random() > 0.5 ? '-60px' : '80vw');
+  if (frog.style.left !== '-60px') {
+    frog.style.animationName = 'coqui-journey-rtl';
+  }
+  document.body.appendChild(frog);
+  setTimeout(() => frog.remove(), 2400);
+}
+
 function celebrateWinner(winnerName) {
+  // Rotate through PR phrases
+  const phrase = WIN_PHRASES[Math.floor(Math.random() * WIN_PHRASES.length)];
+  const phraseEl = document.getElementById('winnerPhrase');
+  phraseEl.textContent = phrase;
+  // Re-trigger pop animation
+  phraseEl.style.animation = 'none';
+  phraseEl.offsetHeight; // reflow
+  phraseEl.style.animation = '';
+
   elements.winnerText.textContent = winnerName + " Wins!";
   elements.winnerOverlay.classList.add('active');
   haptic('heavy');
   playCelebrationCoqui();
   createConfetti();
   createBalloons();
+  // Spawn coquí frogs hopping across at staggered times
+  spawnCoqui();
+  setTimeout(spawnCoqui, 700);
+  setTimeout(spawnCoqui, 1500);
+  setTimeout(spawnCoqui, 2800);
+  setTimeout(spawnCoqui, 4200);
 }
 
 // Draw a 5-pointed star on a canvas and return a data URL
@@ -1775,7 +1881,10 @@ function render() {
       const tName = i < 2 ? teamNames[0] : teamNames[1];
       teamLabel = '<div style="font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;margin-bottom:2px;">' + tName + '</div>';
     }
-    return '<div class="score ' + (isWinner ? 'winner' : '') + '">' + teamLabel + (isWinner ? '🏆 ' : '') + name + ': ' + scores[i] + wepa + '</div>';
+    const ribbon = isWinner
+      ? `<span class="pr-ribbon"><svg width="22" height="14" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" style="border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,0.3)"><rect width="900" height="600" fill="#ED0000"/><rect width="900" height="120" y="120" fill="#fff"/><rect width="900" height="120" y="360" fill="#fff"/><path d="M0 0 L519.6 300 L0 600Z" fill="#0050F0"/><path fill="#fff" d="M173,200l29,90h95l-77,56 29,90-76-56-77,56 29-90-77-56h95z"/></svg></span>`
+      : '';
+    return '<div class="score ' + (isWinner ? 'winner' : '') + '">' + teamLabel + (isWinner ? '🏆 ' : '') + name + ': ' + scores[i] + wepa + ribbon + '</div>';
   }).join('');
   
   let table = '<thead><tr><th>#</th>' + names.map(n => '<th>' + n + '</th>').join('') + '<th>Winner</th></tr></thead><tbody>';
