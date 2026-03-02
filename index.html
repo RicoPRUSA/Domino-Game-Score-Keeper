@@ -946,7 +946,7 @@ button.rematch:hover {
               <th style="width: 40px;"></th>
               <!-- Players.svg Image -->
               <th style="text-align: left;">
-                  <img src="Players.svg" width="32" height="32" style="vertical-align: middle; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2)); border-radius: 4px;" alt="Players"/>
+                  <img src="Players.svg" width="24" height="24" style="vertical-align: middle; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2)); border-radius: 3px;" alt="Players"/>
               </th>
               <th style="text-align: center;">🏆</th>
               <th style="text-align: center;">❌</th>
@@ -971,7 +971,7 @@ button.rematch:hover {
               <th style="width: 25px;"></th> <!-- Delete Icon -->
               <!-- Players.svg Image -->
               <th style="text-align: left;">
-                  <img src="Players.svg" width="32" height="32" style="vertical-align: middle; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2)); border-radius: 4px;" alt="Players"/>
+                  <img src="Players.svg" width="24" height="24" style="vertical-align: middle; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2)); border-radius: 3px;" alt="Players"/>
               </th>
               <th style="text-align: center;"><span class="badge capicu">Cap</span></th>
               <th style="text-align: center;"><span class="badge chuchazo">Chu</span></th>
@@ -1442,6 +1442,7 @@ function rematchGame() {
   setupRoundInputs();
   render();
   saveGameState();
+  requestWakeLock();
   haptic('medium');
   playCoquiSound();
 }
@@ -1450,6 +1451,7 @@ function newGame() {
   if (rounds.length > 0) {
     saveGameToHistory();
   }
+  releaseWakeLock();
   localStorage.removeItem('dominoGame');
   elements.winnerOverlay.classList.remove('active');
   elements.game.classList.add('hidden');
@@ -1848,6 +1850,7 @@ function resumeGame(index) {
     elements.game.classList.remove('hidden');
     setupRoundInputs();
     render();
+    requestWakeLock();
   } else {
     alert("Cannot resume this game (old format).");
   }
@@ -1856,15 +1859,46 @@ function resumeGame(index) {
 renderPlayerSelects();
 loadGameState();
 
+
+// ── WAKE LOCK ──────────────────────────────────────────────────────────────
+// Keeps the screen from dimming/locking during an active game so sound effects
+// never get cut off by the OS. Acquired when a game starts, released on New Game.
+let wakeLock = null;
+
+async function requestWakeLock() {
+  if (!('wakeLock' in navigator)) return; // not supported — fail silently
+  try {
+    wakeLock = await navigator.wakeLock.request('screen');
+  } catch (err) {
+    // Low battery or other OS refusal — not a fatal error, just carry on
+    console.warn('Wake Lock not granted:', err.message);
+  }
+}
+
+function releaseWakeLock() {
+  if (wakeLock) {
+    wakeLock.release();
+    wakeLock = null;
+  }
+}
+
 // When the user returns to the app after the screen was locked or they switched
 // tabs, the OS will have suspended the AudioContext to save battery.
 // This listener proactively resumes it so the very first tap after unlocking
 // plays sound immediately rather than being silent.
+// It also re-requests the Wake Lock because iOS/Android automatically release
+// it whenever the page goes to the background.
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible' && audioCtx) {
-    // resume() is a no-op if the context is already running, so this is safe to
-    // call unconditionally whenever the page becomes visible again.
-    audioCtx.resume();
+  if (document.visibilityState === 'visible') {
+    if (audioCtx) audioCtx.resume();
+    // Re-acquire wake lock if a game is currently in progress
+    if (!elements.game.classList.contains('hidden')) {
+      requestWakeLock();
+    }
+  } else {
+    // Page going to background — OS releases the lock automatically,
+    // so just null out our reference to keep state clean.
+    wakeLock = null;
   }
 });
 </script>
