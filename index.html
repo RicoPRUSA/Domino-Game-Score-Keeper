@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Domino PR">
-<meta name="theme-color" content="#0050F0">
+<meta name="theme-color" content="#0038b8">
 <meta name="description" content="Puerto Rican Domino Score Keeper">
 
 <!-- ICON GENERATOR SCRIPT -->
@@ -181,6 +181,7 @@ body {
   box-shadow: 0 8px 20px rgba(0,0,0,0.1);
   border: 1px solid rgba(0,0,0,0.05);
   position: relative;
+  overflow: hidden;
 }
 
 .card::before {
@@ -190,10 +191,9 @@ body {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(to right, #b91c1c, #ffffff, #1e3a8a);
+  background: linear-gradient(to right, #7f0000, #ffffff, #12235c);
   background-size: 200% 100%;
   animation: shine 3s linear infinite;
-  border-radius: 16px 16px 0 0;
 }
 
 
@@ -229,7 +229,7 @@ body {
 
 h1 {
   font-weight: 600;
-  color: #1e3a8a;
+  color: #12235c;
   text-align: center;
   margin: 0.2rem 0 0.5rem 0;
   font-size: 1.5rem;
@@ -238,7 +238,7 @@ h1 {
 
 h2 {
   font-weight: 800;
-  color: #1e3a8a;
+  color: #12235c;
   text-align: center;
   margin-bottom: 1rem;
   font-size: 1.5rem;
@@ -250,7 +250,7 @@ h2 {
   height: 4px;
   margin: 0.4rem auto 0.8rem;
   border-radius: 3px;
-  background: linear-gradient(to right, #b91c1c, #ffffff, #1e3a8a);
+  background: linear-gradient(to right, #7f0000, #ffffff, #12235c);
   background-size: 200% 100%;
   animation: shine 3s linear infinite;
 }
@@ -332,7 +332,7 @@ input[type="number"] {
   font-weight: 800;
   text-align: center;
   width: 85px;
-  color: #1e3a8a;
+  color: #12235c;
   background-color: #f1f5f9;
   border: 2px solid #cbd5e1;
   border-radius: 12px;
@@ -379,7 +379,7 @@ input:disabled {
 
 .bonus { background: #f59e0b; }
 .capicu { background: #ea580c; }
-.chuchazo { background: #dc2626; }
+.chuchazo { background: #b30000; }
 
 /* --- NEON OUTLINE TOGGLES --- */
 .checkbox-group {
@@ -427,8 +427,8 @@ input:disabled {
 }
 
 .checkbox-label input:checked + .badge.chuchazo {
-  background: #dc2626;
-  border-color: #dc2626;
+  background: #b30000;
+  border-color: #b30000;
   color: white;
   box-shadow: 0 0 15px rgba(220, 38, 38, 0.5);
   transform: scale(1.05);
@@ -436,7 +436,7 @@ input:disabled {
 
 /* --- TABLE --- */
 table { width: 100%; border-collapse: collapse; }
-th, td { padding: 0.75rem 0.5rem; text-align: center; color: #1e3a8a; }
+th, td { padding: 0.75rem 0.5rem; text-align: center; color: #12235c; }
 th { font-weight: 800; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px; }
 tbody tr { border-top: 1px solid #e2e8f0; }
 
@@ -485,7 +485,7 @@ td .badge-stack {
 .score {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1e3a8a;
+  color: #12235c;
   padding: 0.5rem 1rem;
   border-radius: 12px;
   border: 2px solid transparent;
@@ -494,7 +494,7 @@ td .badge-stack {
 }
 
 .score.winner {
-  color: #dc2626;
+  color: #b30000;
   background-color: #fef2f2;
   border: 2px solid #fee2e2;
   animation: pulse-winner 2.5s infinite;
@@ -528,7 +528,7 @@ td .badge-stack {
 
 .winner-overlay h1 {
   font-size: 3rem;
-  color: #dc2626;
+  color: #b30000;
   margin-bottom: 1rem;
   z-index: 2002;
   animation: pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -536,7 +536,7 @@ td .badge-stack {
 
 .winner-overlay h2 {
   font-size: 2rem;
-  color: #1e3a8a;
+  color: #12235c;
   margin-bottom: 2rem;
   z-index: 2002;
 }
@@ -548,7 +548,7 @@ td .badge-stack {
   gap: 0.5rem;
   margin-bottom: 0.8rem;
   font-size: 1rem;
-  color: #1e3a8a;
+  color: #12235c;
   font-weight: 800;
   width: 100%;
   justify-content: space-between;
@@ -584,7 +584,7 @@ td .badge-stack {
 }
 .icon-btn:hover {
   transform: scale(1.1);
-  color: #1e3a8a !important;
+  color: #12235c !important;
 }
 .delete-btn {
   background: transparent !important;
@@ -597,7 +597,7 @@ td .badge-stack {
 }
 .delete-btn:hover {
   transform: scale(1.1);
-  color: #dc2626 !important;
+  color: #b30000 !important;
 }
 
 .confetti {
@@ -669,7 +669,7 @@ td .badge-stack {
   border-radius: 10px;
   border: 2px solid #cbd5e1;
   background: #f1f5f9;
-  color: #1e3a8a;
+  color: #12235c;
   text-align: center;
   box-shadow: inset 0 2px 4px rgba(0,0,0,0.08);
   transition: all 0.2s ease;
@@ -740,7 +740,7 @@ td .badge-stack {
 .stat-tile .stat-val {
   font-size: 2rem;
   font-weight: 900;
-  color: #1e3a8a;
+  color: #12235c;
   line-height: 1;
 }
 .stat-tile .stat-lbl {
@@ -783,7 +783,7 @@ td .badge-stack {
   font-size: 9px;
 }
 .streak-dot.win  { background: #dcfce7; color: #16a34a; font-weight: 900; }
-.streak-dot.loss { background: #fee2e2; color: #dc2626; font-weight: 900; }
+.streak-dot.loss { background: #fee2e2; color: #b30000; font-weight: 900; }
 
 /* --- PR FLAG RIBBON on winning score --- */
 .pr-ribbon {
@@ -831,7 +831,7 @@ td .badge-stack {
 /* --- WINNER PHRASE --- */
 #winnerPhrase {
   font-size: 3.2rem;
-  color: #dc2626;
+  color: #b30000;
   text-shadow: 0 4px 12px rgba(220,38,38,0.3);
   animation: phrase-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.6) forwards;
   transform: scale(0);
@@ -882,7 +882,7 @@ button.rematch:hover {
     <rect width="900" height="600" fill="#ED0000"/>
     <rect width="900" height="120" y="120" fill="#ffffff"/>
     <rect width="900" height="120" y="360" fill="#ffffff"/>
-    <path d="M 0 0 L 519.6 300 L 0 600 Z" fill="#0050F0"/>
+    <path d="M 0 0 L 519.6 300 L 0 600 Z" fill="#0038b8"/>
     <path fill="#ffffff" d="M 173.20508,200 L 202.59606,290.47227 L 297.71261,290.47227 L 220.76335,346.37683 L 250.15433,436.8491 L 173.20508,380.94454 L 96.255829,436.8491 L 125.64681,346.37683 L 48.697551,290.47227 L 143.8141,290.47227 Z"/>
   </svg>
 </div>
@@ -929,7 +929,7 @@ button.rematch:hover {
 
 <!-- EDIT PLAYER OVERLAY -->
 <div id="editOverlay" class="winner-overlay">
-  <h2 style="color: #1e3a8a; margin-bottom: 0.5rem;">Edit Stats</h2>
+  <h2 style="color: #12235c; margin-bottom: 0.5rem;">Edit Stats</h2>
   <h1 id="editPlayerName" style="font-size: 2rem; color: #DC2626; margin-bottom: 1rem;"></h1>
   
   <div style="width: 100%; max-width: 320px; overflow-y: auto; max-height: 60vh;">
@@ -1469,9 +1469,9 @@ function makeStarDataURL(color, size) {
 function createConfetti() {
   // PR flag palette: red, white, blue
   const pieces = [
-    { type: 'rect', color: '#dc2626' },
+    { type: 'rect', color: '#b30000' },
     { type: 'rect', color: '#ffffff' },
-    { type: 'rect', color: '#0050F0' },
+    { type: 'rect', color: '#0038b8' },
     { type: 'star', color: '#ffffff' },
     { type: 'star', color: '#fbbf24' }, // gold star for flair
   ];
@@ -1500,7 +1500,7 @@ function createConfetti() {
 }
 
 function createBalloons() {
-  const colors = ['#dc2626', '#ffffff', '#0050F0'];
+  const colors = ['#b30000', '#ffffff', '#0038b8'];
   for (let i = 0; i < 25; i++) {
     const balloon = document.createElement('div');
     balloon.classList.add('balloon');
@@ -1671,12 +1671,12 @@ function renderGameHistory() {
     const gameIdx = gameHistory.length - 1 - reverseIdx;
     historyHTML += '<div style="padding: 1rem; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">';
     historyHTML += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; border-bottom: 1px solid #cbd5e1; padding-bottom: 0.5rem;">';
-    historyHTML += '<h3 style="margin: 0; color: #1e3a8a; font-size: 1rem;">Game ' + (gameIdx + 1) + '</h3>';
+    historyHTML += '<h3 style="margin: 0; color: #12235c; font-size: 1rem;">Game ' + (gameIdx + 1) + '</h3>';
     historyHTML += '<span style="font-size: 0.8rem; color: #64748b;">' + game.date + '</span>';
     historyHTML += '</div>';
     game.players.forEach((player, rank) => {
       const isWinner = rank === 0;
-      historyHTML += '<div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.25rem; color: ' + (isWinner ? '#dc2626' : '#334155') + '; font-weight: ' + (isWinner ? '700' : '400') + ';">';
+      historyHTML += '<div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.25rem; color: ' + (isWinner ? '#b30000' : '#334155') + '; font-weight: ' + (isWinner ? '700' : '400') + ';">';
       historyHTML += '<span>' + (isWinner ? '🏆 ' : '') + player.name + '</span>';
       historyHTML += '<span>' + player.finalScore + '</span>';
       historyHTML += '</div>';
@@ -1699,7 +1699,7 @@ function renderLeaderboard() {
         
         const row = `<tr>
             <td style="text-align: center;"><button class="delete-btn" onclick="deletePlayer('${name}')">🗑️</button></td>
-            <td style="text-align: left; padding: 0.5rem;"><button class="icon-btn" style="color:#1e3a8a;font-weight:700;font-size:0.95rem;text-decoration:underline;text-underline-offset:2px;" onclick="openStatsPlayer('${name}')">${name}</button></td>
+            <td style="text-align: left; padding: 0.5rem;"><button class="icon-btn" style="color:#12235c;font-weight:700;font-size:0.95rem;text-decoration:underline;text-underline-offset:2px;" onclick="openStatsPlayer('${name}')">${name}</button></td>
             <td style="text-align: center; padding: 0.5rem;">${stats.wins}</td>
             <td style="text-align: center; padding: 0.5rem;">${stats.losses}</td>
             <td style="text-align: center; padding: 0.5rem;">
@@ -1723,7 +1723,7 @@ function renderBonusBoard() {
         
         const row = `<tr>
             <td style="text-align: center;"><button class="delete-btn" onclick="deletePlayer('${name}')">🗑️</button></td>
-            <td style="text-align: left; padding: 0.5rem; color: #1e3a8a; font-weight: 600; font-size: 0.8rem;">${name}</td>
+            <td style="text-align: left; padding: 0.5rem; color: #12235c; font-weight: 600; font-size: 0.8rem;">${name}</td>
             <td style="text-align: center; padding: 0.5rem; font-size: 0.8rem;"><span class="badge capicu" style="font-size: 0.8rem;">${cap}</span></td>
             <td style="text-align: center; padding: 0.5rem; font-size: 0.8rem;"><span class="badge chuchazo" style="font-size: 0.8rem;">${chu}</span></td>
             <td style="text-align: center; padding: 0.5rem;">
@@ -1797,7 +1797,7 @@ function openStatsPlayer(name) {
       <div class="stat-lbl">Capicú</div>
     </div>
     <div class="stat-tile">
-      <div class="stat-val" style="color:#dc2626;">${s.chuchazo || 0}</div>
+      <div class="stat-val" style="color:#b30000;">${s.chuchazo || 0}</div>
       <div class="stat-lbl">Chuchazo</div>
     </div>
   `;
@@ -1889,7 +1889,7 @@ function render() {
       teamLabel = '<div style="font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;margin-bottom:2px;">' + tName + '</div>';
     }
     const ribbon = isWinner
-      ? `<span class="pr-ribbon"><svg width="22" height="14" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" style="border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,0.3)"><rect width="900" height="600" fill="#ED0000"/><rect width="900" height="120" y="120" fill="#fff"/><rect width="900" height="120" y="360" fill="#fff"/><path d="M0 0 L519.6 300 L0 600Z" fill="#0050F0"/><path fill="#fff" d="M173,200l29,90h95l-77,56 29,90-76-56-77,56 29-90-77-56h95z"/></svg></span>`
+      ? `<span class="pr-ribbon"><svg width="22" height="14" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" style="border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,0.3)"><rect width="900" height="600" fill="#ED0000"/><rect width="900" height="120" y="120" fill="#fff"/><rect width="900" height="120" y="360" fill="#fff"/><path d="M0 0 L519.6 300 L0 600Z" fill="#0038b8"/><path fill="#fff" d="M173,200l29,90h95l-77,56 29,90-76-56-77,56 29-90-77-56h95z"/></svg></span>`
       : '';
     return '<div class="score ' + (isWinner ? 'winner' : '') + '">' + teamLabel + (isWinner ? '🏆 ' : '') + name + ': ' + scores[i] + wepa + ribbon + '</div>';
   }).join('');
